@@ -1,0 +1,28 @@
+<remote_name>: https://github.gatech.edu/ahaamid3/grudy.git
+
+git remote add origin <remote_name>
+make <branch_name> branch online
+git clone -b <branch_name> <remote_name>
+cd DTOUR
+git init
+git status
+git add .
+git branch (-a(all), -r(remote))
+git checkout <branch_name>
+change the files
+git commit -m "added <branch_name>"
+git push origin <branch_name>
+
+git merge master
+
+# make a local testingBranch branch
+git checkout -b testingBranch
+
+# push local testingBranch to remote one.
+git push --set-upstream origin testingBranch
+
+# delete remote branch
+git push <remote_name> --delete <branch_name>
+
+# delete local branch
+git branch -d <branch_name>
