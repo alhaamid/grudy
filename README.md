@@ -1,2 +1,2 @@
 # grudy
-A web application that studenets can use to study in groups
+A web application that students can use to study in groups
