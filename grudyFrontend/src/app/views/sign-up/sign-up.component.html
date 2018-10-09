@@ -1,0 +1,90 @@
+<div class="pageContainer">
+  <div class="mainContainer">
+      
+    <h2>Sign Up</h2>
+
+    <div class="signUpForm">
+      <mat-card>
+        <form [formGroup]="rForm">
+          <div class="validationError" *ngIf="!rForm.controls['nameValidation'].valid && rForm.controls['nameValidation'].touched">
+            <div *ngIf="rForm.controls['nameValidation'].hasError('required')">
+              Name is required.
+            </div>
+            <div *ngIf="rForm.controls['nameValidation'].hasError('minlength')">
+              Name must be at least {{this.minNameLength}} characters long.
+            </div>
+          </div>
+          <div class="validationError" *ngIf="!rForm.controls['emailValidation'].valid && rForm.controls['emailValidation'].touched">
+            <div *ngIf="rForm.controls['emailValidation'].hasError('required')">
+              Email is required.
+            </div>
+            <div *ngIf="rForm.controls['emailValidation'].hasError('minlength')">
+              Email must be at least {{this.minEmailLength}} characters long.
+            </div>
+          </div>
+          <div class="validationError" *ngIf="!rForm.controls['passwordValidation'].valid && rForm.controls['passwordValidation'].touched">
+            <div *ngIf="rForm.controls['passwordValidation'].hasError('required')">
+              Password is required.
+            </div>
+            <div *ngIf="rForm.controls['passwordValidation'].hasError('minlength')">
+              Password must be at least {{this.minPasswordLength}} characters long.
+            </div>
+          </div>
+
+          <div class="notification" *ngIf="this.verificationEmailSent">
+            Please verify your email and then login
+          </div>
+
+          <div class="validationError" *ngIf="this.alreadyInUse">
+            The email address is already registered with us.
+          </div>
+
+          <div class="table">
+            <mat-form-field>
+              <input 
+                matInput 
+                formControlName="nameValidation" 
+                [(ngModel)]="this.name" 
+                name="title" 
+                placeholder="{{this.namePlaceholder}}">
+            </mat-form-field>
+            <mat-form-field>
+              <input 
+                matInput type="email"
+                formControlName="emailValidation" 
+                [(ngModel)]="this.email" 
+                name="title" 
+                placeholder="{{this.emailPlaceholder}}">
+            </mat-form-field>
+            <mat-form-field>
+              <input 
+                matInput type="password"
+                formControlName="passwordValidation" 
+                [(ngModel)]="this.password" 
+                name="title" 
+                placeholder="{{this.passwordPlaceholder}}">
+            </mat-form-field>
+          </div>
+
+          <button mat-raised-button 
+            color="primary"
+            [disabled]="!rForm.valid"
+            (click)="signUp()" 
+            title="Sign up">
+            <b>Sign Up</b>
+          </button>
+
+          <a routerLink="{{this.rs.LOGIN_PAGE.ROUTE}}">
+            <button mat-raised-button 
+              color="secondary"
+              title="Log In">
+              <b>Log In</b>
+            </button>
+          </a>
+
+        </form>
+      </mat-card>
+    </div>
+
+  </div>
+</div>

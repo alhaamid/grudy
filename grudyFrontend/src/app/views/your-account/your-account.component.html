@@ -1,0 +1,18 @@
+<div class="pageContainer">
+  <div class="mainContainer">
+    <div class="yourDetails">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>
+            <h2>{{this.authService.userDetails.displayName}}</h2>
+          </mat-card-title>
+          <mat-card-subtitle>
+            <h3>{{this.authService.userDetails.email}}</h3>
+          </mat-card-subtitle>
+        </mat-card-header>
+        <img mat-card-image src="{{this.authService.userDetails.photoURL}}">
+      </mat-card>
+    </div>
+        
+  </div>
+</div>

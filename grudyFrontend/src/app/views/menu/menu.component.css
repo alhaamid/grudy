@@ -1,0 +1,186 @@
+* {
+    --navbar-height: 5em;
+    /* border: 1px solid red; */
+}
+
+a {
+    text-decoration-line: none;
+    color: inherit;
+    height: inherit;
+    width: inherit;
+}
+
+#header {
+    width: 100%;
+    height:  var(--navbar-height);
+
+    display: table;
+    
+    color: white;
+    background: var(--primary-color);
+}
+
+#titleContainer {
+    width: 40%;
+    height: inherit;
+
+    display: table-cell;
+    vertical-align: middle;
+}
+
+#navbarContainer {
+    width: 60%;
+    height: inherit;
+    
+    display: table-cell;
+    vertical-align: middle;
+}
+
+#titleContent {
+    float: left;
+    margin-left: 20%;
+    margin-right: 20%;
+}
+
+#titleContent h1 {
+    text-transform: uppercase;
+    font-family: 'Roboto';
+    letter-spacing: 0.1em;
+}
+
+#navbarContent {
+    float: right;
+}
+
+.linkBox {
+    float: right;
+    height: var(--navbar-height);
+    width: var(--navbar-height);
+    margin-left: 1em;
+
+    display: table;
+
+    border-radius: 50%;
+    background: var(--primary-color);
+
+    transition: all 0.2s ease-in-out;
+}
+
+/* .mat-progress-spinner {
+    border-radius: 50%;
+    vertical-align: middle;
+    background-color: yellow;
+} */
+
+.linkBox a i {
+    width: fit-content;
+    height: fit-content;
+
+    display: table-cell;
+    vertical-align: middle;
+
+    /* background-color: red; */
+    transition: all 0.2s ease-in-out;
+}
+
+.linkBox:hover {
+    background-color: var(--hover-color);
+}
+
+.linkBox:hover a i {
+    transform: scale(1.2);
+}
+
+.active {
+    background-color: var(--hover-color);
+}
+
+.material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 2em;  
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: 'liga';
+}
+
+
+.dropdown {
+    position: relative;
+    display: none;
+    height: var(--navbar-height);
+
+    border-radius: 50%;
+    /* background-color: red; */
+}
+
+.hoverBox {
+    height: var(--navbar-height);
+    width: var(--navbar-height);
+
+    /* background-color: blue; */
+    /* border-radius: 50%; */
+    
+    transition: all 0.2s ease-in-out;
+}
+
+.hoverBox i {
+    width: fit-content;
+    cursor: default;
+
+    transition: all 0.2s ease-in-out;
+    transform: scale(1);
+}
+
+.dropdown:hover {
+    background-color: var(--hover-color);
+}
+
+.dropdown:hover i {
+    transform: scale(1.2);
+}
+
+.dropdown:hover .dropdownCol {
+    display: block;
+}
+
+.dropdownCol {
+    display: none;
+    position: absolute;
+    width: var(--navbar-height);
+
+    background: transparent;
+    
+    z-index: auto !important;
+}
+
+@media(max-width: 1000px){
+    .dropdown {
+        display: inline-block;
+    }
+    .flat {
+        display: none;
+    }
+}
+
+/* display: inline-flex;
+align-items: center;
+justify-content: right; */
+
+/* display: -moz-box;
+-moz-box-pack: center;
+-moz-box-align: center;
+
+display: -webkit-box;
+-webkit-box-pack: center;
+-webkit-box-align: center; */

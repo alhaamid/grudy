@@ -1,0 +1,109 @@
+* {
+    --input-height: 2em;
+    --min-input-width: 500px;
+}
+
+.mainContainer {
+    text-align: center;
+    margin: auto;
+    width: 50%;
+}
+
+.logInForm {
+    text-align: center;
+    min-width: 400px;
+    width: 100%;
+}
+
+.table {
+    display: table;
+    width: 100%;
+    text-align: center;
+}
+
+.material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 2em;  
+    display: inline;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+    cursor: pointer;
+
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: 'liga';
+}
+
+.taskRow {
+    display: table;
+    width: 100%;
+    min-height: var(--input-height);
+}
+
+button {
+    text-transform: uppercase;
+}
+
+h2 {
+    font-family: 'Roboto';
+    padding: 0.5em 0 0.5em 0;
+
+    display: inline-block; 
+    vertical-align: middle;
+    width: fit-content;
+}
+
+.validationError {
+    color: red;
+    margin-bottom: 10px;
+}
+
+input {
+    min-height: var(--input-height);
+}
+
+.mat-form-field {
+    min-width: 100%;
+    min-height: var(--input-height);
+    height: auto;
+}
+
+.mat-checkbox {
+    padding: 0.5em; 
+}
+
+.cursorPtr {
+    cursor: pointer;
+}
+
+.mat-raised-button {
+    margin-right: 20px;
+}
+
+/* #header {
+    width: 100%;
+    height: fit-content;
+
+    text-align: center;
+    
+    color: black;
+}
+
+.btn {
+    border-radius: 50%;
+    border-width: 0px;
+    background-color: white;
+    cursor: pointer;
+}
+
+.img {
+    width: 64px;
+    height: 64px;
+} */

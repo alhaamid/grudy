@@ -1,0 +1,3 @@
+node_modules/.bin/ts-node-dev server.ts
+npm start
+nodemon --exec npm start

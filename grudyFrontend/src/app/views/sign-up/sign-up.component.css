@@ -1,0 +1,93 @@
+* {
+    --input-height: 2em;
+    --min-input-width: 500px;
+}
+
+.mainContainer {
+    text-align: center;
+    margin: auto;
+    width: 50%;
+}
+
+.signUpForm {
+    text-align: center;
+    min-width: 400px;
+    width: 100%;
+}
+
+.table {
+    text-align: center;
+    display: table;
+    width: 100%;
+}
+
+.material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 2em;  
+    display: inline;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+    cursor: pointer;
+
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: 'liga';
+}
+
+.taskRow {
+    display: table;
+    width: 100%;
+    min-height: var(--input-height);
+}
+
+button {
+    text-transform: uppercase;
+}
+
+h2 {
+    font-family: 'Roboto';
+    padding: 0.5em 0 0.5em 0;
+
+    display: inline-block; 
+    vertical-align: middle;
+    width: fit-content;
+}
+
+.notification {
+    color: blue;
+    margin-bottom: 10px;
+}
+
+.validationError {
+    color: red;
+    margin-bottom: 10px;
+}
+
+input {
+    min-height: var(--input-height);
+}
+
+.mat-raised-button {
+    margin-right: 20px;
+}
+
+.mat-form-field {
+    min-width: 100%;
+    min-height: var(--input-height);
+    height: auto;
+}
+
+.mat-checkbox {
+    padding: 0.5em; 
+}
+
+.cursorPtr {
+    cursor: pointer;
+}

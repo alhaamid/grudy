@@ -1,0 +1,44 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+* {
+    --primary-color: #044b7f;
+    --hover-color: #13aff0;
+    --min-all-width: 600px;
+    
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    outline: none;
+    font-family: 'Open Sans';
+}
+
+.pageContainer {
+    min-width: var(--min-all-width);
+    width: 60%;
+    margin: auto;
+    height: fit-content;
+
+    /* background: lightgreen; */
+    text-align: center;
+    
+    color: var(--primary-color);
+}
+
+.toRight {
+    float: right;
+}
+
+.toLeft {
+    float: left;
+}
+
+.centerBoth {
+    display: -moz-box;
+    -moz-box-pack: center;
+    -moz-box-align: center;
+
+    display: -webkit-box;
+    -webkit-box-pack: center;
+    -webkit-box-align: center;
+}

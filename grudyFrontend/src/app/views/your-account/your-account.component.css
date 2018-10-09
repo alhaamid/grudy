@@ -1,0 +1,9 @@
+.mainContainer {
+    text-align: left;
+    background: lightblue;
+    width: 50%;
+}
+
+.yourDetails {
+    margin-top: 2em;
+}

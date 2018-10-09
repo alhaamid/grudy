@@ -1,0 +1,85 @@
+<div class="pageContainer">
+    <div class="mainContainer">
+        
+      <h2>Log In</h2>
+
+      <div class="logInForm">
+        <mat-card>
+          <form [formGroup]="rForm">
+            <div class="validationError" *ngIf="!rForm.controls['emailValidation'].valid && rForm.controls['emailValidation'].touched">
+              <div *ngIf="rForm.controls['emailValidation'].hasError('required')">
+                Email is required.
+              </div>
+              <div *ngIf="rForm.controls['emailValidation'].hasError('minlength')">
+                Email must be at least {{this.minEmailLength}} characters long.
+              </div>
+            </div>
+            <div class="validationError" *ngIf="!rForm.controls['passwordValidation'].valid && rForm.controls['passwordValidation'].touched">
+              <div *ngIf="rForm.controls['passwordValidation'].hasError('required')">
+                Password is required.
+              </div>
+              <div *ngIf="rForm.controls['passwordValidation'].hasError('minlength')">
+                Password must be at least {{this.minPasswordLength}} characters long.
+              </div>
+            </div>
+
+            <div class="notification" *ngIf="this.verificationEmailSent">
+              Please verify your email and then login
+            </div>
+
+            <div class="validationError" *ngIf="this.noSuchUser">
+              There is no user with this email and password.
+            </div>
+
+            <div class="table">
+              <mat-form-field>
+                <input type="email"
+                  matInput 
+                  formControlName="emailValidation" 
+                  [(ngModel)]="this.email" 
+                  name="title" 
+                  placeholder="{{this.emailPlaceholder}}">
+              </mat-form-field>
+              <mat-form-field>
+                <input type="password"
+                  matInput 
+                  formControlName="passwordValidation" 
+                  [(ngModel)]="this.password" 
+                  name="title" 
+                  placeholder="{{this.passwordPlaceholder}}">
+              </mat-form-field>
+            </div>
+
+            <button mat-raised-button 
+              color="primary"
+              [disabled]="!rForm.valid"
+              (click)="logIn()" 
+              title="Log In">
+              <b>Log In</b>
+            </button>
+
+            <a routerLink="{{this.rs.SIGNUP_PAGE.ROUTE}}">
+              <button mat-raised-button 
+                color="secondary"
+                title="Sign up">
+                <b>Sign Up</b>
+              </button>
+            </a>
+
+          </form>
+        </mat-card>
+      </div>
+  
+    </div>
+  </div>
+
+
+<!-- <div id="header">
+  <br>
+  <h2>Log In</h2>
+  <br>
+
+  <button class="btn" type="button" (click)="this.signIn()">
+    <img class="img" src="../assets/google_logo.png">
+  </button>
+</div> -->
