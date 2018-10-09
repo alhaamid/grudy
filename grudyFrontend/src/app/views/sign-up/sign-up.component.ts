@@ -31,7 +31,7 @@ export class SignUpComponent implements OnInit {
 
     this.rForm = fb.group({
       'emailValidation': ['', Validators.compose([
-        Validators.required, Validators.minLength(this.minEmailLength)
+        Validators.required, Validators.minLength(this.minEmailLength), Validators.pattern('^[A-Za-z0-9._%+-]+@gatech.edu$')
       ])],
       'passwordValidation': ['', Validators.compose([
         Validators.required, Validators.minLength(this.minPasswordLength)
