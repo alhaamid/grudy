@@ -1,0 +1,40 @@
+Course
+	courseId
+	courseCode
+	courseName
+
+	allTopics: Topic[]
+
+Topic
+	topicId
+	name
+	postIds[] (foreign key)
+
+Post
+	courseId (foreign key)
+	topicId (foreign key)
+
+	postId
+	subject
+	content
+	postedWhen
+	postedBy (userId)
+	isResolved?
+
+	allDoscussions: Discussion[]
+
+Discussion
+	discussionId
+	text
+	postedWhen
+	startedBy
+	isResolved?
+
+User
+	userId
+	userName
+	userEmail
+	userPassword
+	
+	allCourses: Course[]
+	preferences: {}

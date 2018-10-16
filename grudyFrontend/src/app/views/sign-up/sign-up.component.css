@@ -3,16 +3,9 @@
     --min-input-width: 500px;
 }
 
-.mainContainer {
-    text-align: center;
-    margin: auto;
-    width: 50%;
-}
-
 .signUpForm {
-    text-align: center;
-    min-width: 400px;
-    width: 100%;
+    text-align: left;
+    width: 30%;
 }
 
 .table {

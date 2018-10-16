@@ -15,7 +15,7 @@
 
 .pageContainer {
     min-width: var(--min-all-width);
-    width: 60%;
+    width: 80%;
     margin: auto;
     height: fit-content;
 
@@ -23,6 +23,16 @@
     text-align: center;
     
     color: var(--primary-color);
+}
+
+.mainContainer {
+    text-align: left;
+    width: 100%;
+    margin: 1em 0;
+}
+
+.mainContainer h2 {
+    margin-bottom: 1em;
 }
 
 .toRight {

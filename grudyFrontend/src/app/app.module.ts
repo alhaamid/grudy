@@ -31,6 +31,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
+import { GrudyService } from './services/grudy.service';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -52,6 +54,7 @@ import { MatDividerModule } from '@angular/material/divider';
     AngularFireAuthModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    HttpClientModule,
 
     MatCheckboxModule,
     MatInputModule,
@@ -62,7 +65,7 @@ import { MatDividerModule } from '@angular/material/divider';
     MatProgressBarModule
   ],
   providers: [
-    GlobalsService, AuthService, RoutingService, AuthGuardService
+    GlobalsService, AuthService, RoutingService, AuthGuardService, GrudyService
   ],
   bootstrap: [AppComponent]
 })

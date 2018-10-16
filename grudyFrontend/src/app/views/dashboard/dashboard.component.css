@@ -1,0 +1,8 @@
+* {
+    --input-height: 2em;
+    --min-input-width: 500px;
+}
+
+.courseList {
+    /* background: lightblue; */
+}

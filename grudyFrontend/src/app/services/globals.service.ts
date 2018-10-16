@@ -10,6 +10,8 @@ export class GlobalsService {
 
   public USERS_COLLECTION: string = 'users';
 
+  public DEFAULT_PICTURE: string = "https://pbs.twimg.com/profile_images/582436192307703809/DqWJEB13_400x400.png";
+
   constructor() { }
 
   public log(...a) {

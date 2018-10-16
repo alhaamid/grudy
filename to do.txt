@@ -1,0 +1,1 @@
+1) at login, connect to mongodb and add/update the user
