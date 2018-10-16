@@ -57,4 +57,8 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
   }
 
+  canDeactivate() {
+    return true;
+  }
+
 }

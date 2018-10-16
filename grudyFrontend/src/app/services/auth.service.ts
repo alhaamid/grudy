@@ -19,7 +19,7 @@ export class AuthService {
   public userInBackendDatabase: boolean = false;
 
   constructor(private afa: AngularFireAuth, private afs: AngularFirestore, private gs: GlobalsService, private grudy: GrudyService) {
-    this.setupUserObservable().catch(__ => {});
+    this.setupUserObservable().catch(err => {this.gs.log(err);});
   }
 
   setupUserObservable() {
@@ -37,20 +37,18 @@ export class AuthService {
                 this.userInBackendDatabase = true;
                 resolve();
               })
-              .catch(__ => {resolve()});
-
-              // resolve();
+              .catch(__ => {reject("User doesn't exist in the databse")});
             });
           }
         } else {
           this.userDetailsObservable = null;
-          reject();
+          reject("authState is logged out");
         }
       });
     });
   }
 
-  updateUserData(user: firebase.User, email: string, name: string, password: string) {
+  initializeUserData(email: string, name: string, password: string) {
     const userRef: AngularFirestoreDocument<User> = this.afs.doc(`${this.gs.USERS_COLLECTION}/${email}`);
 
     const data: User = {
@@ -66,9 +64,16 @@ export class AuthService {
     return new Promise<any> ((resolve, reject) => {
       this.afa.auth.createUserWithEmailAndPassword(email, password)
       .then(val => {
-        this.updateUserData(val.user, email, name, password);
+        this.initializeUserData(email, name, password);
         this.afa.auth.currentUser.sendEmailVerification()
-        .then(val => {
+        .then(__ => {
+          // a new user is created on Firestore and verification email is sent here
+          
+          // create a user in our own database
+          this.grudy.createAUser(email, password, name, this.gs.DEFAULT_PICTURE)
+          .then(user => { this.userInBackendDatabase = true; this.gs.log("new user at our backend created at signup"); })
+          .catch(err => { this.gs.log("some error in creating user on the backend", err); })
+
           resolve({code: "verification-email-sent", message: "Please verify your email and then login"});
         })
         .catch(err => {
@@ -76,7 +81,14 @@ export class AuthService {
         })
       })
       .catch(err => {
+        // user is already created on Firestore but has not been verified yet
         if (!this.afa.auth && this.afa.auth.currentUser.emailVerified) {
+
+          // if for some reason, the user wasn't created at signup, create one now
+          this.grudy.createAUser(email, password, name, this.gs.DEFAULT_PICTURE)
+          .then(user => { this.userInBackendDatabase = true; this.gs.log("new user at our backend created at signup"); })
+          .catch(err => { this.gs.log("some error in creating user on the backend", err); })
+
           resolve({code: "verification-email-sent", message: "Please verify your email and then login"});
         } else {
           reject(err);
@@ -92,44 +104,16 @@ export class AuthService {
         if (!val.user.emailVerified) {
           resolve({code: "verification-email-sent", message: "Please verify your email and then login"});
         } else {
-          // connect to mongodb database and add/update the user here.
+
+          // make sure that the user logs in only if the user exists in our backend
           this.grudy.getAUser(email)
           .then(user => { resolve(user); this.userInBackendDatabase = true;})
           .catch(err => {
-            if (this.userDetailsObservable == null) {
-              // came straight from sign-up page
-              // console.log("1", err);
-              this.setupUserObservable()
-              .then(__ => {
-                this.grudy.createAUser(email, password, this.userDetails.displayName, this.userDetails.photoURL)
-                .then(user => {
-                  // console.log("2", user);
-                  this.userInBackendDatabase = true;
-                  resolve(user);
-                })
-                .catch(err => {
-                  // console.log("3", err);
-                  reject(err);
-                })
-              })
-              .catch(her => {
-                // console.log("6", her);
-              })
-            } else {
-              // if the user doesn't exist, create
-              // assumes that this.userDetailsObservable was setup in the constructor
-              this.grudy.createAUser(email, password, this.userDetails.displayName, this.userDetails.photoURL)
-              .then(user => {resolve(user); this.userInBackendDatabase = true;})
-              .catch(err => {
-                // console.log("4", err);
-                reject(err);
-              })
-            }
+            resolve({code: "user-not-in-our-backend", message: "Please signup again and then login"});
           });
         }
       })
       .catch(err => {
-        // console.log("5", err);
         reject(err);
       })
     })
@@ -169,7 +153,7 @@ export interface User {
 //         .then(user => { resolve(user); })
 //         .catch(err => {
 //           if (this.userDetailsObservable == null) {
-//             // console.log("came straight from sign-up page");
+//             // this.gs.log("came straight from sign-up page");
 //             this.setupUserObservable().then(__ => {
 //               this.grudy.createAUser(email, password, this.userDetails.displayName, this.userDetails.photoURL)
 //                 .then(user => {resolve(user)})
