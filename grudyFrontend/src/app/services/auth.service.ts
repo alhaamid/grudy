@@ -19,7 +19,7 @@ export class AuthService {
   public userInBackendDatabase: boolean = false;
 
   constructor(public afa: AngularFireAuth, private afs: AngularFirestore, private gs: GlobalsService, private grudy: GrudyService) {
-    this.setupUserObservable().catch(err => {this.gs.log(err);});
+    this.setupUserObservable().catch(err => {});
   }
 
   setupUserObservable() {
@@ -37,12 +37,19 @@ export class AuthService {
                 this.userInBackendDatabase = true;
                 resolve();
               })
-              .catch(__ => {reject("User doesn't exist in the databse")});
+              .catch(__ => {
+                reject(this.gs.ERR_USER_NOT_BACKEND_DB);
+                this.userDetailsObservable = null;
+                this.userInBackendDatabase = false;
+                this.userDetails = null;
+              });
             });
+          } else {
+            reject(this.gs.ERR_USER_NOT_VERIFIED)
           }
         } else {
           this.userDetailsObservable = null;
-          reject("authState is logged out");
+          reject(this.gs.ERR_USER_LOGGED_OUT);
         }
       });
     });
