@@ -15,6 +15,7 @@ export const UserSchema = new Schema({
     },
     displayName: {
         type: String,
+        index: true,
         required: 'Display name is required'
     },
     photoURL: {

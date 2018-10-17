@@ -36,5 +36,5 @@ User
 	userEmail
 	userPassword
 	
-	allCourses: Course[]
+	allCourses: Course[] (foreign key)
 	preferences: {}

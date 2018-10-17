@@ -18,7 +18,7 @@ export class AuthService {
   public userDetails: User = null;
   public userInBackendDatabase: boolean = false;
 
-  constructor(private afa: AngularFireAuth, private afs: AngularFirestore, private gs: GlobalsService, private grudy: GrudyService) {
+  constructor(public afa: AngularFireAuth, private afs: AngularFirestore, private gs: GlobalsService, private grudy: GrudyService) {
     this.setupUserObservable().catch(err => {this.gs.log(err);});
   }
 
@@ -127,7 +127,7 @@ export class AuthService {
     this.userDetailsObservable = null;
     this.userDetails = null;
     this.gs.log("logged out");
-    this.afa.auth.signOut();;
+    this.afa.auth.signOut();
   }
 }
 

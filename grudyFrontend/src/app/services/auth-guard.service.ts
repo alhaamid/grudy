@@ -20,15 +20,25 @@ export class AuthGuardService implements CanActivate {
     private gs: GlobalsService, 
     private rs: RoutingService, private afs: AngularFirestore, private grudy: GrudyService) { }
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
+  canActivate(ar: ActivatedRouteSnapshot, ss: RouterStateSnapshot): Promise<boolean> {
 
     return new Promise<boolean>((resolve, reject) => {
-      // if current url is signup or login and user is already logged in, then navigate to dashboard
-      if (state.url == this.rs.LOGIN_PAGE.ROUTE || state.url == this.rs.SIGNUP_PAGE.ROUTE) {
-        this.gs.log("this page shouldn't be accessed when logged in")
-        resolve(false);
-        this.router.navigate(this.rs.LANDING_PAGE.NAV);
-      } else {
+      /* if user is on signup or login page and is already logged in, then navigate to dashboard */
+      if (ss.url == this.rs.LOGIN_PAGE.ROUTE || ss.url == this.rs.SIGNUP_PAGE.ROUTE) {
+        this.authService.setupUserObservable()
+        .then(__ => {
+          if (this.authService.isLoggedIn()) {
+            this.gs.log("this page shouldn't be accessed when logged in");
+            resolve(false);
+            this.router.navigate(this.rs.LANDING_PAGE.NAV);
+          } else {
+            this.gs.log("fine to access. user isn't logged in");
+            resolve(true);
+          } 
+        })
+        .catch(__ => {});
+      } 
+      else {
         if (this.authService.isLoggedIn()) {
           this.gs.log("auth-gard: already logged in");
           resolve(true);
@@ -69,6 +79,7 @@ export class AuthGuardService implements CanActivate {
             } else {
               // this.gs.IN_PROGRESS = false;
               this.authService.userDetailsObservable = null;
+              this.authService.afa.auth.signOut();
               this.gs.log("auth-guard: user is logged out");
               if (!(this.router.url === this.rs.LOGIN_PAGE.ROUTE)) {
                 this.router.navigate(this.rs.LOGIN_PAGE.NAV);
