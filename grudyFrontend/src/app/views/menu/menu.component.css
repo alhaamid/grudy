@@ -114,65 +114,6 @@ a {
     font-feature-settings: 'liga';
 }
 
-
-.dropdown {
-    position: relative;
-    display: none;
-    height: var(--navbar-height);
-
-    border-radius: 50%;
-    /* background-color: red; */
-}
-
-.hoverBox {
-    height: var(--navbar-height);
-    width: var(--navbar-height);
-
-    /* background-color: blue; */
-    /* border-radius: 50%; */
-    
-    transition: all 0.2s ease-in-out;
-}
-
-.hoverBox i {
-    width: fit-content;
-    cursor: default;
-
-    transition: all 0.2s ease-in-out;
-    transform: scale(1);
-}
-
-.dropdown:hover {
-    background-color: var(--hover-color);
-}
-
-.dropdown:hover i {
-    transform: scale(1.2);
-}
-
-.dropdown:hover .dropdownCol {
-    display: block;
-}
-
-.dropdownCol {
-    display: none;
-    position: absolute;
-    width: var(--navbar-height);
-
-    background: transparent;
-    
-    z-index: auto !important;
-}
-
-@media(max-width: 1000px){
-    .dropdown {
-        display: inline-block;
-    }
-    .flat {
-        display: none;
-    }
-}
-
 /* display: inline-flex;
 align-items: center;
 justify-content: right; */

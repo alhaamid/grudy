@@ -27,19 +27,6 @@ mongoose.connect(DB_URI, (err: any) => {
     } else {
         console.log("Succesfully Connected to Grudy Database!");
         populateCourses(COURSE_FILE_NAME);
-        // let sampleUser = {
-        //     email: "haamid@gatech.edu",
-        //     password: "haamid@gatech.edu",
-        //     displayName: "haamid",
-        // };
-        // const aUser = new User(sampleUser);
-        // aUser.save((err: any) => {
-        //     if (err) {
-        //         console.log("sample user error", err);
-        //     } else {
-        //         console.log("added sample user");
-        //     }
-        // });
     }
 });
 
