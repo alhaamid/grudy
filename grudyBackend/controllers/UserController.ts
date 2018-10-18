@@ -1,22 +1,11 @@
 import mongoose from "mongoose";
 import { UserSchema } from "../models/User";
-import { MongoError } from "mongodb";
 import promise from "promise";
 
 export class UserController {
-    DB_URI: string = 'mongodb://127.0.0.1:27017/grudy';
-    User: mongoose.Model<mongoose.Document> = null;
+    User: mongoose.Model<mongoose.Document> = mongoose.model('User', UserSchema);
 
-    constructor() {
-        this.User = mongoose.model('User', UserSchema);
-        mongoose.connect(this.DB_URI, (err: MongoError) => {
-            if (err) {
-                console.log(err.message);
-            } else {
-                console.log("Succesfully Connected to Grudy Database in Users!");
-            }
-        });
-    }
+    constructor() {}
 
     public getAUser(params) {
         let email = params["email"]
@@ -46,11 +35,9 @@ export class UserController {
             newUser.save((err, user) => {
                 let toShow = null;
                 if (err) {
-                    // res.status(500).send(err);
                     toShow = "error while creating a new user";
                     reject({code: 500, result: err});
                 } else {
-                    // res.status(201).send(user);
                     toShow = `${user["email"]} created successfully`;
                     resolve({code: 201, result: user});
                 }

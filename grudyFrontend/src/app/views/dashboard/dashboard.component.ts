@@ -9,7 +9,7 @@ import { GrudyService } from '../../services/grudy.service';
 export class DashboardComponent implements OnInit {
 
   constructor(private grudy: GrudyService) {
-    // this.grudy.getAllCourses();
+    this.grudy.getAllCourses();
     // this.grudy.getACourse("CS 1100");
     // this.grudy.getAUser('haamid@gatech.edu').catch(err => {
     //   console.log("got error in dashboard", err);

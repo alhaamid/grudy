@@ -1,21 +1,53 @@
 import mongoose from "mongoose";
 import { CourseSchema } from "../models/Course";
-import { MongoError } from "mongodb";
 import promise from "promise";
+import csv from 'csvtojson';
 
 export class CourseController {
-    DB_URI: string = 'mongodb://127.0.0.1:27017/grudy';
-    Course: mongoose.Model<mongoose.Document> = null;
+    Course: mongoose.Model<mongoose.Document> = mongoose.model('Course', CourseSchema);;
 
-    constructor() {
-        this.Course = mongoose.model('Course', CourseSchema);
-        mongoose.connect(this.DB_URI, (err: MongoError) => {
-            if (err) {
-                console.log(err.message);
-            } else {
-                console.log("Succesfully Connected to Grudy Database in Courses!");
-            }
+    constructor() {}
+
+    public populateCourses(name: string) {
+        return new promise ((resolve, reject) => {
+            csv().fromFile(name)
+            .then(allCoursesJSON => {
+                for (let courseJSON of allCoursesJSON) {
+                    let whichErr: boolean = null;
+
+                    const aCourse = new this.Course(courseJSON);
+                    aCourse.save((err: any) => {
+                        if (err) {
+                            if (err["code"] == 11000) {/* duplicate keys */}
+                            else {
+                                console.log("errormsg", err["errormsg"]); 
+                                whichErr = err["errormsg"];
+                            }
+                        } 
+                        else { console.log(`Successfully added ${aCourse["courseCode"]}`);}
+                    })
+
+                    if (whichErr) {
+                        reject(whichErr);
+                    } else {
+                        resolve("success");
+                    }
+                }
+            }, err => {
+                reject(err);
+            })
         });
+            // .subscribe((courseJSON, __) => {
+            //     const aCourse = new this.Course(courseJSON);
+            //     aCourse.save((err: any) => {
+            //         if (err) {console.log(err["errmsg"]);} 
+            //         else { console.log(`Successfully added ${aCourse["courseCode"]}`);}
+            //     })
+            //     res(true);
+            // }, (err: CSVError) => {
+            //     console.log(err.message);
+            //     rej(err);
+            // })
     }
 
     public getAllCourses() {
@@ -25,11 +57,9 @@ export class CourseController {
                 if (err) {
                     toShow = err;
                     reject({code: 404, result: err})
-                //   res.send("Error!");
                 } else {
                     toShow = "all courses found successfully";
                     resolve({code: 200, result: courses});
-                //   res.send(courses);
                 }
                 console.log(toShow);
             }, (err) => {
