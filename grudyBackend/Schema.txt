@@ -1,5 +1,4 @@
 Course
-	courseId
 	courseCode
 	courseName
 
@@ -11,30 +10,29 @@ Topic
 	postIds[] (foreign key)
 
 Post
-	courseId (foreign key)
+	courseCode (foreign key)
 	topicId (foreign key)
 
 	postId
 	subject
 	content
-	postedWhen
-	postedBy (userId)
+	postedWhen (Date...)
+	postedBy (userEmail)
 	isResolved?
 
-	allDoscussions: Discussion[]
+	allDiscussions: Discussion[]
 
 Discussion
 	discussionId
 	text
-	postedWhen
-	startedBy
+	postedWhen (Date...)
+	startedBy (userEmail)
 	isResolved?
 
 User
-	userId
 	userName
 	userEmail
 	userPassword
 	
-	allCourses: Course[] (foreign key)
+	allCourses: courseCode[] (foreign key)
 	preferences: {}

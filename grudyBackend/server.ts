@@ -49,9 +49,8 @@ function populateCourses(name: string) {
         .subscribe((courseJSON, __) => {
             const aCourse = new Course(courseJSON);
             aCourse.save((err: any) => {
-                if (err) {
-                    // console.log(err.message);
-                } else {
+                if (err) {} 
+                else {
                     console.log("Successfully added", aCourse);
                 }
             })
