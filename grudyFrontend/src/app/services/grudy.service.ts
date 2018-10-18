@@ -21,14 +21,15 @@ export class GrudyService {
     });
   }
 
-  getACourse(id: string) {
+  getACourse(code: string) {
     return new Promise<Course>((res, rej) => {
-      var str = '/course/' + id;
+      var str = '/course/' + code;
       this.http.get<Course>(this.backendUrl + str)
       .subscribe(course => {
         console.log(course);
         res(course);
       }, err => {
+        this.gs.log("got error in getting a course", err);
         rej(err);
       });
     });

@@ -10,7 +10,7 @@ export class DashboardComponent implements OnInit {
 
   constructor(private grudy: GrudyService) {
     // this.grudy.getAllCourses();
-    // this.grudy.getACourse("5bc00f507e4af16ad20fd5bc");
+    // this.grudy.getACourse("CS 1100");
     // this.grudy.getAUser('haamid@gatech.edu').catch(err => {
     //   console.log("got error in dashboard", err);
     // });

@@ -25,7 +25,7 @@ mongoose.connect(DB_URI, (err: any) => {
     if (err) {
         console.log(err.message);
     } else {
-        console.log("Succesfully Connected to Grudy Database!");
+        console.log("Succesfully Connected to Grudy Database in Server!");
         populateCourses(COURSE_FILE_NAME);
     }
 });
