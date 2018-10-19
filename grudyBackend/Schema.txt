@@ -33,6 +33,7 @@ User
 	userName
 	userEmail
 	userPassword
+	photoUrl
 	
 	allCourses: courseCode[] (foreign key)
 	preferences: {}

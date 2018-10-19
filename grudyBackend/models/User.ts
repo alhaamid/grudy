@@ -19,5 +19,11 @@ export const UserSchema = new Schema({
     },
     photoURL: {
         type: String,
+        required: false,
     },
+    courses: [{type: String}]
+    // courses: [{
+    //     type: Schema.Types.ObjectId,
+    //     ref: 'Course'
+    // }]
 });

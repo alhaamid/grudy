@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import { CourseSchema } from "../models/Course";
 import promise from "promise";
 import csv from 'csvtojson';
+import { Result } from "./UserController";
 
 export class CourseController {
     Course: mongoose.Model<mongoose.Document> = mongoose.model('Course', CourseSchema);;
@@ -37,21 +38,10 @@ export class CourseController {
                 reject(err);
             })
         });
-            // .subscribe((courseJSON, __) => {
-            //     const aCourse = new this.Course(courseJSON);
-            //     aCourse.save((err: any) => {
-            //         if (err) {console.log(err["errmsg"]);} 
-            //         else { console.log(`Successfully added ${aCourse["courseCode"]}`);}
-            //     })
-            //     res(true);
-            // }, (err: CSVError) => {
-            //     console.log(err.message);
-            //     rej(err);
-            // })
     }
 
     public getAllCourses() {
-        return new promise((resolve, reject) => {
+        return new promise <Result> ((resolve, reject) => {
             this.Course.find((err: any, courses: any) => {
                 let toShow = null;
                 if (err) {
@@ -68,10 +58,11 @@ export class CourseController {
         });
     }
 
-    public getACourse(params) {
-        let courseCode = params['courseCode'];
-        return new promise((resolve, reject) => {
-            this.Course.findOne({ courseCode: { $eq: courseCode } }, (err, course) => {
+    public getACourse(courseCode: string) {
+        // let courseCode = params['courseCode'];
+        return new promise <Result> ((resolve, reject) => {
+            let condition = { courseCode: { $eq: courseCode } };
+            this.Course.findOne(condition, (err, course) => {
                 let toShow = null;
                 if (err) {
                     toShow = err;
