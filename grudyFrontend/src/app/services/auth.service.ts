@@ -63,6 +63,7 @@ export class AuthService {
       email: email,
       password: password,
       photoURL: this.gs.DEFAULT_PICTURE,
+      courses: []
     }
     return userRef.set(data);
   }
@@ -144,6 +145,7 @@ export interface User {
   password: string;
   displayName: string;
   photoURL?: string;
+  courses: string[]
 }
 
 

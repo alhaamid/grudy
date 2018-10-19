@@ -32,7 +32,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { GrudyService } from './services/grudy.service';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
+import {MatListModule} from '@angular/material/list';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
     MatIconModule,
     MatCardModule,
     MatDividerModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatListModule,
   ],
   providers: [
     GlobalsService, AuthService, RoutingService, AuthGuardService, GrudyService

@@ -13,37 +13,35 @@ export class GrudyService {
 
   constructor(private http: HttpClient, private gs: GlobalsService) {}
 
-  getAllCourses() {
+  /* Course related */
+
+  getAllOfferedCourses() {
     var str = '/course';
     this.http.get<[Course]>(this.backendUrl + str)
-    .subscribe(loc => {
-      this.listOfCourses = loc;
-    });
+    .subscribe(loc => {this.listOfCourses = loc;});
   }
 
   getACourse(code: string) {
     return new Promise<Course>((res, rej) => {
       var str = '/course/' + code;
       this.http.get<Course>(this.backendUrl + str)
-      .subscribe(course => {
-        console.log(course);
-        res(course);
-      }, err => {
-        this.gs.log("got error in getting a course", err);
-        rej(err);
-      });
+      .subscribe(
+        course => {res(course);}, 
+        err => {rej(err);}
+      );
     });
   }
 
+  /* User relead */
+  
   getAUser(email: string) {
     return new Promise<User>((res, rej) => {
       var str = '/user/' + email;
       this.http.get<User>(this.backendUrl + str)
-      .subscribe(user => {
-        res(user);
-      }, err => {
-        rej(err);
-      });
+      .subscribe(
+        user => {res(user);}, 
+        err => {rej(err);}
+      );
     });
   }
 
@@ -53,13 +51,10 @@ export class GrudyService {
         displayName: displayName,
         email: email,
         password: password,
-        photoURL: photoURL
+        photoURL: photoURL,
+        courses: []
       }
-      this.http.post<User>(this.backendUrl + "/user", user, {
-        headers: new HttpHeaders({
-          'Content-Type':  'application/json'
-        })
-      })
+      this.http.post<User>(this.backendUrl + "/user", user, {headers: new HttpHeaders({'Content-Type':  'application/json'})})
       .subscribe(user => {
         this.gs.log("created a user in createAUser", user);
         res(user);
@@ -78,9 +73,21 @@ export class GrudyService {
       // });
     });
   }
+
+  enrollUser(email, courseCode) {
+    return new Promise<User> ((res, rej) => {
+      let update = {enrollCourse: courseCode};
+      this.http.put<User>(this.backendUrl + "/user/" + email, update, {headers: new HttpHeaders({'Content-Type':  'application/json'})})
+      .subscribe(user => {
+        console.log("enrollUser result", user);
+      }, err => {
+        console.log("enrollUser err:", err);
+      })
+    });
+  }
 }
 
-interface Course {
+export interface Course {
   _id: string,
   courseCode: string,
   courseName: string,
