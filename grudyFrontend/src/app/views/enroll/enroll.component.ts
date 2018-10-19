@@ -34,7 +34,7 @@ export class EnrollComponent implements OnInit {
   }
 
   enroll() {
-    this.grudy.enrollUser(this.authService.userDetails.email, this.selectedCourse)
+    this.grudy.enrollACourse(this.authService.userDetails.email, this.selectedCourse)
     .then(__ => {
       this.enrolledSuccessfully = 1;
       this.setupUnenrolledCourses();

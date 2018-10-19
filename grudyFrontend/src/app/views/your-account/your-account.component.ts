@@ -13,11 +13,11 @@ export class YourAccountComponent implements OnInit {
   checkedCourses: boolean = false;
 
   constructor(private grudy: GrudyService, private authService: AuthService, private rs: RoutingService) {
-    this.allEnrolledCourses = [];
     this.getAllUsersCourses();
   }
 
   getAllUsersCourses() {
+    this.allEnrolledCourses = [];
     this.grudy.getAUser(this.authService.userDetails.email)
     .then(user => {
       this.checkedCourses = true;
@@ -31,6 +31,16 @@ export class YourAccountComponent implements OnInit {
       }
     })
     .catch(err => console.log(err));
+  }
+
+  dropCourse(courseCode: string) {
+    this.grudy.dropACourse(this.authService.userDetails.email, courseCode)
+    .then(__ => {
+      this.getAllUsersCourses();
+    })
+    .catch(err => {
+      console.log(err);
+    });
   }
 
   ngOnInit() {

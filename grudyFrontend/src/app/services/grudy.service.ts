@@ -75,7 +75,7 @@ export class GrudyService {
     });
   }
 
-  enrollUser(email, courseCode) {
+  enrollACourse(email, courseCode) {
     return new Promise<User> ((res, rej) => {
       let update = {enrollCourse: courseCode};
       this.http.put<User>(this.backendUrl + "/user/" + email, update, {headers: new HttpHeaders({'Content-Type':  'application/json'})})
@@ -84,6 +84,18 @@ export class GrudyService {
         res(user);
       }, err => {
         // console.log("enrollUser err:", err);
+        rej(err);
+      })
+    });
+  }
+
+  dropACourse(email, courseCode) {
+    return new Promise<User> ((res, rej) => {
+      let update = {dropCourse: courseCode};
+      this.http.put<User>(this.backendUrl + "/user/" + email, update, {headers: new HttpHeaders({'Content-Type':  'application/json'})})
+      .subscribe(user => {
+        res(user);
+      }, err => {
         rej(err);
       })
     });
