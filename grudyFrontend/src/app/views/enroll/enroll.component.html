@@ -1,0 +1,39 @@
+<div class="pageContainer">
+  <div class="mainContainer">
+    
+    <h2>Enroll in a course</h2>
+
+    <mat-card>
+      <form [formGroup]="rForm">
+        <div class="validationError" *ngIf="!rForm.controls['enrollmentValidation'].valid && rForm.controls['enrollmentValidation'].touched">
+          <div *ngIf="rForm.controls['enrollmentValidation'].hasError('required')">
+            You have to select a course to enroll.
+          </div>
+        </div>
+        <div class="notification" *ngIf="this.enrolledSuccessfully == 1">
+          Successfully enrolled!
+        </div>
+        <div class="validationError" *ngIf="this.enrolledSuccessfully == 2">
+          {{this.enrollErr}}
+        </div>
+
+        <mat-form-field>
+          <mat-select *ngIf="this.unenrolledCourses!=[]" placeholder="Select a course" formControlName="enrollmentValidation" [(ngModel)]="this.selectedCourse">
+            <mat-option *ngFor="let course of this.unenrolledCourses" [value]="course.courseCode">
+              {{course.courseName}} - {{course.courseCode}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <button mat-raised-button 
+          color="primary"
+          [disabled]="!rForm.valid"
+          title="Enroll"
+          (click)="enroll()">
+          <b>Enroll</b>
+        </button>
+      </form>
+    </mat-card>
+
+  </div>
+</div>

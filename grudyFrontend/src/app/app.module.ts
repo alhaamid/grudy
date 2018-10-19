@@ -34,6 +34,8 @@ import { MatDividerModule } from '@angular/material/divider';
 import { GrudyService } from './services/grudy.service';
 import { HttpClientModule } from '@angular/common/http';
 import {MatListModule} from '@angular/material/list';
+import {MatSelectModule} from '@angular/material/select';
+import { EnrollComponent } from './views/enroll/enroll.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +45,7 @@ import {MatListModule} from '@angular/material/list';
     MenuComponent,
     YourAccountComponent,
     SignUpComponent,
+    EnrollComponent,
   ],
   imports: [
     BrowserModule,
@@ -65,6 +68,7 @@ import {MatListModule} from '@angular/material/list';
     MatDividerModule,
     MatProgressBarModule,
     MatListModule,
+    MatSelectModule,
   ],
   providers: [
     GlobalsService, AuthService, RoutingService, AuthGuardService, GrudyService

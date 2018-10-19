@@ -8,10 +8,11 @@ import { GlobalsService } from './globals.service';
 })
 export class GrudyService {
   private backendUrl: string = "http://localhost:4201";
-
   public listOfCourses: Course[] = null;
 
-  constructor(private http: HttpClient, private gs: GlobalsService) {}
+  constructor(private http: HttpClient, private gs: GlobalsService) {
+    this.getAllOfferedCourses();
+  }
 
   /* Course related */
 
@@ -79,9 +80,11 @@ export class GrudyService {
       let update = {enrollCourse: courseCode};
       this.http.put<User>(this.backendUrl + "/user/" + email, update, {headers: new HttpHeaders({'Content-Type':  'application/json'})})
       .subscribe(user => {
-        console.log("enrollUser result", user);
+        // console.log("enrollUser result", user);
+        res(user);
       }, err => {
-        console.log("enrollUser err:", err);
+        // console.log("enrollUser err:", err);
+        rej(err);
       })
     });
   }

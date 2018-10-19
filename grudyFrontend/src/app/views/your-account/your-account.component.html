@@ -5,21 +5,32 @@
 
     <mat-list *ngIf="this.allEnrolledCourses">
 
-      <!-- <h3>Enroll in a course</h3> -->
-
       <h3>Enrolled Courses</h3>
+
+      <div class="notification" *ngIf="this.allEnrolledCourses.length == 0 && this.checkedCourses">
+        You have not enrolled in any course yet.
+      </div>
+
       <mat-list-item *ngFor="let course of this.allEnrolledCourses">
         <mat-icon mat-list-icon>book</mat-icon>
         <h4 mat-line>{{course.courseCode}}</h4>
         <p mat-line> {{course.courseName}} </p>
       </mat-list-item>
+
+      <a routerLink="{{this.rs.ENROLL_PAGE.ROUTE}}">
+        <button mat-raised-button 
+          color="primary"
+          title="Enroll in another course">
+          <b>Enroll in another course</b>
+        </button>
+      </a>
       
     </mat-list>
 
-    <mat-divider></mat-divider><br>
+    <mat-divider></mat-divider>
 
-    <h3>Profile</h3><br>
-    <mat-card class="yourDetails">
+    <h3>Profile</h3>
+    <mat-card>
       <mat-card-header>
         <mat-card-title>
           <h2>{{this.authService.userDetails.displayName}}</h2>

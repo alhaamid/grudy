@@ -6,6 +6,7 @@ import { AuthGuardService } from '../services/auth-guard.service';
 import { DashboardComponent } from '../views/dashboard/dashboard.component';
 import { YourAccountComponent } from '../views/your-account/your-account.component';
 import { SignUpComponent } from '../views/sign-up/sign-up.component';
+import { EnrollComponent } from '../views/enroll/enroll.component';
 
 const routes: Routes = [
   {
@@ -26,6 +27,11 @@ const routes: Routes = [
   {
     path: 'sign-up',
     component: SignUpComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'enroll',
+    component: EnrollComponent,
     canActivate: [AuthGuardService]
   }
 ];
