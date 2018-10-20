@@ -1,0 +1,36 @@
+<div class="pageContainer">
+    <div class="mainContainer">
+      <div class="thisContainer">
+      
+        <h2>Drop a course</h2>
+  
+        <mat-card>
+          <h3>Enrolled Courses</h3>
+          <mat-list *ngIf="this.allEnrolledCourses">
+  
+            <div class="notification" *ngIf="this.allEnrolledCourses.length == 0 && this.checkedCourses">
+              You have not enrolled in any course yet.
+            </div>
+  
+            <mat-list-item *ngFor="let course of this.allEnrolledCourses; index as i">
+              <mat-icon mat-list-icon>book</mat-icon>
+              <h4 mat-line>{{course.courseCode}}</h4>
+              <p mat-line> {{course.courseName}} </p>
+  
+              <button type="button" 
+                mat-icon-button 
+                (click)="this.dropCourse(course.courseCode)" 
+                title="Drop course">
+                <mat-icon>delete</mat-icon>
+              </button>
+  
+              <mat-divider *ngIf="i < this.allEnrolledCourses.length-1"></mat-divider>
+  
+            </mat-list-item>
+            
+          </mat-list>
+        </mat-card>
+        
+      </div>
+    </div>
+  </div>

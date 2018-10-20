@@ -3,8 +3,8 @@ h3 {
 }
 
 .mat-card {
-    text-align: left;
-    width: 50%;
+    width: 500px;
+    color: var(--primary-color);
 }
 
 .mat-divider {

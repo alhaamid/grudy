@@ -4,54 +4,12 @@
     
       <h2>Your Account Details</h2>
 
-      <mat-list *ngIf="this.allEnrolledCourses">
-
-        <h3>Enrolled Courses</h3>
-
-        <div class="notification" *ngIf="this.allEnrolledCourses.length == 0 && this.checkedCourses">
-          You have not enrolled in any course yet.
-        </div>
-
-        <mat-list-item *ngFor="let course of this.allEnrolledCourses; index as i">
-          <mat-icon mat-list-icon>book</mat-icon>
-          <h4 mat-line>{{course.courseCode}}</h4>
-          <p mat-line> {{course.courseName}} </p>
-
-          <button type="button" 
-            mat-icon-button 
-            (click)="this.dropCourse(course.courseCode)" 
-            title="Drop course">
-            <mat-icon>delete</mat-icon>
-          </button>
-
-          <mat-divider *ngIf="i < this.allEnrolledCourses.length-1"></mat-divider>
-
-        </mat-list-item>
-
-        <a routerLink="{{this.rs.ENROLL_PAGE.ROUTE}}">
-          <button mat-raised-button 
-            color="primary"
-            title="Enroll in another course">
-            <b>Enroll in another course</b>
-          </button>
-        </a>
-        
-      </mat-list>
+      <app-enrolled-courses></app-enrolled-courses>
 
       <mat-divider></mat-divider>
 
-      <h3>Profile</h3>
-      <mat-card>
-        <mat-card-header>
-          <mat-card-title>
-            <h2>{{this.authService.userDetails.displayName}}</h2>
-          </mat-card-title>
-          <mat-card-subtitle>
-            <h3>{{this.authService.userDetails.email}}</h3>
-          </mat-card-subtitle>
-        </mat-card-header>
-        <img mat-card-image src="{{this.authService.userDetails.photoURL}}">
-      </mat-card>
+      <app-profile></app-profile>
+      
     </div>
   </div>
 </div>

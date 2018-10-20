@@ -4,6 +4,7 @@
     <h2>Enroll in a course</h2>
 
     <mat-card>
+      <h3>All Courses</h3>
       <form [formGroup]="rForm">
         <div class="validationError" *ngIf="!rForm.controls['enrollmentValidation'].valid && rForm.controls['enrollmentValidation'].touched">
           <div *ngIf="rForm.controls['enrollmentValidation'].hasError('required')">

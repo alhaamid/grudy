@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from '../views/login/login.component';
 import { AuthGuardService } from '../services/auth-guard.service';
@@ -7,6 +6,7 @@ import { DashboardComponent } from '../views/dashboard/dashboard.component';
 import { YourAccountComponent } from '../views/your-account/your-account.component';
 import { SignUpComponent } from '../views/sign-up/sign-up.component';
 import { EnrollComponent } from '../views/enroll/enroll.component';
+import { DropComponent } from '../views/drop/drop.component';
 
 const routes: Routes = [
   {
@@ -32,6 +32,11 @@ const routes: Routes = [
   {
     path: 'enroll',
     component: EnrollComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'drop',
+    component: DropComponent,
     canActivate: [AuthGuardService]
   }
 ];

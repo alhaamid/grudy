@@ -33,9 +33,12 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { GrudyService } from './services/grudy.service';
 import { HttpClientModule } from '@angular/common/http';
-import {MatListModule} from '@angular/material/list';
-import {MatSelectModule} from '@angular/material/select';
+import { MatListModule } from '@angular/material/list';
+import { MatSelectModule } from '@angular/material/select';
+import { ProfileComponent } from './views/your-account/profile/profile.component';
 import { EnrollComponent } from './views/enroll/enroll.component';
+import { DropComponent } from './views/drop/drop.component';
+import { EnrolledCoursesComponent } from './views/your-account/enrolled-courses/enrolled-courses.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +49,9 @@ import { EnrollComponent } from './views/enroll/enroll.component';
     YourAccountComponent,
     SignUpComponent,
     EnrollComponent,
+    ProfileComponent,
+    DropComponent,
+    EnrolledCoursesComponent,
   ],
   imports: [
     BrowserModule,

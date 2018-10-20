@@ -1,0 +1,34 @@
+<mat-card>
+  <h3>Enrolled Courses</h3>
+  <mat-list *ngIf="this.allEnrolledCourses">
+
+    <div class="notification" *ngIf="this.allEnrolledCourses.length == 0 && this.checkedCourses">
+      You have not enrolled in any course yet.
+    </div>
+
+    <mat-list-item *ngFor="let course of this.allEnrolledCourses; index as i">
+      <mat-icon mat-list-icon>book</mat-icon>
+      <h4 mat-line>{{course.courseCode}}</h4>
+      <p mat-line> {{course.courseName}} </p>
+
+      <mat-divider *ngIf="i < this.allEnrolledCourses.length-1"></mat-divider>
+
+    </mat-list-item>
+
+    <a routerLink="{{this.rs.ENROLL_PAGE.ROUTE}}">
+      <button mat-raised-button 
+        color="primary"
+        title="Enroll courses">
+        <b>Enroll courses</b>
+      </button>
+    </a>
+    <a routerLink="{{this.rs.DROP_PAGE.ROUTE}}">
+      <button mat-raised-button 
+        color="warn"
+        title="Drop courses">
+        <b>Drop courses</b>
+      </button>
+    </a>
+    
+  </mat-list>
+</mat-card>
