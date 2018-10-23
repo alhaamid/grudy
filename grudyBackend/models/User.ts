@@ -22,8 +22,4 @@ export const UserSchema = new Schema({
         required: false,
     },
     courses: [{type: String}]
-    // courses: [{
-    //     type: Schema.Types.ObjectId,
-    //     ref: 'Course'
-    // }]
 });

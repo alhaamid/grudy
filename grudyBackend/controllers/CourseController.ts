@@ -1,11 +1,13 @@
 import mongoose from "mongoose";
 import { CourseSchema } from "../models/Course";
+import { TopicSchema } from "../models/Topic";
 import promise from "promise";
 import csv from 'csvtojson';
 import { Result } from "./UserController";
 
 export class CourseController {
-    Course: mongoose.Model<mongoose.Document> = mongoose.model('Course', CourseSchema);;
+    Course: mongoose.Model<mongoose.Document> = mongoose.model('Course', CourseSchema);
+    Topic: mongoose.Model<mongoose.Document> = mongoose.model('Topic', TopicSchema);
 
     constructor() {}
 
@@ -15,6 +17,11 @@ export class CourseController {
             .then(allCoursesJSON => {
                 for (let courseJSON of allCoursesJSON) {
                     let whichErr: boolean = null;
+
+                    let topic1 = new this.Topic({name: "quiz"});
+                    let topic2 = new this.Topic({name: "mid"});
+                    let topic3 = new this.Topic({name: "final"});
+                    courseJSON["topics"] = [topic1, topic2, topic3];
 
                     const aCourse = new this.Course(courseJSON);
                     aCourse.save((err: any) => {

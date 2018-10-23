@@ -106,6 +106,12 @@ export interface Course {
   _id: string,
   courseCode: string,
   courseName: string,
+  topics: [Topic]
+}
+
+interface Topic {
+  _id: string,
+  name: string
 }
 
 
