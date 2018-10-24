@@ -8,7 +8,20 @@ export class PostController {
     constructor() {}
 
     public addNewPost(postJSON) {
-        
+        let newPost = new this.Post(postJSON);
+            return new promise <Result>((resolve, reject) => {
+                newPost.save((err, post) => {
+                    let toShow = null;
+                    if (err) {
+                        toShow = "error while creating a new post";
+                        reject({code: 500, result: err});
+                    } else {
+                        toShow = `new post created successfully with subject ${post["subject"]}`;
+                        resolve({code: 201, result: post});
+                    }
+                    console.log(toShow);
+                });
+            });      
     }
 }
 
@@ -16,3 +29,20 @@ export interface Result {
     code: number;
     result: any;
 }
+
+// public addNewUser(userJSON) {
+//     let newUser = new this.User(userJSON);
+//     return new promise <Result>((resolve, reject) => {
+//         newUser.save((err, user) => {
+//             let toShow = null;
+//             if (err) {
+//                 toShow = "error while creating a new user";
+//                 reject({code: 500, result: err});
+//             } else {
+//                 toShow = `${user["email"]} created successfully`;
+//                 resolve({code: 201, result: user});
+//             }
+//             console.log(toShow);
+//         });
+//     });
+// }

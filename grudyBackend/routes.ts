@@ -66,6 +66,6 @@ routes.route('/user')
 routes.route('/post')
 .post((req, res) => {
     postController.addNewPost(req.body)
-    // .then(obj => {res.status(obj["code"]).send(obj["result"]);})
-    // .catch(obj => {res.status(obj["code"]).send(obj["result"]);});
+    .then(obj => {res.status(obj["code"]).send(obj["result"]);})
+    .catch(obj => {res.status(obj["code"]).send(obj["result"]);});
 });
