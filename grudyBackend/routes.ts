@@ -1,12 +1,14 @@
 import express from 'express';
 import { UserController } from "./controllers/UserController";
 import { CourseController } from "./controllers/CourseController";
+import { PostController } from "./controllers/PostController";
 
 export const routes = express.Router();
 
 
 let userController = new UserController();
 let courseController = new CourseController();
+let postController = new PostController();
 
 routes.route('/')
 .get((req, res) => {res.send('Backend Server is working');});
@@ -55,6 +57,15 @@ routes.route('/user/:email')
 routes.route('/user')
 .post((req, res) => {
     userController.addNewUser(req.body)
+    .then(obj => {res.status(obj["code"]).send(obj["result"]);})
+    .catch(obj => {res.status(obj["code"]).send(obj["result"]);});
+});
+
+
+// CREATE a post
+routes.route('/post')
+.post((req, res) => {
+    postController.addNewPost(req.body)
     .then(obj => {res.status(obj["code"]).send(obj["result"]);})
     .catch(obj => {res.status(obj["code"]).send(obj["result"]);});
 });

@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import { PostSchema } from "../models/Post";
 import promise from "promise";
 
-export class UserController {
+export class PostController {
     Post: mongoose.Model<mongoose.Document> = mongoose.model('Post', PostSchema);
 
     constructor() {}
