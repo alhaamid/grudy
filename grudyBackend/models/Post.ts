@@ -2,6 +2,10 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 export const PostSchema = new Schema({
+    topicId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Topic'
+    },
     subject: {
         type: String,
         required: 'Subject is required'
