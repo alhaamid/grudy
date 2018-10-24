@@ -13,5 +13,5 @@ export const CourseSchema = new Schema({
         type: String,
         required: 'Course Name is required'
     }, 
-    // topics: [TopicSchema],
+    topics: [TopicSchema],
 });
