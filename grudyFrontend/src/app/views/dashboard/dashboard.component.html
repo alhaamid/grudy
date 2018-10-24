@@ -4,6 +4,13 @@
       
       <h2>Dashboard</h2>
 
+      <button mat-raised-button 
+        color="primary"
+        title="Create a post"
+        (click)="createAPost()">
+        <b>Create a post</b>
+      </button>
+
       <div class="notification" *ngIf="this.allEnrolledCourses.length == 0 && this.checkedCourses">
         <mat-card>
           <p>

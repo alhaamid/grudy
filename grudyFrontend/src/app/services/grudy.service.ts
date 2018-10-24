@@ -100,8 +100,23 @@ export class GrudyService {
   }
 
   /* Posts related */
-  addAPost(topicId: string, subject: string, content: string, postedBy: string) {
-    
+  createAPost(topicId: string, subject: string, content: string, postedBy: string) {
+    return new Promise<Post> ((res, rej) => {
+      const post: Post = {
+        topicId: topicId,
+        subject: subject,
+        content: content,
+        postedBy: postedBy
+      }
+      this.http.post<Post>(this.backendUrl + "/post", post, {headers: new HttpHeaders({'Content-Type':  'application/json'})})
+      .subscribe(post => {
+        this.gs.log("created a post in createAPost", post);
+        res(post);
+      }, err => {
+        this.gs.log("err in createAPost", err);
+        rej(err);
+      });
+    });
   }
 }
 
@@ -115,6 +130,16 @@ export interface Course {
 export interface Topic {
   _id: string,
   name: string
+}
+
+export interface Post {
+  _id?: string,
+	topicId: string,
+	subject: string,
+	content: string,
+	postedWhen?: any,
+	postedBy: string,
+	isResolved?: boolean
 }
 
 /* checkUser() {

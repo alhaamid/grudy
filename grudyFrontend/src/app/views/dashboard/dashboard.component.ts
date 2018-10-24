@@ -39,6 +39,10 @@ export class DashboardComponent implements OnInit {
     console.log(this.selectedTopicId);
   }
 
+  createAPost() {
+    this.grudy.createAPost(this.selectedTopicId, "Question1", "How to do this", this.authService.userDetails.email);
+  }
+
   temp() {
     // this.grudy.enrollUser(this.authService.userDetails.email, "CS 6476")
     // .then(val => {console.log(val);})
