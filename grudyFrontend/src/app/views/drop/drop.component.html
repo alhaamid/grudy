@@ -18,8 +18,9 @@
               <p mat-line> {{course.courseName}} </p>
   
               <button type="button" 
-                mat-icon-button 
-                (click)="this.dropCourse(course.courseCode)" 
+                mat-icon-button
+                color="warn"
+                (click)="this.dropCourse(course._id)" 
                 title="Drop course">
                 <mat-icon>delete</mat-icon>
               </button>

@@ -22,9 +22,9 @@ export class GrudyService {
     .subscribe(loc => {this.listOfCourses = loc;});
   }
 
-  getACourse(code: string) {
+  getACourse(id: string) {
     return new Promise<Course>((res, rej) => {
-      var str = '/course/' + code;
+      var str = '/course/' + id;
       this.http.get<Course>(this.backendUrl + str)
       .subscribe(
         course => {res(course);}, 
@@ -33,8 +33,7 @@ export class GrudyService {
     });
   }
 
-  /* User relead */
-  
+  /* User related */
   getAUser(email: string) {
     return new Promise<User>((res, rej) => {
       var str = '/user/' + email;
@@ -63,41 +62,40 @@ export class GrudyService {
         this.gs.log("err in createAUser", err);
         rej(err);
       });
-      // .toPromise()
-      // .then(user => {
-      //   this.gs.log("created a user in createAUser", user);
-      //   res(user);
-      // })
-      // .catch(err => {
-      //   this.gs.log("err in createAUser", err);
-      //   rej(err);
-      // });
     });
   }
 
-  enrollACourse(email, courseCode) {
+  enrollACourse(email, id) {
     return new Promise<User> ((res, rej) => {
-      let update = {enrollCourse: courseCode};
+      let update = {enrollCourse: id};
       this.http.put<User>(this.backendUrl + "/user/" + email, update, {headers: new HttpHeaders({'Content-Type':  'application/json'})})
       .subscribe(user => {
         // console.log("enrollUser result", user);
         res(user);
       }, err => {
-        // console.log("enrollUser err:", err);
+        console.log("enrollUser err:", err);
         rej(err);
       })
     });
   }
 
-  dropACourse(email, courseCode) {
+  dropACourse(email, id) {
     return new Promise<User> ((res, rej) => {
-      let update = {dropCourse: courseCode};
+      let update = {dropCourse: id};
       this.http.put<User>(this.backendUrl + "/user/" + email, update, {headers: new HttpHeaders({'Content-Type':  'application/json'})})
       .subscribe(user => {
         res(user);
       }, err => {
         rej(err);
       })
+    });
+  }
+
+  getUsersCourses(email): Promise<Course[]> {
+    return new Promise<Course[]> ((resolve, reject) => {
+      this.getAUser(email)
+      .then(user => {resolve(user.courses)})
+      .catch(err => {reject(err)});
     });
   }
 }
@@ -109,11 +107,10 @@ export interface Course {
   topics: [Topic]
 }
 
-interface Topic {
+export interface Topic {
   _id: string,
   name: string
 }
-
 
 /* checkUser() {
   const sampleUser = {

@@ -18,8 +18,7 @@ export class DashboardComponent implements OnInit {
     // .then(val => {console.log(val);})
     // .catch(err => {console.log("got error in getAUser", err);});
     // this.grudy.getAllOfferedCourses();
-    // this.grudy.getACourse("CS 1100");
-    // this.grudy.getACourse('CS 6476')
+    // this.grudy.getACourse("5bcfb5c0a267d44bc44f484e")
     // .then(val => {console.log(val);})
     // .catch(err => {console.log("got error in getACourse", err);});
   }

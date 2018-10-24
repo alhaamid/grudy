@@ -12,20 +12,25 @@ export class UserController {
         return new promise<Result>((resolve, reject) => {
             let condition = { email: { $eq: email } };
             this.User.findOne(condition, (err, user) => {
-                let toShow = null;
                 if (err) {
-                    toShow = err;
+                    console.log(err);
                     reject({code: 500, result: err});
                 } else {
                     if (user) {
-                        toShow = `${email} found successfully`;
-                        resolve({code: 200, result: user});
+                        user.populate('courses', (err, populatedUser: mongoose.Document) => {
+                            if (populatedUser) {
+                                console.log(`${email} found and populated successfully`);
+                                resolve({code: 200, result: populatedUser});
+                            } else {
+                                console.log("Error while populating user");
+                                reject({code: 500, result: err});
+                            }
+                        })
                     } else {
-                        toShow = `${email} not found`;
+                        console.log(`${email} not found`);
                         reject({code: 404, result: `${email} not found`});
                     }
                 }
-                console.log(toShow);
             });
         });
     }
@@ -47,93 +52,69 @@ export class UserController {
         });
     }
 
-    public enrollACourse(email: string, courseCode: string) {
+    public enrollACourse(email: string, id: string) {
         return new promise <Result> ((resolve, reject) => {
-            this.getAUser(email)
-            .then(user => {
-                let exists = user.result.courses.find(code => code === courseCode);
-                let toShow = null;
-                if (!exists) {
-                    toShow = `course can be enrolled for ${email}`;
-
-                    let condition = { email: { $eq: email } };
-                    let update = {$addToSet: { courses: { $each: [courseCode] } }};
-                    let options = {new: true};
-
-                    this.User.findOneAndUpdate(condition, update, options, (err, user) => {
-                        let toShow2 = null;
-                        if (err) {
-                            toShow2 = err;
-                            reject({code: 500, result: err});
-                        } else {
-                            if (user) {
-                                // console.log(user);
-                                toShow2 = `${email} enrolled in ${courseCode}`;
-                                resolve({code: 200, result: user});
-                            } else {
-                                toShow2 = `${email} not found`;
-                                reject({code: 404, result: `${email} not found`});
-                            }
-                        }
-                        console.log(toShow2);
-                    });
-
+            let condition = { email: { $eq: email } };
+            let update = {$addToSet: { courses: { $each: [id] } }};
+            let options = {new: true};
+            this.User.findOneAndUpdate(condition, update, options, (err, user) => {
+                let toShow2 = null;
+                if (err) {
+                    toShow2 = err;
+                    reject({code: 500, result: `Invalid course selected. ${id}`});
                 } else {
-                    toShow = "course already enrolled";
-                    reject({code: 403, result: `${email} already enrolled in ${courseCode}`});
+                    if (user) {
+                        user.populate('courses', (err, populatedUser: mongoose.Document) => {
+                            if (populatedUser) {
+                                toShow2 = `${email} enrolled in ${id}`;
+                                resolve({code: 200, result: populatedUser});
+                            } else {
+                                console.log("Error while populating user");
+                                reject({code: 500, result: err});
+                            }
+                        })
+                        // console.log(user);
+                    } else {
+                        toShow2 = `${email} not found`;
+                        reject({code: 404, result: `${email} not found`});
+                    }
                 }
-                console.log(toShow);
-            })
-            .catch(err => {
-                console.log(err);
-                reject(err);
+                console.log("enrollACourse", toShow2);
             });
         });
     }
 
-    public dropACourse(email: string, courseCode: string) {
+    public dropACourse(email: string, id: string) {
         return new promise <Result> ((resolve, reject) => {
-            this.getAUser(email)
-            .then(user => {
-                let exists = user.result.courses.find(code => code === courseCode);
-                let toShow = null;
-                if (exists) {
-                    toShow = `${courseCode} can be dropped for ${email}`;
-
-                    let condition = { email: { $eq: email } };
-                    let update = {$pull: { courses: { $in: [courseCode] } }};
-                    let options = {new: true};
-
-                    this.User.findOneAndUpdate(condition, update, options, (err, user) => {
-                        let toShow2 = null;
-                        if (err) {
-                            toShow2 = err;
-                            reject({code: 500, result: err});
-                        } else {
-                            if (user) {
-                                // console.log(user);
-                                toShow2 = `${courseCode} dropped for ${email}`;
-                                resolve({code: 200, result: user});
-                            } else {
-                                toShow2 = `${email} not found`;
-                                reject({code: 404, result: `${email} not found`});
-                            }
-                        }
-                        console.log(toShow2);
-                    });
-
+            let condition = { email: { $eq: email } };
+            let update = {$pull: { courses: { $in: [id] } }};;
+            let options = {new: true};
+            this.User.findOneAndUpdate(condition, update, options, (err, user) => {
+                let toShow2 = null;
+                if (err) {
+                    toShow2 = err;
+                    reject({code: 500, result: `Invalid course selected. ${id}`});
                 } else {
-                    toShow = `${courseCode} does not exist`;
-                    reject({code: 403, result: `${email} already not enrolled in ${courseCode}`});
+                    if (user) {
+                        user.populate('courses', (err, populatedUser: mongoose.Document) => {
+                            if (populatedUser) {
+                                toShow2 = `${id} dropped for in ${email}`;
+                                resolve({code: 200, result: populatedUser});
+                            } else {
+                                console.log("Error while populating user");
+                                reject({code: 500, result: err});
+                            }
+                        })
+                    } else {
+                        toShow2 = `${email} not found`;
+                        reject({code: 404, result: `${email} not found`});
+                    }
                 }
-                console.log(toShow);
-            })
-            .catch(err => {
-                console.log(err);
-                reject(err);
+                console.log("dropACourse", toShow2);
             });
         });
     }
+
 }
 
 export interface Result {
@@ -156,3 +137,93 @@ export interface Result {
 //         }
 //     }
 // });
+
+
+
+/* 
+enrollACourse....
+this.getAUser(email)
+.then(resultObj => {
+    let exists = resultObj.result.courses.find(_id => _id === id);
+    let toShow = null;
+    if (!exists) {
+        toShow = `course can be enrolled for ${email}`;
+
+        // let condition = { email: { $eq: email } };
+        // let update = {$addToSet: { courses: { $each: [id] } }};
+        // let options = {new: true};
+
+        // this.User.findOneAndUpdate(condition, update, options, (err, user) => {
+        //     let toShow2 = null;
+        //     if (err) {
+        //         toShow2 = err;
+        //         reject({code: 500, result: err});
+        //     } else {
+        //         if (user) {
+        //             // console.log(user);
+        //             toShow2 = `${email} enrolled in ${id}`;
+        //             resolve({code: 200, result: user});
+        //         } else {
+        //             toShow2 = `${email} not found`;
+        //             reject({code: 404, result: `${email} not found`});
+        //         }
+        //     }
+        //     console.log(toShow2);
+        // });
+
+    } else {
+        toShow = "course already enrolled";
+        // reject({code: 403, result: `${email} already enrolled in ${id}`});
+    }
+    console.log(toShow);
+})
+.catch(err => {
+    console.log(err);
+    reject(err);
+}); */
+
+
+
+/* public dropACourse(email: string, courseCode: string) {
+    return new promise <Result> ((resolve, reject) => {
+        this.getAUser(email)
+        .then(user => {
+            let exists = user.result.courses.find(code => code === courseCode);
+            let toShow = null;
+            if (exists) {
+                toShow = `${courseCode} can be dropped for ${email}`;
+
+                let condition = { email: { $eq: email } };
+                let update = {$pull: { courses: { $in: [courseCode] } }};
+                let options = {new: true};
+
+                this.User.findOneAndUpdate(condition, update, options, (err, user) => {
+                    let toShow2 = null;
+                    if (err) {
+                        toShow2 = err;
+                        reject({code: 500, result: err});
+                    } else {
+                        if (user) {
+                            // console.log(user);
+                            toShow2 = `${courseCode} dropped for ${email}`;
+                            resolve({code: 200, result: user});
+                        } else {
+                            toShow2 = `${email} not found`;
+                            reject({code: 404, result: `${email} not found`});
+                        }
+                    }
+                    console.log(toShow2);
+                });
+
+            } else {
+                toShow = `${courseCode} does not exist`;
+                reject({code: 403, result: `${email} already not enrolled in ${courseCode}`});
+            }
+            console.log(toShow);
+        })
+        .catch(err => {
+            console.log(err);
+            reject(err);
+        });
+    });
+} */

@@ -20,9 +20,9 @@ routes.route('/course')
 });
 
 // GET a course
-routes.route('/course/:courseCode')
+routes.route('/course/:_id')
 .get((req, res) => {
-    courseController.getACourse(req.params["courseCode"])
+    courseController.getACourse(req.params["_id"])
     .then(obj => {res.status(obj["code"]).send(obj["result"]);})
     .catch(obj => {res.status(obj["code"]).send(obj["result"]);});
 });
@@ -37,12 +37,13 @@ routes.route('/user/:email')
 })
 // UPDATE a user
 .put((req, res) => {
-    // console.log(req.params["email"], req.body);
     let email = req.params["email"];
+    // enroll a course
     if (req.body["enrollCourse"]) {
         userController.enrollACourse(email, req.body["enrollCourse"])
         .then(obj => {res.status(obj["code"]).send(obj["result"]);})
         .catch(obj => {res.status(obj["code"]).send(obj["result"]);});
+    // drop a course
     } else if (req.body["dropCourse"]) {
         userController.dropACourse(email, req.body["dropCourse"])
         .then(obj => {res.status(obj["code"]).send(obj["result"]);})

@@ -6,7 +6,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
 
 import { Observable} from 'rxjs';
-import { GrudyService } from './grudy.service';
+import { GrudyService, Course } from './grudy.service';
 
 @Injectable({
   providedIn: 'root'
@@ -145,7 +145,7 @@ export interface User {
   password: string;
   displayName: string;
   photoURL?: string;
-  courses: string[]
+  courses: Course[]
 }
 
 

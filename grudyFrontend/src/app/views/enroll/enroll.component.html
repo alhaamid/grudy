@@ -19,8 +19,8 @@
         </div>
 
         <mat-form-field>
-          <mat-select *ngIf="this.unenrolledCourses!=[]" placeholder="Select a course" formControlName="enrollmentValidation" [(ngModel)]="this.selectedCourse">
-            <mat-option *ngFor="let course of this.unenrolledCourses" [value]="course.courseCode">
+          <mat-select *ngIf="this.unenrolledCourses!=[]" placeholder="Select a course" formControlName="enrollmentValidation" [(ngModel)]="this.selectedCourseId">
+            <mat-option *ngFor="let course of this.unenrolledCourses" [value]="course._id">
               {{course.courseName}} - {{course.courseCode}}
             </mat-option>
           </mat-select>

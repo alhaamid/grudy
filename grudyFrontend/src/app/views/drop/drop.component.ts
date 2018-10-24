@@ -18,24 +18,30 @@ export class DropComponent implements OnInit {
   }
 
   getAllUsersCourses() {
-    this.allEnrolledCourses = [];
-    this.grudy.getAUser(this.authService.userDetails.email)
-    .then(user => {
+    this.grudy.getUsersCourses(this.authService.userDetails.email)
+    .then(courses => {
+      this.allEnrolledCourses = courses;
       this.checkedCourses = true;
-      let allCourseCodes = user.courses;
-      for (let courseCode of allCourseCodes) {
-        this.grudy.getACourse(courseCode)
-        .then(course => {
-          this.allEnrolledCourses.push(course);
-        })
-        .catch(err => console.log(err));
-      }
     })
-    .catch(err => console.log(err));
+    .catch(err => console.log(err))
+    // this.allEnrolledCourses = [];
+    // this.grudy.getAUser(this.authService.userDetails.email)
+    // .then(user => {
+    //   this.checkedCourses = true;
+    //   let allCourseCodes = user.courses;
+    //   for (let courseCode of allCourseCodes) {
+    //     this.grudy.getACourse(courseCode)
+    //     .then(course => {
+    //       this.allEnrolledCourses.push(course);
+    //     })
+    //     .catch(err => console.log(err));
+    //   }
+    // })
+    // .catch(err => console.log(err));
   }
 
-  dropCourse(courseCode: string) {
-    this.grudy.dropACourse(this.authService.userDetails.email, courseCode)
+  dropCourse(id: string) {
+    this.grudy.dropACourse(this.authService.userDetails.email, id)
     .then(__ => {
       this.getAllUsersCourses();
     })

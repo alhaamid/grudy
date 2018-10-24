@@ -18,10 +18,10 @@ export class CourseController {
                 for (let courseJSON of allCoursesJSON) {
                     let whichErr: boolean = null;
 
-                    let topic1 = new this.Topic({name: "quiz"});
-                    let topic2 = new this.Topic({name: "mid"});
-                    let topic3 = new this.Topic({name: "final"});
-                    courseJSON["topics"] = [topic1, topic2, topic3];
+                    // let topic1 = new this.Topic({name: "quiz"});
+                    // let topic2 = new this.Topic({name: "mid"});
+                    // let topic3 = new this.Topic({name: "final"});
+                    // courseJSON["topics"] = [topic1, topic2, topic3];
 
                     const aCourse = new this.Course(courseJSON);
                     aCourse.save((err: any) => {
@@ -65,22 +65,21 @@ export class CourseController {
         });
     }
 
-    public getACourse(courseCode: string) {
+    public getACourse(id: string) {
         // let courseCode = params['courseCode'];
         return new promise <Result> ((resolve, reject) => {
-            let condition = { courseCode: { $eq: courseCode } };
-            this.Course.findOne(condition, (err, course) => {
+            this.Course.findById(id, (err, course) => {
                 let toShow = null;
                 if (err) {
                     toShow = err;
                     reject({code: 500, result: err});
                 } else {
                     if (course) {
-                        toShow = `${courseCode} found successfully`;
+                        toShow = `${course["courseName"]} found successfully`;
                         resolve({code: 200, result: course});
                     } else {
-                        toShow = `${courseCode} not found`;
-                        reject({code: 404, result: `${courseCode} not found`});
+                        toShow = `${id} not found`;
+                        reject({code: 404, result: `${id} not found`});
                     }
                 }
                 console.log(toShow);

@@ -9,7 +9,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./enroll.component.css']
 })
 export class EnrollComponent implements OnInit {
-  selectedCourse = null;
+  selectedCourseId = null;
   rForm: FormGroup;
   unenrolledCourses: Course[] = [];
 
@@ -24,9 +24,11 @@ export class EnrollComponent implements OnInit {
   }
 
   setupUnenrolledCourses() {
-    this.grudy.getAUser(this.authService.userDetails.email)
-    .then(user => {
-      this.unenrolledCourses = this.grudy.listOfCourses.filter(course => user.courses.indexOf(course.courseCode) < 0);
+    this.grudy.getUsersCourses(this.authService.userDetails.email)
+    .then(enrolledCourses => {
+      let enrolledCourseIds = enrolledCourses.map(course => course._id);
+      this.unenrolledCourses = this.grudy.listOfCourses.filter(course => enrolledCourseIds.indexOf(course._id) < 0);
+      this.rForm.reset();
     })
     .catch(err => {
       console.log(err);
@@ -34,8 +36,9 @@ export class EnrollComponent implements OnInit {
   }
 
   enroll() {
-    this.grudy.enrollACourse(this.authService.userDetails.email, this.selectedCourse)
-    .then(__ => {
+    this.grudy.enrollACourse(this.authService.userDetails.email, this.selectedCourseId)
+    .then(user => {
+      console.log(user.courses);
       this.enrolledSuccessfully = 1;
       this.setupUnenrolledCourses();
     })

@@ -18,3 +18,8 @@
     min-width: 500px;
     width: 70%;
 }
+
+.notification {
+    color: blue;
+    margin-bottom: 10px;
+}
