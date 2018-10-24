@@ -18,9 +18,9 @@ export class CourseController {
                 for (let courseJSON of allCoursesJSON) {
                     let whichErr: boolean = null;
 
-                    let topic1 = new this.Topic({name: "quiz"});
-                    let topic2 = new this.Topic({name: "mid"});
-                    let topic3 = new this.Topic({name: "final"});
+                    let topic1 = new this.Topic({name: "Quiz"});
+                    let topic2 = new this.Topic({name: "Mid"});
+                    let topic3 = new this.Topic({name: "Final"});
                     courseJSON["topics"] = [topic1, topic2, topic3];
 
                     const aCourse = new this.Course(courseJSON);

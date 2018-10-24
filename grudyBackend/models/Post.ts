@@ -3,8 +3,7 @@ const Schema = mongoose.Schema;
 
 export const PostSchema = new Schema({
     topicId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Topic'
+        type: mongoose.Schema.Types.ObjectId
     },
     subject: {
         type: String,
@@ -20,12 +19,12 @@ export const PostSchema = new Schema({
         required: 'Date and Time of post is required'
     },
     postedBy: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Course'
+        type: String,
     },
     isResolved: {
         type: Boolean,
-        required: 'Post content is required'
+        default: false,
+        required: 'isResolved is required'
     },
     /* 
     discussions: [{

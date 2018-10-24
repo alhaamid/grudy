@@ -98,6 +98,11 @@ export class GrudyService {
       .catch(err => {reject(err)});
     });
   }
+
+  /* Posts related */
+  addAPost(topicId: string, subject: string, content: string, postedBy: string) {
+    
+  }
 }
 
 export interface Course {
