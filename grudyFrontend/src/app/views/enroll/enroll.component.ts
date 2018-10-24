@@ -38,7 +38,6 @@ export class EnrollComponent implements OnInit {
   enroll() {
     this.grudy.enrollACourse(this.authService.userDetails.email, this.selectedCourseId)
     .then(user => {
-      console.log(user.courses);
       this.enrolledSuccessfully = 1;
       this.setupUnenrolledCourses();
     })
@@ -46,10 +45,6 @@ export class EnrollComponent implements OnInit {
       this.enrollErr = err["error"];
       this.enrolledSuccessfully = 2;
     });
-  }
-
-  updateSelectedStatus(val) {
-    console.log(val);
   }
 
   ngOnInit() {

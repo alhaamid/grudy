@@ -1,9 +1,47 @@
 <div class="pageContainer">
-    <div class="mainContainer">
-        
+  <div class="mainContainer">
+    <div class="thisContainer">
+      
       <h2>Dashboard</h2>
 
-      <p>To do</p>
-  
+      <div class="notification" *ngIf="this.allEnrolledCourses.length == 0 && this.checkedCourses">
+        <mat-card>
+          <p>
+            You are not enrolled in any course yet.
+          </p>
+          <a routerLink="{{this.rs.ENROLL_PAGE.ROUTE}}">
+            <button mat-raised-button 
+              color="primary"
+              title="Enroll courses">
+              <b>Enroll courses</b>
+            </button>
+          </a>
+        </mat-card>
+      </div>
+      
+      <div *ngIf="this.allEnrolledCourses.length>0 && this.checkedCourses">
+        <mat-card>
+
+          <mat-form-field>
+            <mat-select (selectionChange)="this.courseChange()" placeholder="Select a course" [(ngModel)]="this.selectedCourseId">
+              <mat-option *ngFor="let course of this.allEnrolledCourses" [value]="course._id">
+                {{course.courseName}} - {{course.courseCode}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field *ngIf="this.checkedTopics">
+            <mat-select (selectionChange)="this.topicChange()" placeholder="Select a topic" [(ngModel)]="this.selectedTopicId">
+              <mat-option *ngFor="let topic of this.selectedTopics" [value]="topic._id">
+                {{topic.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+        </mat-card>
+      </div>
+      
     </div>
+
   </div>
+</div>

@@ -3,6 +3,29 @@
     --min-input-width: 500px;
 }
 
-.courseList {
-    /* background: lightblue; */
+.thisContainer {
+    /* background: lightpink; */
+    min-width: 500px;
+    width: 70%;
+}
+
+.mat-card {
+    width: 500px;
+    color: var(--primary-color);
+}
+
+.mat-form-field {
+    min-width: 100%;
+    min-height: var(--input-height);
+    height: auto;
+}
+
+.validationError {
+    color: red;
+    margin-bottom: 10px;
+}
+
+.notification {
+    color: blue;
+    margin-bottom: 10px;
 }

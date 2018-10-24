@@ -18,17 +18,17 @@ export class CourseController {
                 for (let courseJSON of allCoursesJSON) {
                     let whichErr: boolean = null;
 
-                    // let topic1 = new this.Topic({name: "quiz"});
-                    // let topic2 = new this.Topic({name: "mid"});
-                    // let topic3 = new this.Topic({name: "final"});
-                    // courseJSON["topics"] = [topic1, topic2, topic3];
+                    let topic1 = new this.Topic({name: "quiz"});
+                    let topic2 = new this.Topic({name: "mid"});
+                    let topic3 = new this.Topic({name: "final"});
+                    courseJSON["topics"] = [topic1, topic2, topic3];
 
                     const aCourse = new this.Course(courseJSON);
                     aCourse.save((err: any) => {
                         if (err) {
                             if (err["code"] == 11000) {/* duplicate keys */}
                             else {
-                                console.log("errormsg", err["errormsg"]); 
+                                console.log("errormsg", err); 
                                 whichErr = err["errormsg"];
                             }
                         } 

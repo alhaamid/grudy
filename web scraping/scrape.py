@@ -1,10 +1,10 @@
 import csv
 
 input_file_name = "courses.html"
-output_file_name = "details.csv"
+output_file_name = "courses.csv"
 
-code_str = "Course code"
-code_name = "Course name"
+code_str = "courseCode"
+code_name = "courseName"
 
 writer = csv.DictWriter(open(output_file_name, "w"), fieldnames=[code_str, code_name])
 writer.writeheader()
@@ -28,7 +28,7 @@ with open(input_file_name, 'r') as reader:
         if title_start_index != -1 and title_end_index != -1:
             subject = line[len(title_prefix): title_end_index]
             pieces = subject.split(".")
-            course_code = pieces[0].strip()
+            course_code = pieces[0].strip().replace(" ", "")
             course_name = pieces[1].strip().replace("&amp;", "&")
 
             writer.writerow({code_str: course_code, code_name: course_name})

@@ -12,6 +12,7 @@ Topic
 
 Post
 	_id
+	topicId Topic._id (foreign key)
 
 	subject
 	content
