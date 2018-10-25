@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Promise } from "mongoose";
 import { PostSchema } from "../models/Post";
 import promise from "promise";
 
@@ -9,19 +9,38 @@ export class PostController {
 
     public addNewPost(postJSON) {
         let newPost = new this.Post(postJSON);
-            return new promise <Result>((resolve, reject) => {
-                newPost.save((err, post) => {
-                    let toShow = null;
-                    if (err) {
-                        toShow = "error while creating a new post";
-                        reject({code: 500, result: err});
+        return new promise <Result>((resolve, reject) => {
+            newPost.save((err, post) => {
+                let toShow = null;
+                if (err) {
+                    toShow = "error while creating a new post";
+                    reject({code: 500, result: err});
+                } else {
+                    toShow = `new post created successfully with subject ${post["subject"]}`;
+                    resolve({code: 201, result: post});
+                }
+                console.log(toShow);
+            });
+        });      
+    }
+
+    public getAllPostsByTopic(topicId: string) {
+        return new promise<Result>((resolve, reject) => {
+            let condition = {topicId: { $eq: topicId} };
+            this.Post.find(condition, (err, posts: mongoose.Document[]) => {
+                if (err) {
+                    console.log(err);
+                    reject({code: 404, result: err});
+                } else {
+                    if (posts) {
+                        console.log(`all posts under ${topicId} found`)
+                        resolve({code: 200, result: posts});
                     } else {
-                        toShow = `new post created successfully with subject ${post["subject"]}`;
-                        resolve({code: 201, result: post});
+                        reject({code: 404, result: `no posts under ${topicId}`});
                     }
-                    console.log(toShow);
-                });
-            });      
+                }
+            })
+        });
     }
 }
 

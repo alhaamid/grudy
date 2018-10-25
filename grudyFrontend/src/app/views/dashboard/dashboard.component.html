@@ -4,13 +4,6 @@
       
       <h2>Dashboard</h2>
 
-      <button mat-raised-button 
-        color="primary"
-        title="Create a post"
-        (click)="createAPost()">
-        <b>Create a post</b>
-      </button>
-
       <div class="notification" *ngIf="this.allEnrolledCourses.length == 0 && this.checkedCourses">
         <mat-card>
           <p>
@@ -26,13 +19,13 @@
         </mat-card>
       </div>
       
-      <div *ngIf="this.allEnrolledCourses.length>0 && this.checkedCourses">
+      <div class="subMenu" *ngIf="this.allEnrolledCourses.length>0 && this.checkedCourses">
         <mat-card>
 
           <mat-form-field>
             <mat-select (selectionChange)="this.courseChange()" placeholder="Select a course" [(ngModel)]="this.selectedCourseId">
               <mat-option *ngFor="let course of this.allEnrolledCourses" [value]="course._id">
-                {{course.courseName}} - {{course.courseCode}}
+                {{course.courseCode}} - {{course.courseName}}
               </mat-option>
             </mat-select>
           </mat-form-field>
@@ -47,8 +40,60 @@
 
         </mat-card>
       </div>
-      
-    </div>
 
+      <button *ngIf="this.selectedTopicId" 
+        mat-raised-button 
+        color="primary"
+        title="Create a post"
+        (click)="createAPost()">
+        <b>Create a post</b>
+      </button>
+
+      <div class="notification" *ngIf="this.selectedPosts.length == 0 && this.checkedPosts">
+        No posts exists for this topic.
+      </div>
+
+      <div class="bigMenu">
+
+        <mat-drawer-container *ngIf="this.selectedPosts.length>0 && this.checkedPosts">
+          <mat-drawer mode="side" opened>
+            <div class="center"><h3>All Posts</h3></div>
+            <div *ngFor="let post of this.selectedPosts" >
+              <mat-card [ngClass]="{
+                'postCard': true, 'clickable': true,
+                'activePost': post?._id == this.selectedPost?._id
+              }" (click)="setPostAndDiscussions(post)">
+                <mat-card-title [ngClass]="{'activePost': post?._id == this.selectedPost?._id}">{{post.postedWhen | date: 'long'}}</mat-card-title>
+                <mat-card-subtitle [ngClass]="{'activePost': post?._id == this.selectedPost?._id}" class="restrictHeight">{{post.content}}</mat-card-subtitle>
+              </mat-card>
+            </div>
+          </mat-drawer>
+          <mat-drawer-content>
+              <div class="center"><h3>Post and Discussions</h3></div>
+            <mat-card *ngIf="this.selectedPost" [ngClass]="{'postCard': true}">
+              <mat-card-title>{{this.selectedPost.subject}}</mat-card-title>
+              <mat-card-subtitle>{{this.selectedPost.content}}</mat-card-subtitle>
+            </mat-card>
+            <mat-card *ngIf="this.selectedPost" [ngClass]="{'postCard': true}">
+              <mat-card-title>{{this.selectedPost.subject}}</mat-card-title>
+              <mat-card-subtitle>{{this.selectedPost.content}}</mat-card-subtitle>
+            </mat-card>
+            <mat-card *ngIf="this.selectedPost" [ngClass]="{'postCard': true}">
+              <mat-card-title>{{this.selectedPost.subject}}</mat-card-title>
+              <mat-card-subtitle>{{this.selectedPost.content}}</mat-card-subtitle>
+            </mat-card>
+            <mat-card *ngIf="this.selectedPost" [ngClass]="{'postCard': true}">
+              <mat-card-title>{{this.selectedPost.subject}}</mat-card-title>
+              <mat-card-subtitle>{{this.selectedPost.content}}</mat-card-subtitle>
+            </mat-card>
+            <mat-card *ngIf="this.selectedPost" [ngClass]="{'postCard': true}">
+              <mat-card-title>{{this.selectedPost.subject}}</mat-card-title>
+              <mat-card-subtitle>{{this.selectedPost.content}}</mat-card-subtitle>
+            </mat-card>
+          </mat-drawer-content>
+        </mat-drawer-container>
+
+      </div>
+    </div>
   </div>
 </div>

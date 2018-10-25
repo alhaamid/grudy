@@ -110,12 +110,23 @@ export class GrudyService {
       }
       this.http.post<Post>(this.backendUrl + "/post", post, {headers: new HttpHeaders({'Content-Type':  'application/json'})})
       .subscribe(post => {
-        this.gs.log("created a post in createAPost", post);
+        // this.gs.log("created a post in createAPost", post);
         res(post);
       }, err => {
-        this.gs.log("err in createAPost", err);
+        // this.gs.log("err in createAPost", err);
         rej(err);
       });
+    });
+  }
+
+  getAllPostsByTopicId(topicId: string) {
+    return new Promise<Post[]> ((resolve, reject) => {
+      var str = '/post/topic/' + topicId;
+      this.http.get<Post[]>(this.backendUrl + str)
+      .subscribe(
+        posts => {resolve(posts);}, 
+        err => {reject(err);}
+      );
     });
   }
 }

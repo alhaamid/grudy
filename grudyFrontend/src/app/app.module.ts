@@ -30,6 +30,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatDividerModule } from '@angular/material/divider';
 import { GrudyService } from './services/grudy.service';
 import { HttpClientModule } from '@angular/common/http';
@@ -75,6 +76,7 @@ import { EnrolledCoursesComponent } from './views/your-account/enrolled-courses/
     MatProgressBarModule,
     MatListModule,
     MatSelectModule,
+    MatSidenavModule
   ],
   providers: [
     GlobalsService, AuthService, RoutingService, AuthGuardService, GrudyService

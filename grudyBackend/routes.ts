@@ -69,3 +69,10 @@ routes.route('/post')
     .then(obj => {res.status(obj["code"]).send(obj["result"]);})
     .catch(obj => {res.status(obj["code"]).send(obj["result"]);});
 });
+
+routes.route('/post/topic/:topicId')
+.get((req, res) => {
+    postController.getAllPostsByTopic(req.params["topicId"])
+    .then(obj => {res.status(obj["code"]).send(obj["result"]);})
+    .catch(obj => {res.status(obj["code"]).send(obj["result"]);});
+});

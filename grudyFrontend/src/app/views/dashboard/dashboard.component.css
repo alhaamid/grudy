@@ -1,23 +1,84 @@
 * {
     --input-height: 2em;
-    --min-input-width: 500px;
 }
 
 .thisContainer {
     /* background: lightpink; */
     min-width: 500px;
-    width: 70%;
+    width: 100%;
 }
 
 .mat-card {
-    width: 500px;
+    width: 600px;
     color: var(--primary-color);
+    /* background: lightblue; */
+}
+
+.subMenu {
+    display: table;
+}
+
+.bigMenu {
+    margin: 2em 0;
+    height: fit-content;
 }
 
 .mat-form-field {
     min-width: 100%;
     min-height: var(--input-height);
     height: auto;
+    display: table-cell;
+    padding-right: 1em;
+    /* background: lightgray; */
+}
+
+.mat-drawer-container {
+    height: 800px;
+
+    color: var(--primary-color);
+    border-right: 2px solid var(--primary-color);
+    border-left: 2px solid var(--primary-color);
+    border-bottom: 2px solid var(--primary-color);
+}
+
+.mat-drawer {
+    width: 30%;
+    max-height: inherit;
+
+    color: var(--primary-color);
+    border-right: 1px solid var(--primary-color);
+}
+
+.center {
+    text-align: center;
+    border-top: 2px solid var(--primary-color);
+    border-bottom: 2px solid var(--primary-color);
+}
+
+.mat-drawer-content {
+    width:  70%;
+    max-height: inherit;
+    /* background: lightgreen; */
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.postCard {
+    margin: 0px 0px 5px 0px;
+    width: 100%; 
+    max-height: inherit;
+}
+
+.restrictHeight {
+    max-height: 20px;
+    overflow: hidden;
+}
+
+.activePost {
+    color: white;
+    background: var(--primary-color);
 }
 
 .validationError {
