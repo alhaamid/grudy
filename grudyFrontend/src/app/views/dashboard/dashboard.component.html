@@ -38,23 +38,25 @@
             </mat-select>
           </mat-form-field>
 
+          <mat-card-actions>
+            <button *ngIf="this.selectedTopicId" 
+              mat-raised-button 
+              color="primary"
+              title="Create a post"
+              (click)="createAPost()">
+              <b>Create a post</b>
+            </button>
+            <button *ngIf="this.selectedPost && this.checkedPosts" 
+              mat-raised-button 
+              color="accent"
+              title="Create a discussion"
+              (click)="createADiscussion()">
+              <b>Create a discussion</b>
+            </button>
+          </mat-card-actions>
+
         </mat-card>
       </div>
-
-      <button *ngIf="this.selectedTopicId" 
-        mat-raised-button 
-        color="primary"
-        title="Create a post"
-        (click)="createAPost()">
-        <b>Create a post</b>
-      </button>
-      <button *ngIf="this.selectedPost && this.checkedPosts" 
-        mat-raised-button 
-        color="accent"
-        title="Create a discussion"
-        (click)="createADiscussion()">
-        <b>Create a discussion</b>
-      </button>
 
       <div class="notification" *ngIf="this.selectedPosts.length == 0 && this.checkedPosts">
         No posts exists for this topic.
@@ -76,9 +78,10 @@
             </div>
           </mat-drawer>
           <mat-drawer-content>
+            <div class="center"><h3>Post</h3></div>
+
             <div *ngIf="this.selectedPost">
 
-              <div class="center"><h3>Post</h3></div>
               <mat-card *ngIf="this.selectedPost" [ngClass]="{'postCard': true}">
                 <mat-card-title>{{this.selectedPost.subject}}</mat-card-title>
                 <mat-card-subtitle>{{this.selectedPost.content}}</mat-card-subtitle>
@@ -86,7 +89,7 @@
 
               <div class="center"><h3>Followup Discussions</h3></div>
               <mat-card [ngClass]="{'postCard': true}" *ngFor="let discussion of this.selectedPost.discussions">
-                <mat-card-title>{{discussion.postedWhen}}</mat-card-title>
+                <mat-card-title>{{discussion.postedWhen | date: 'long'}}</mat-card-title>
                 <mat-card-subtitle>{{discussion.content}}</mat-card-subtitle>
               </mat-card>
 

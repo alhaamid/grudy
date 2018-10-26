@@ -20,6 +20,7 @@ export class DashboardComponent implements OnInit {
   selectedTopicId: string = null;
   selectedPosts: Post[] = []
   selectedPost: Post = null;
+  selectedPostId: string = null;
 
   prevActivePost = null;
 
@@ -45,6 +46,18 @@ export class DashboardComponent implements OnInit {
     .then(posts => {
       this.selectedPosts = posts;
       this.sortOn(this.selectedPosts, "postedWhen", true);
+
+      if (this.selectedPostId) {
+        // reset your selected post
+        let result = this.selectedPosts.filter(post => post._id == this.selectedPostId);
+        if (result.length > 0) {
+          this.selectedPost = result[0];
+          this.sortOn(this.selectedPost.discussions, "postedWhen", true);
+        } else {
+          this.selectedPost = null;
+        }
+      }
+
       this.checkedPosts = true;
     })
     .catch(err => console.log(err));
@@ -92,14 +105,15 @@ export class DashboardComponent implements OnInit {
     }
     this.grudy.createADiscussion(this.selectedPost._id, tempDiscussion)
     .then(newPost => {
-      // console.log("new discussions", newPost.discussions)
-      this.selectedPost = newPost;
+      // need to refresh the posts
+      this.topicChange();
     })
     .catch(err => console.log(err));
   }
 
   setPostAndDiscussions(post: Post) {
     this.selectedPost = post;
+    this.selectedPostId = post._id;
     this.sortOn(this.selectedPost.discussions, "postedWhen", true);
     /* update and sort relevant discussions when the a post selection changes */
   }

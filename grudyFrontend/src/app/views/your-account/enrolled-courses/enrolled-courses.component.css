@@ -3,11 +3,10 @@
     width: 500px;
 }
 
-.mat-divider {
-    margin: 1.5em 0;
-}
-
 .notification {
     color: blue;
-    margin-bottom: 10px;
+}
+
+a {
+    margin-right: 5px;
 }
