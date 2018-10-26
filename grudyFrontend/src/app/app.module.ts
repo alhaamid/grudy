@@ -17,10 +17,11 @@ import { MenuComponent } from './views/menu/menu.component';
 import { YourAccountComponent } from './views/your-account/your-account.component';
 import { SignUpComponent } from './views/sign-up/sign-up.component';
 
-import { AuthService } from './services/auth.service';
-import { GlobalsService } from './services/globals.service';
-import { RoutingService } from './services/routing.service';
-import { AuthGuardService } from './services/auth-guard.service';
+import { AuthService } from './services/auth/auth.service';
+import { GlobalsService } from './services/globals/globals.service';
+import { RoutingService } from './services/routing/routing.service';
+import { AuthGuardService } from './services/auth-guard/auth-guard.service';
+import { GrudyService } from './services/grudy/grudy.service';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing/app-routing.module';
@@ -32,7 +33,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatDividerModule } from '@angular/material/divider';
-import { GrudyService } from './services/grudy.service';
 import { HttpClientModule } from '@angular/common/http';
 import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';

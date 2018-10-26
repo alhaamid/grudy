@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Course, GrudyService } from 'src/app/services/grudy.service';
-import { AuthService } from 'src/app/services/auth.service';
-import { RoutingService } from 'src/app/services/routing.service';
-import { GlobalsService } from 'src/app/services/globals.service';
+import { Course, GrudyService } from 'src/app/services/grudy/grudy.service';
+import { AuthService } from 'src/app/services/auth/auth.service';
+import { RoutingService } from 'src/app/services/routing/routing.service';
+import { GlobalsService } from 'src/app/services/globals/globals.service';
 
 @Component({
   selector: 'app-enrolled-courses',

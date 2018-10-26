@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
-import { GlobalsService } from '../../services/globals.service';
-import { RoutingService } from '../../services/routing.service';
+import { AuthService } from '../../services/auth/auth.service';
+import { GlobalsService } from '../../services/globals/globals.service';
+import { RoutingService } from '../../services/routing/routing.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 

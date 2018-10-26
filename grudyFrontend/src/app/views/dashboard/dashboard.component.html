@@ -18,7 +18,7 @@
           </a>
         </mat-card>
       </div>
-      
+
       <div class="subMenu" *ngIf="this.allEnrolledCourses.length>0 && this.checkedCourses">
         <mat-card>
 
@@ -31,11 +31,13 @@
           </mat-form-field>
 
           <mat-form-field *ngIf="this.checkedTopics">
+
             <mat-select (selectionChange)="this.refreshPosts()" placeholder="Select a topic" [(ngModel)]="this.selectedTopicId">
               <mat-option *ngFor="let topic of this.selectedTopics" [value]="topic._id">
                 {{topic.name}}
               </mat-option>
             </mat-select>
+
           </mat-form-field>
 
           <mat-card-actions>

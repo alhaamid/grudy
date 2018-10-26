@@ -1,4 +1,4 @@
-import { GlobalsService } from './globals.service';
+import { GlobalsService } from '../globals/globals.service';
 import { Injectable } from '@angular/core';
 
 import * as firebase from 'firebase/app';
@@ -6,7 +6,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
 
 import { Observable} from 'rxjs';
-import { GrudyService, Course } from './grudy.service';
+import { GrudyService, Course } from '../grudy/grudy.service';
 
 @Injectable({
   providedIn: 'root'

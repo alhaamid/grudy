@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { GlobalsService } from '../../services/globals.service';
-import { AuthService } from '../../services/auth.service';
-import { RoutingService } from '../../services/routing.service';
+import { GlobalsService } from '../../services/globals/globals.service';
+import { AuthService } from '../../services/auth/auth.service';
+import { RoutingService } from '../../services/routing/routing.service';
 
 @Component({
   selector: 'app-menu',
