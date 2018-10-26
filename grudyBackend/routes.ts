@@ -115,6 +115,11 @@ routes.route('/post/:postId/discussion')
     .then(obj => {res.status(obj["code"]).send(obj["result"]);})
     .catch(obj => {res.status(obj["code"]).send(obj["result"]);});
 })
+// GET all discussions in a post
+routes.route('/post/:postId/discussion')
+// Delete a discussion in a post
+.get((req, res) => {
+})
 // GET a discussion in a post
 routes.route('/post/:postId/discussion/:discussionId')
 // Delete a discussion in a post

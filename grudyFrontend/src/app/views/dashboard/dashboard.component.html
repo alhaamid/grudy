@@ -31,7 +31,7 @@
           </mat-form-field>
 
           <mat-form-field *ngIf="this.checkedTopics">
-            <mat-select (selectionChange)="this.topicChange()" placeholder="Select a topic" [(ngModel)]="this.selectedTopicId">
+            <mat-select (selectionChange)="this.refreshPosts()" placeholder="Select a topic" [(ngModel)]="this.selectedTopicId">
               <mat-option *ngFor="let topic of this.selectedTopics" [value]="topic._id">
                 {{topic.name}}
               </mat-option>

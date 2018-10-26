@@ -25,8 +25,6 @@ export class DashboardComponent implements OnInit {
   prevActivePost = null;
 
   constructor(private grudy: GrudyService, private authService: AuthService, private fb: FormBuilder, private rs: RoutingService) {
-    this.temp();
-
     this.grudy.getUsersCourses(this.authService.userDetails.email)
     .then(courses => {
       this.allEnrolledCourses = courses;
@@ -36,31 +34,45 @@ export class DashboardComponent implements OnInit {
   }
 
   courseChange() {
-    let selectedCourse = this.allEnrolledCourses.filter(course => course._id === this.selectedCourseId)[0];
-    this.selectedTopics = selectedCourse.topics;
-    this.checkedTopics = true;
+    let result = this.allEnrolledCourses.filter(course => course._id === this.selectedCourseId);
+    if (result.length > 0) {
+      this.selectedTopics = result[0].topics;
+      this.checkedTopics = true;
+    } else {
+      this.selectedTopics = null;
+      this.checkedTopics = null;
+      console.log("selected course id is not in user's courses");
+    }
   }
 
-  topicChange() {
-    this.grudy.getAllPostsByTopicId(this.selectedTopicId)
-    .then(posts => {
-      this.selectedPosts = posts;
-      this.sortOn(this.selectedPosts, "postedWhen", true);
+  refreshPosts() {
+    return new Promise<Boolean>((res, rej) => {
+      this.grudy.getAllPostsByTopicId(this.selectedTopicId)
+      .then(posts => {
+        this.selectedPosts = posts;
+        this.sortOn(this.selectedPosts, "postedWhen", true);
 
-      if (this.selectedPostId) {
-        // reset your selected post
-        let result = this.selectedPosts.filter(post => post._id == this.selectedPostId);
-        if (result.length > 0) {
-          this.selectedPost = result[0];
-          this.sortOn(this.selectedPost.discussions, "postedWhen", true);
-        } else {
-          this.selectedPost = null;
+        // update selected post in case a discussion was added
+        if (this.selectedPostId) {
+          // reset your selected post
+          let result = this.selectedPosts.filter(post => post._id == this.selectedPostId);
+          if (result.length > 0) {
+            this.selectedPost = result[0];
+            this.sortOn(this.selectedPost.discussions, "postedWhen", true);
+          } else {
+            this.selectedPost = null;
+          }
         }
-      }
 
-      this.checkedPosts = true;
-    })
-    .catch(err => console.log(err));
+        res(true);
+
+        this.checkedPosts = true;
+      })
+      .catch(err => {
+        console.log(err);
+        res(false);
+      });
+    });
   }
 
   sortOn(array: any[], attribute: string, descending: boolean) {
@@ -92,7 +104,7 @@ export class DashboardComponent implements OnInit {
     }
     this.grudy.createAPost(tempPost)
     .then(newPost => {
-      this.topicChange()
+      this.refreshPosts()
     })
     .catch(err => console.log(err));
   }
@@ -106,7 +118,7 @@ export class DashboardComponent implements OnInit {
     this.grudy.createADiscussion(this.selectedPost._id, tempDiscussion)
     .then(newPost => {
       // need to refresh the posts
-      this.topicChange();
+      this.refreshPosts();
     })
     .catch(err => console.log(err));
   }
