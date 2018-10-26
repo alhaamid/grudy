@@ -44,7 +44,6 @@ export class PostController {
     }
 
     public addNewDiscussion(postId: string, discussionJSON) {
-        console.log(discussionJSON);
         return new promise <Result> ((resolve, reject) => {
             let update = {$addToSet: { discussions: { $each: [discussionJSON] } }};
             let options = {new: true};
