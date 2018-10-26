@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { User } from '../auth/auth.service';
+import { User } from '../../models/User';
 import { GlobalsService } from '../globals/globals.service';
+import { Course } from "../../models/Course";
+import { Post } from "../../models/Post";
+import { Discussion } from "../../models/Discussion";
 
 @Injectable({
   providedIn: 'root'
@@ -133,56 +136,3 @@ export class GrudyService {
     });
   }
 }
-
-export interface Course {
-  _id: string,
-  courseCode: string,
-  courseName: string,
-  topics: Topic[]
-}
-
-export interface Topic {
-  _id: string,
-  name: string
-}
-
-export interface Post {
-  _id?: string,
-	topicId: string,
-	subject: string,
-	content: string,
-	postedWhen?: any,
-	postedBy: string,
-  isResolved?: boolean,
-  discussions: Discussion[]
-}
-
-export interface Discussion {
-  _id?: string,
-  subject: string,
-  content: string,
-  postedWhen?: any,
-  startedBy: string,
-  isResolved?: boolean
-}
-
-/* checkUser() {
-  const sampleUser = {
-    userId: 0x5bbfb9d5218008015115a701,
-    displayName: "Haamid",
-    email: "@gatech.edu",
-    password: "password",
-    photoURL: "https://pbs.twimg.com/profile_images/582436192307703809/DqWJEB13_400x400.png"
-  }
-  this.http.post(this.backendUrl+"/user", sampleUser, {
-    headers: new HttpHeaders({
-      'Content-Type':  'application/json'
-    })
-  }).toPromise()
-  .then(val => {
-    console.log("val", val);
-  })
-  .catch(err => {
-    console.log("err", err);
-  });
-} */

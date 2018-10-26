@@ -1,12 +1,11 @@
 import { GlobalsService } from '../globals/globals.service';
 import { Injectable } from '@angular/core';
-
+import { User } from "../../models/User";
 import * as firebase from 'firebase/app';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
-
-import { Observable} from 'rxjs';
-import { GrudyService, Course } from '../grudy/grudy.service';
+import { Observable } from 'rxjs';
+import { GrudyService } from '../grudy/grudy.service';
 
 @Injectable({
   providedIn: 'root'
@@ -138,68 +137,3 @@ export class AuthService {
     this.afa.auth.signOut();
   }
 }
-
-export interface User {
-  id?: string,
-  email: string;
-  password: string;
-  displayName: string;
-  photoURL?: string;
-  courses: Course[]
-}
-
-
-
-// logIn(email: string, password: string) {
-//   return new Promise<any> ((resolve, reject) => {
-//     this.afa.auth.signInWithEmailAndPassword(email, password)
-//     .then(val => {
-//       if (!val.user.emailVerified) {
-//         resolve({code: "verification-email-sent", message: "Please verify your email and then login"});
-//       } else {
-//         // connect to mongodb database and add/update the user here.
-//         this.grudy.getAUser(email)
-//         .then(user => { resolve(user); })
-//         .catch(err => {
-//           if (this.userDetailsObservable == null) {
-//             // this.gs.log("came straight from sign-up page");
-//             this.setupUserObservable().then(__ => {
-//               this.grudy.createAUser(email, password, this.userDetails.displayName, this.userDetails.photoURL)
-//                 .then(user => {resolve(user)})
-//                 .catch(err => {reject(err)})
-//             })
-
-//             // this.authState = this.afa.authState;
-//             // this.authState.subscribe(user => {
-//             //   if (user) {
-//             //     if (user.emailVerified) {
-//             //       this.userDetailsObservable = this.afs.doc<User>(`${this.gs.USERS_COLLECTION}/${user.email}`).valueChanges();
-//             //       this.userDetailsObservable.subscribe(user => {
-//             //         this.userDetails = user;
-//             //         this.grudy.createAUser(email, password, user.displayName, user.photoURL)
-//             //         .then(user => {resolve(user)})
-//             //         .catch(err => {reject(err)})
-//             //       });
-//             //     }
-//             //   } else {
-//             //     this.userDetailsObservable = null;
-//             //   }
-//             // });
-//           } else {
-//             // if the user doesn't exist, create
-//             // assumes that this.userDetailsObservable was setup in the constructor
-//             // this.userDetailsObservable.subscribe(user => {
-//             this.grudy.createAUser(email, password, this.userDetails.displayName, this.userDetails.photoURL)
-//             .then(user => {resolve(user)})
-//             .catch(err => {reject(err)})
-//             // });
-//           }
-//         });
-//         // resolve(val.user);
-//       }
-//     })
-//     .catch(err => {
-//       reject(err);
-//     })
-//   })
-// }

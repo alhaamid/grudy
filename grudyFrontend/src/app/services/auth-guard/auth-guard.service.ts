@@ -1,7 +1,7 @@
 import { AngularFirestore } from 'angularfire2/firestore';
 import { GlobalsService } from '../globals/globals.service';
 import { Injectable } from '@angular/core';
-import { AuthService, User } from '../auth/auth.service';
+import { AuthService } from '../auth/auth.service';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
 import { RoutingService } from '../routing/routing.service';

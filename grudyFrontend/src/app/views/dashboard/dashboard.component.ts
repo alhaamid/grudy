@@ -1,5 +1,10 @@
+import { Course } from "../../models/Course";
+import { Post } from "../../models/Post";
+import { Discussion } from "../../models/Discussion";
+import { Topic } from "../../models/Topic";
+
 import { Component, OnInit } from '@angular/core';
-import { GrudyService, Course, Topic, Post, Discussion } from '../../services/grudy/grudy.service';
+import { GrudyService } from '../../services/grudy/grudy.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { RoutingService } from 'src/app/services/routing/routing.service';

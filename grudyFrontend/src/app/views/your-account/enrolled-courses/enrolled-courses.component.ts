@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Course, GrudyService } from 'src/app/services/grudy/grudy.service';
+import { GrudyService } from 'src/app/services/grudy/grudy.service';
+import { Course } from "../../../models/Course";
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { RoutingService } from 'src/app/services/routing/routing.service';
 import { GlobalsService } from 'src/app/services/globals/globals.service';
