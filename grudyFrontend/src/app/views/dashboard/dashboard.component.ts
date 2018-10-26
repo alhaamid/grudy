@@ -3,6 +3,7 @@ import { GrudyService, Course, Topic, Post, Discussion } from '../../services/gr
 import { AuthService } from 'src/app/services/auth.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { RoutingService } from 'src/app/services/routing.service';
+import { GlobalsService } from 'src/app/services/globals.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -22,9 +23,7 @@ export class DashboardComponent implements OnInit {
   selectedPost: Post = null;
   selectedPostId: string = null;
 
-  prevActivePost = null;
-
-  constructor(private grudy: GrudyService, private authService: AuthService, private fb: FormBuilder, private rs: RoutingService) {
+  constructor(private grudy: GrudyService, private authService: AuthService, private fb: FormBuilder, private rs: RoutingService, private gs: GlobalsService) {
     this.grudy.getUsersCourses(this.authService.userDetails.email)
     .then(courses => {
       this.allEnrolledCourses = courses;
@@ -50,7 +49,7 @@ export class DashboardComponent implements OnInit {
       this.grudy.getAllPostsByTopicId(this.selectedTopicId)
       .then(posts => {
         this.selectedPosts = posts;
-        this.sortOn(this.selectedPosts, "postedWhen", true);
+        this.gs.sortOn(this.selectedPosts, "postedWhen", true);
 
         // update selected post in case a discussion was added
         if (this.selectedPostId) {
@@ -58,7 +57,7 @@ export class DashboardComponent implements OnInit {
           let result = this.selectedPosts.filter(post => post._id == this.selectedPostId);
           if (result.length > 0) {
             this.selectedPost = result[0];
-            this.sortOn(this.selectedPost.discussions, "postedWhen", true);
+            this.gs.sortOn(this.selectedPost.discussions, "postedWhen", true);
           } else {
             this.selectedPost = null;
           }
@@ -73,21 +72,6 @@ export class DashboardComponent implements OnInit {
         res(false);
       });
     });
-  }
-
-  sortOn(array: any[], attribute: string, descending: boolean) {
-    array.sort( (a, b) => {
-      if (a[attribute] < b[attribute]) {
-        return -1;
-      } else if (a[attribute] > b[attribute]) {
-        return 1;
-      } else {
-        return 0;
-      }
-    })
-    if (descending) {
-      array.reverse();
-    };
   }
 
   createAPost() {
@@ -126,7 +110,7 @@ export class DashboardComponent implements OnInit {
   setPostAndDiscussions(post: Post) {
     this.selectedPost = post;
     this.selectedPostId = post._id;
-    this.sortOn(this.selectedPost.discussions, "postedWhen", true);
+    this.gs.sortOn(this.selectedPost.discussions, "postedWhen", true);
     /* update and sort relevant discussions when the a post selection changes */
   }
 

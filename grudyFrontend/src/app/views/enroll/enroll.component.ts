@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { GrudyService, Course } from 'src/app/services/grudy.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { GlobalsService } from 'src/app/services/globals.service';
 
 @Component({
   selector: 'app-enroll',
@@ -16,7 +17,7 @@ export class EnrollComponent implements OnInit {
   enrolledSuccessfully: number = 0;
   enrollErr = null;
 
-  constructor(private grudy: GrudyService, private authService: AuthService, private fb: FormBuilder) {
+  constructor(private grudy: GrudyService, private authService: AuthService, private fb: FormBuilder, private gs: GlobalsService) {
     this.rForm = fb.group({
       'enrollmentValidation': ['', Validators.compose([Validators.required])]
     });
@@ -28,6 +29,7 @@ export class EnrollComponent implements OnInit {
     .then(enrolledCourses => {
       let enrolledCourseIds = enrolledCourses.map(course => course._id);
       this.unenrolledCourses = this.grudy.listOfCourses.filter(course => enrolledCourseIds.indexOf(course._id) < 0);
+      this.gs.sortOn(this.unenrolledCourses, "courseCode", false);
       this.rForm.reset();
     })
     .catch(err => {

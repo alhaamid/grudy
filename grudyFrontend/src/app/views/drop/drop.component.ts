@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Course, GrudyService } from 'src/app/services/grudy.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { RoutingService } from 'src/app/services/routing.service';
+import { GlobalsService } from 'src/app/services/globals.service';
 
 @Component({
   selector: 'app-drop',
@@ -13,7 +13,7 @@ export class DropComponent implements OnInit {
   allEnrolledCourses: Course[] = null;
   checkedCourses: boolean = false;
 
-  constructor(private grudy: GrudyService, private authService: AuthService) {
+  constructor(private grudy: GrudyService, private authService: AuthService, private gs: GlobalsService) {
     this.getAllUsersCourses();
   }
 
@@ -21,6 +21,7 @@ export class DropComponent implements OnInit {
     this.grudy.getUsersCourses(this.authService.userDetails.email)
     .then(courses => {
       this.allEnrolledCourses = courses;
+      this.gs.sortOn(this.allEnrolledCourses, "courseCode", false);
       this.checkedCourses = true;
     })
     .catch(err => console.log(err))

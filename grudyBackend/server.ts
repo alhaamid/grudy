@@ -11,12 +11,11 @@ const APP = express();
 const PORT = process.env.PORT || 4201;
 
 const DB_NAME: string = '/grudy';
-// const CLOUD_MONGO_URL: string = `mongodb://haamid:haamid@grudycluster1-shard-00-00-bevsd.mongodb.net:27017,grudycluster1-shard-00-01-bevsd.mongodb.net:27017,grudycluster1-shard-00-02-bevsd.mongodb.net:27017${DB_NAME}?ssl=true&replicaSet=GrudyCluster1-shard-0&authSource=admin&retryWrites=true`;
+const CLOUD_MONGO_URL: string = `mongodb://haamid:haamid@grudycluster1-shard-00-00-bevsd.mongodb.net:27017,grudycluster1-shard-00-01-bevsd.mongodb.net:27017,grudycluster1-shard-00-02-bevsd.mongodb.net:27017${DB_NAME}?ssl=true&replicaSet=GrudyCluster1-shard-0&authSource=admin&retryWrites=true`;
+const DB_URI: string = CLOUD_MONGO_URL;
 
-const MONGO_URI: string = 'mongodb://127.0.0.1:27017'
-const DB_URI: string = MONGO_URI + DB_NAME;
-
-// const DB_URI: string = CLOUD_MONGO_URL;
+// const MONGO_URI: string = 'mongodb://127.0.0.1:27017'
+// const DB_URI: string = MONGO_URI + DB_NAME;
 const COURSE_FILE_NAME: string = "./assets/courses.csv";
 
 mongoose.connect(DB_URI, (err: MongoError) => {

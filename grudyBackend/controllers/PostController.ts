@@ -11,15 +11,12 @@ export class PostController {
         let newPost = new this.Post(postJSON);
         return new promise <Result>((resolve, reject) => {
             newPost.save((err, post) => {
-                let toShow = null;
                 if (err) {
-                    toShow = "error while creating a new post";
+                    console.log("error while creating a new post", err);
                     reject({code: 500, result: err});
                 } else {
-                    toShow = `new post created successfully with subject ${post["subject"]}`;
                     resolve({code: 201, result: post});
                 }
-                console.log(toShow);
             });
         });      
     }
@@ -33,9 +30,9 @@ export class PostController {
                     reject({code: 404, result: err});
                 } else {
                     if (posts) {
-                        console.log(`all posts under ${topicId} found`)
                         resolve({code: 200, result: posts});
                     } else {
+                        console.log(`no posts under ${topicId}`);
                         reject({code: 404, result: `no posts under ${topicId}`});
                     }
                 }

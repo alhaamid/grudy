@@ -8,7 +8,6 @@ export class UserController {
     constructor() {}
 
     public getAUser(email: string) {
-        // let email = params["email"]
         return new promise<Result>((resolve, reject) => {
             let condition = { email: { $eq: email } };
             this.User.findOne(condition, (err, user) => {
@@ -19,7 +18,6 @@ export class UserController {
                     if (user) {
                         user.populate('courses', (err, populatedUser: mongoose.Document) => {
                             if (populatedUser) {
-                                console.log(`${email} found and populated successfully`);
                                 resolve({code: 200, result: populatedUser});
                             } else {
                                 console.log("Error while populating user");
@@ -39,15 +37,12 @@ export class UserController {
         let newUser = new this.User(userJSON);
         return new promise <Result>((resolve, reject) => {
             newUser.save((err, user) => {
-                let toShow = null;
                 if (err) {
-                    toShow = "error while creating a new user";
+                    console.log("error while creating a new user", err);
                     reject({code: 500, result: err});
                 } else {
-                    toShow = `${user["email"]} created successfully`;
                     resolve({code: 201, result: user});
                 }
-                console.log(toShow);
             });
         });
     }
@@ -58,28 +53,24 @@ export class UserController {
             let update = {$addToSet: { courses: { $each: [id] } }};
             let options = {new: true};
             this.User.findOneAndUpdate(condition, update, options, (err, user) => {
-                let toShow2 = null;
                 if (err) {
-                    toShow2 = err;
+                    console.log(err);
                     reject({code: 500, result: `Invalid course selected. ${id}`});
                 } else {
                     if (user) {
                         user.populate('courses', (err, populatedUser: mongoose.Document) => {
                             if (populatedUser) {
-                                toShow2 = `${email} enrolled in ${id}`;
                                 resolve({code: 200, result: populatedUser});
                             } else {
                                 console.log("Error while populating user");
                                 reject({code: 500, result: err});
                             }
                         })
-                        // console.log(user);
                     } else {
-                        toShow2 = `${email} not found`;
+                        console.log(`${email} not found`);
                         reject({code: 404, result: `${email} not found`});
                     }
                 }
-                console.log("enrollACourse", toShow2);
             });
         });
     }
@@ -90,15 +81,13 @@ export class UserController {
             let update = {$pull: { courses: { $in: [id] } }};;
             let options = {new: true};
             this.User.findOneAndUpdate(condition, update, options, (err, user) => {
-                let toShow2 = null;
                 if (err) {
-                    toShow2 = err;
+                    console.log(err);
                     reject({code: 500, result: `Invalid course selected. ${id}`});
                 } else {
                     if (user) {
                         user.populate('courses', (err, populatedUser: mongoose.Document) => {
                             if (populatedUser) {
-                                toShow2 = `${id} dropped for in ${email}`;
                                 resolve({code: 200, result: populatedUser});
                             } else {
                                 console.log("Error while populating user");
@@ -106,11 +95,10 @@ export class UserController {
                             }
                         })
                     } else {
-                        toShow2 = `${email} not found`;
+                        console.log(`${email} not found`);
                         reject({code: 404, result: `${email} not found`});
                     }
                 }
-                console.log("dropACourse", toShow2);
             });
         });
     }

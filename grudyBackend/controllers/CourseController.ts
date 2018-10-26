@@ -50,15 +50,12 @@ export class CourseController {
     public getAllCourses() {
         return new promise <Result> ((resolve, reject) => {
             this.Course.find((err: any, courses: any) => {
-                let toShow = null;
                 if (err) {
-                    toShow = err;
+                    console.log(err);
                     reject({code: 404, result: err})
                 } else {
-                    toShow = "all courses found successfully";
                     resolve({code: 200, result: courses});
                 }
-                console.log(toShow);
             }, (err) => {
                 console.log(err);
             });
@@ -69,20 +66,17 @@ export class CourseController {
         // let courseCode = params['courseCode'];
         return new promise <Result> ((resolve, reject) => {
             this.Course.findById(id, (err, course) => {
-                let toShow = null;
                 if (err) {
-                    toShow = err;
+                    console.log(err);
                     reject({code: 500, result: err});
                 } else {
                     if (course) {
-                        toShow = `${course["courseName"]} found successfully`;
                         resolve({code: 200, result: course});
                     } else {
-                        toShow = `${id} not found`;
+                        console.log(`${id} not found`);
                         reject({code: 404, result: `${id} not found`});
                     }
                 }
-                console.log(toShow);
             });
         });
     }
