@@ -24,6 +24,7 @@ Post
 
 Discussion
 	_id
+	subject
 	content
 	postedWhen (Date...)
 	startedBy: User._id (foreign key)

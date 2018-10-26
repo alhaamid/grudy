@@ -1,11 +1,7 @@
 import mongoose from "mongoose";
 const Schema = mongoose.Schema;
-import { DiscussionSchema } from "./Discussion";
 
-export const PostSchema = new Schema({
-    topicId: {
-        type: mongoose.Schema.Types.ObjectId
-    },
+export const DiscussionSchema = new Schema({
     subject: {
         type: String,
         required: 'Subject is required'
@@ -19,7 +15,7 @@ export const PostSchema = new Schema({
         default: Date.now,
         required: 'Date and Time of post is required'
     },
-    postedBy: {
+    startedBy: {
         type: String,
     },
     isResolved: {
@@ -27,5 +23,4 @@ export const PostSchema = new Schema({
         default: false,
         required: 'isResolved is required'
     },
-    discussions: [DiscussionSchema]
 });

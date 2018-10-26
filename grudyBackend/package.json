@@ -21,7 +21,7 @@
     "typescript": "^3.0.3"
   },
   "scripts": {
-    "start": "node_modules/.bin/ts-node-dev server.ts"
+    "start": "clear && node_modules/.bin/ts-node-dev server.ts"
   },
   "devDependencies": {
     "nodemon": "^1.18.4"

@@ -42,6 +42,27 @@ export class PostController {
             })
         });
     }
+
+    public addNewDiscussion(postId: string, discussionJSON) {
+        console.log(discussionJSON);
+        return new promise <Result> ((resolve, reject) => {
+            let update = {$addToSet: { discussions: { $each: [discussionJSON] } }};
+            let options = {new: true};
+            this.Post.findByIdAndUpdate(postId, update, options, (err, post) => {
+                if (err) {
+                    console.log(err);
+                    reject({code: 500, result: `Invalid post given for discussion. ${postId}`});
+                } else {
+                    if (post) {
+                        resolve({code: 200, result: post});
+                    } else {
+                        console.log(`no post with id: ${postId}`);
+                        reject({code: 404, result: `no post with id: ${postId}`});
+                    }
+                }
+            });
+        });
+    }
 }
 
 export interface Result {

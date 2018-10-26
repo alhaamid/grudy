@@ -67,8 +67,7 @@ export class GrudyService {
 
   enrollACourse(email, id) {
     return new Promise<User> ((res, rej) => {
-      let update = {enrollCourse: id};
-      this.http.put<User>(this.backendUrl + "/user/" + email, update, {headers: new HttpHeaders({'Content-Type':  'application/json'})})
+      this.http.post<User>(this.backendUrl + `/user/${email}/enroll/${id}`, {}, {headers: new HttpHeaders({'Content-Type':  'application/json'})})
       .subscribe(user => {
         // console.log("enrollUser result", user);
         res(user);
@@ -81,8 +80,7 @@ export class GrudyService {
 
   dropACourse(email, id) {
     return new Promise<User> ((res, rej) => {
-      let update = {dropCourse: id};
-      this.http.put<User>(this.backendUrl + "/user/" + email, update, {headers: new HttpHeaders({'Content-Type':  'application/json'})})
+      this.http.delete<User>(this.backendUrl + `/user/${email}/drop/${id}`, {headers: new HttpHeaders({'Content-Type':  'application/json'})})
       .subscribe(user => {
         res(user);
       }, err => {
@@ -100,20 +98,25 @@ export class GrudyService {
   }
 
   /* Posts related */
-  createAPost(topicId: string, subject: string, content: string, postedBy: string) {
+  createAPost(post: Post) {
     return new Promise<Post> ((res, rej) => {
-      const post: Post = {
-        topicId: topicId,
-        subject: subject,
-        content: content,
-        postedBy: postedBy
-      }
       this.http.post<Post>(this.backendUrl + "/post", post, {headers: new HttpHeaders({'Content-Type':  'application/json'})})
       .subscribe(post => {
         // this.gs.log("created a post in createAPost", post);
         res(post);
       }, err => {
         // this.gs.log("err in createAPost", err);
+        rej(err);
+      });
+    });
+  }
+
+  createADiscussion(postId: string, discussion: Discussion) {
+    return new Promise<Post> ((res, rej) => {
+      this.http.post<Post>(this.backendUrl + `/post/${postId}/discussion`, discussion, {headers: new HttpHeaders({'Content-Type':  'application/json'})})
+      .subscribe(discussion => {
+        res(discussion);
+      }, err => {
         rej(err);
       });
     });
@@ -135,7 +138,7 @@ export interface Course {
   _id: string,
   courseCode: string,
   courseName: string,
-  topics: [Topic]
+  topics: Topic[]
 }
 
 export interface Topic {
@@ -150,7 +153,17 @@ export interface Post {
 	content: string,
 	postedWhen?: any,
 	postedBy: string,
-	isResolved?: boolean
+  isResolved?: boolean,
+  discussions: Discussion[]
+}
+
+export interface Discussion {
+  _id?: string,
+  subject: string,
+  content: string,
+  postedWhen?: any,
+  startedBy: string,
+  isResolved?: boolean
 }
 
 /* checkUser() {

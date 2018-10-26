@@ -13,6 +13,7 @@ let postController = new PostController();
 routes.route('/')
 .get((req, res) => {res.send('Backend Server is working');});
 
+/* Course related */
 // GET all courses
 routes.route('/course')
 .get((req, res) => {
@@ -30,29 +31,12 @@ routes.route('/course/:_id')
 });
 
 
-routes.route('/user/:email')
-// GET a user
-.get((req, res) => {
-    userController.getAUser(req.params["email"])
-    .then(obj => {res.status(obj["code"]).send(obj["result"]);})
-    .catch(obj => {res.status(obj["code"]).send(obj["result"]);});
-})
-// UPDATE a user
-.put((req, res) => {
-    let email = req.params["email"];
-    // enroll a course
-    if (req.body["enrollCourse"]) {
-        userController.enrollACourse(email, req.body["enrollCourse"])
-        .then(obj => {res.status(obj["code"]).send(obj["result"]);})
-        .catch(obj => {res.status(obj["code"]).send(obj["result"]);});
-    // drop a course
-    } else if (req.body["dropCourse"]) {
-        userController.dropACourse(email, req.body["dropCourse"])
-        .then(obj => {res.status(obj["code"]).send(obj["result"]);})
-        .catch(obj => {res.status(obj["code"]).send(obj["result"]);});
-    }
-})
 
+
+
+
+
+/* User related */
 // CREATE a user
 routes.route('/user')
 .post((req, res) => {
@@ -61,18 +45,84 @@ routes.route('/user')
     .catch(obj => {res.status(obj["code"]).send(obj["result"]);});
 });
 
+// GET a user
+routes.route('/user/:email')
+.get((req, res) => {
+    userController.getAUser(req.params["email"])
+    .then(obj => {res.status(obj["code"]).send(obj["result"]);})
+    .catch(obj => {res.status(obj["code"]).send(obj["result"]);});
+})
 
+// Enroll user in a course
+routes.route('/user/:email/enroll/:courseId')
+.post((req, res) => {
+    let email = req.params["email"];
+    let courseId = req.params["courseId"];
+    userController.enrollACourse(email, courseId)
+    .then(obj => {res.status(obj["code"]).send(obj["result"]);})
+    .catch(obj => {res.status(obj["code"]).send(obj["result"]);});
+})
+
+// Drop user in a course
+routes.route('/user/:email/drop/:courseId')
+.delete((req, res) => {
+    let email = req.params["email"];
+    let courseId = req.params["courseId"];
+    userController.dropACourse(email, courseId)
+    .then(obj => {res.status(obj["code"]).send(obj["result"]);})
+    .catch(obj => {res.status(obj["code"]).send(obj["result"]);});
+})
+
+
+
+/* Post related */
 // CREATE a post
 routes.route('/post')
 .post((req, res) => {
     postController.addNewPost(req.body)
     .then(obj => {res.status(obj["code"]).send(obj["result"]);})
     .catch(obj => {res.status(obj["code"]).send(obj["result"]);});
-});
+})
+// GET a post
+routes.route('/post/:postId')
+.get((req, res) => {
+})
+// UPDATE a post
+.put((req, res) => {
+})
+// DELETE a post
+.delete((req, res) => {
+})
 
+
+
+// GET all posts by a topic
 routes.route('/post/topic/:topicId')
 .get((req, res) => {
     postController.getAllPostsByTopic(req.params["topicId"])
     .then(obj => {res.status(obj["code"]).send(obj["result"]);})
     .catch(obj => {res.status(obj["code"]).send(obj["result"]);});
 });
+
+
+
+/* Discussion related */
+// CREATE a discussion
+routes.route('/post/:postId/discussion')
+.post((req, res) => {
+    let postId = req.params["postId"];
+    postController.addNewDiscussion(postId, req.body)
+    .then(obj => {res.status(obj["code"]).send(obj["result"]);})
+    .catch(obj => {res.status(obj["code"]).send(obj["result"]);});
+})
+// GET a discussion in a post
+routes.route('/post/:postId/discussion/:discussionId')
+// Delete a discussion in a post
+.get((req, res) => {
+})
+// UPDATE a discussion in a post
+.put((req, res) => {
+})
+// DELETE a discussion in a post
+.delete((req, res) => {
+})

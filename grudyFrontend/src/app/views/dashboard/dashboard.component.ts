@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { GrudyService, Course, Topic, Post } from '../../services/grudy.service';
+import { GrudyService, Course, Topic, Post, Discussion } from '../../services/grudy.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { RoutingService } from 'src/app/services/routing.service';
@@ -66,18 +66,41 @@ export class DashboardComponent implements OnInit {
   }
 
   createAPost() {
-    let subject = "subject";
-    let content = `
-      What is going on over here. I am waiting for your answer as this is getting absolutely ridiculous.
-      Do you really think I will put up with this after what you have done?
-      Maybe I will. I dont know. I will have to think about it.
-    `;
-    this.grudy.createAPost(this.selectedTopicId, subject, content, this.authService.userDetails.email)
-    .then(__ => this.topicChange());
+    let tempPost: Post = {
+      topicId: this.selectedTopicId,
+      subject: "Post subject",
+      content: `
+        What is going on over here. I am waiting for your answer as this is getting absolutely ridiculous.
+        Do you really think I will put up with this after what you have done?
+        Maybe I will. I dont know. I will have to think about it.
+      `,
+      postedBy: this.authService.userDetails.email,
+      discussions: []
+    }
+    this.grudy.createAPost(tempPost)
+    .then(newPost => {
+      this.topicChange()
+    })
+    .catch(err => console.log(err));
+  }
+
+  createADiscussion() {
+    let tempDiscussion: Discussion = {
+      subject: "discussion subject",
+      content: "discussion content",
+      startedBy: this.authService.userDetails.email,
+    }
+    this.grudy.createADiscussion(this.selectedPost._id, tempDiscussion)
+    .then(newPost => {
+      // console.log("new discussions", newPost.discussions)
+      this.selectedPost = newPost;
+    })
+    .catch(err => console.log(err));
   }
 
   setPostAndDiscussions(post: Post) {
     this.selectedPost = post;
+    this.sortOn(this.selectedPost.discussions, "postedWhen", true);
     /* update and sort relevant discussions when the a post selection changes */
   }
 
