@@ -22,7 +22,6 @@
 
 .mat-card-footer {
     text-align: right;
-    font-style: italic;
     padding-right: 1em;
 }
 
@@ -98,7 +97,7 @@ textarea {
 }
 
 .restrictHeight {
-    max-height: 20px;
+    max-height: 1.5em;
     overflow: hidden;
 }
 

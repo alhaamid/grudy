@@ -6,7 +6,7 @@ export interface Post {
   subject: string,
   content: string,
   postedWhen?: any,
-  postedBy: string,
+  postedBy: any,
   isResolved?: boolean,
   discussions: Discussion[]
 }

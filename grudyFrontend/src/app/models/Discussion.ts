@@ -3,6 +3,6 @@ export interface Discussion {
     subject: string,
     content: string,
     postedWhen?: any,
-    startedBy: string,
+    startedBy: any,
     isResolved?: boolean
 }

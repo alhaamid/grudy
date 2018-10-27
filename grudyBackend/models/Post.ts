@@ -20,7 +20,8 @@ export const PostSchema = new Schema({
         required: 'Date and Time of post is required'
     },
     postedBy: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
     },
     isResolved: {
         type: Boolean,

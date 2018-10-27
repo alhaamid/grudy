@@ -118,17 +118,18 @@
           <mat-drawer mode="side" opened>
             <div class="center"><h3>All Posts</h3></div>
             <div *ngFor="let post of this.selectedPosts">
-              <mat-card [ngClass]="{
-                'postCard': true, 'clickable': true,
-                'activePost': post?._id == this.selectedPost?._id
-              }" (click)="setPostAndDiscussions(post)">
+              <mat-card [ngClass]="{'postCard': true, 'clickable': true,
+                'activePost': post?._id == this.selectedPost?._id}" 
+                (click)="setPostAndDiscussions(post)">
                 <mat-card-header>
-                  <!-- <img mat-card-avatar [src]="post.postedBy.photoURL" style="background-size: cover;"> -->
+                  <img mat-card-avatar [src]="post.postedBy.photoURL" style="background-size: cover;">
                   <mat-card-title [ngClass]="{'activePost': post?._id == this.selectedPost?._id}"><h3>{{post.subject}}</h3></mat-card-title>
                   <mat-card-subtitle [ngClass]="{'activePost': post?._id == this.selectedPost?._id}" class="restrictHeight">{{post.content}}</mat-card-subtitle>  
                 </mat-card-header>
 
-                <mat-card-footer [ngClass]="{'activePost': post?._id == this.selectedPost?._id}">{{post.postedWhen | date: 'short'}}</mat-card-footer>
+                <mat-card-footer [ngClass]="{'activePost': post?._id == this.selectedPost?._id}">
+                  Posted on {{post.postedWhen | date: 'shortDate'}} at {{post.postedWhen | date: 'shortTime'}}
+                </mat-card-footer>
               </mat-card>
 
             </div>
@@ -140,13 +141,15 @@
 
               <mat-card *ngIf="this.selectedPost" [ngClass]="{'postCard': true}">
                 <mat-card-header>
-                  <!-- <img mat-card-avatar [src]="this.selectedPost.postedBy.photoURL" style="background-size: cover;"> -->
+                  <img mat-card-avatar [src]="this.selectedPost.postedBy.photoURL" style="background-size: cover;">
                   <mat-card-title><h3>{{this.selectedPost.subject}}</h3></mat-card-title>
-                  <mat-card-subtitle>Last updated: {{this.selectedPost.postedWhen | date: 'short'}}</mat-card-subtitle>  
+                  <mat-card-subtitle>
+                    Posted by {{this.selectedPost.postedBy.displayName}} on {{this.selectedPost.postedWhen | date: 'shortDate'}} at {{this.selectedPost.postedWhen | date: 'shortTime'}}
+                  </mat-card-subtitle>  
                 </mat-card-header>
 
                 <mat-card-content>{{this.selectedPost.content}}</mat-card-content>
-
+                
                 <mat-card-actions>
                   <button *ngIf="this.selectedPost && this.checkedPosts" 
                     mat-raised-button 
@@ -162,7 +165,7 @@
               <div class="center"><h3>Followup Discussions</h3></div>
               <mat-card [ngClass]="{'postCard': true}" *ngFor="let discussion of this.selectedPost.discussions">
                 <mat-card-header>
-                  <!-- <img mat-card-avatar [src]="discussion.startedBy.photoURL" style="background-size: cover;"> -->
+                  <img mat-card-avatar [src]="discussion.startedBy.photoURL" style="background-size: cover;">
                   <mat-card-title><h3>{{discussion.subject}}</h3></mat-card-title>
                   <mat-card-subtitle>Last updated: {{discussion.postedWhen | date: 'short'}}</mat-card-subtitle>  
                 </mat-card-header>

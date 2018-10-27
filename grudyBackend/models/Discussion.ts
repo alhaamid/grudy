@@ -16,7 +16,8 @@ export const DiscussionSchema = new Schema({
         required: 'Date and Time of post is required'
     },
     startedBy: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
     },
     isResolved: {
         type: Boolean,

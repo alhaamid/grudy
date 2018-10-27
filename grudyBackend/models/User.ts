@@ -21,7 +21,6 @@ export const UserSchema = new Schema({
         type: String,
         required: false,
     },
-    // courses: [{type: String}],
     courses: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Course'

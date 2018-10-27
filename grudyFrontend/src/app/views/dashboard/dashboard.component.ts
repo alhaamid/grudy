@@ -78,17 +78,7 @@ export class DashboardComponent implements OnInit {
         this.gs.sortOn(this.selectedPosts, "postedWhen", true);
 
         // update selected post in case a discussion was added
-        if (this.selectedPostId) {
-          // reset your selected post
-          let result = this.selectedPosts.filter(post => post._id == this.selectedPostId);
-          if (result.length > 0) {
-            this.selectedPost = result[0];
-            this.gs.sortOn(this.selectedPost.discussions, "postedWhen", true);
-          } else {
-            this.selectedPost = null;
-          }
-        }
-
+        this.resetSelectedPost();
         res(true);
 
         this.checkedPosts = true;
@@ -100,12 +90,25 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  resetSelectedPost() {
+    if (this.selectedPostId) {
+      // reset your selected post
+      let result = this.selectedPosts.filter(post => post._id == this.selectedPostId);
+      if (result.length > 0) {
+        this.selectedPost = result[0];
+        this.gs.sortOn(this.selectedPost.discussions, "postedWhen", true);
+      } else {
+        this.selectedPost = null;
+      }
+    }
+  }
+
   createAPost() {
     let tempPost: Post = {
       topicId: this.selectedTopicId,
       subject: this.newPost.subject,
       content: this.newPost.content,
-      postedBy: this.authService.userDetails.email,
+      postedBy: this.authService.userDetails._id,
       discussions: []
     }
     this.grudy.createAPost(tempPost)
@@ -122,7 +125,7 @@ export class DashboardComponent implements OnInit {
     let tempDiscussion: Discussion = {
       subject: "discussion subject",
       content: "discussion content",
-      startedBy: this.authService.userDetails.email,
+      startedBy: this.authService.userDetails._id,
     }
     this.grudy.createADiscussion(this.selectedPost._id, tempDiscussion)
     .then(newPost => {

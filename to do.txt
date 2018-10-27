@@ -1,4 +1,2 @@
-
-
-Done:
-    At login, connect to mongodb and add/update the user
+Separate drawer for All posts and Post headings
+Set default photourl in the database, not the frontend

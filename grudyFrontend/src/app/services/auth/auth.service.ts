@@ -29,10 +29,10 @@ export class AuthService {
           if (user.emailVerified) {
             this.userDetailsObservable = this.afs.doc<User>(`${this.gs.USERS_COLLECTION}/${user.email}`).valueChanges();
             this.userDetailsObservable.subscribe(res => {
-              this.userDetails = res;
 
               this.grudy.getAUser(user.email)
-              .then(__ => {
+              .then(user => {
+                this.userDetails = user;
                 this.userInBackendDatabase = true;
                 resolve();
               })
@@ -114,7 +114,11 @@ export class AuthService {
 
           // make sure that the user logs in only if the user exists in our backend
           this.grudy.getAUser(email)
-          .then(user => { resolve(user); this.userInBackendDatabase = true;})
+          .then(user => { 
+            this.userInBackendDatabase = true;
+            this.userDetails = user;
+            resolve(user);
+          })
           .catch(err => {
             resolve({code: "user-not-in-our-backend", message: "Please signup again and then login"});
           });

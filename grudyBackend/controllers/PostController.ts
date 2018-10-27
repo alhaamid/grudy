@@ -15,6 +15,16 @@ export class PostController {
                     console.log("error while creating a new post", err);
                     reject({code: 500, result: err});
                 } else {
+
+                    post.populate('postedBy', (err, populatedPost: mongoose.Document) => {
+                        if (populatedPost) {
+                            resolve({code: 200, result: populatedPost});
+                        } else {
+                            console.log("Error while populating post");
+                            reject({code: 500, result: err});
+                        }
+                    })
+
                     resolve({code: 201, result: post});
                 }
             });
@@ -24,19 +34,22 @@ export class PostController {
     public getAllPostsByTopic(topicId: string) {
         return new promise<Result>((resolve, reject) => {
             let condition = {topicId: { $eq: topicId} };
-            this.Post.find(condition, (err, posts: mongoose.Document[]) => {
-                if (err) {
-                    console.log(err);
-                    reject({code: 404, result: err});
-                } else {
-                    if (posts) {
-                        resolve({code: 200, result: posts});
+            this.Post.find(condition)
+                .populate('postedBy')
+                .populate('discussions.startedBy')
+                .exec((err, posts: mongoose.Document[]) => {
+                    if (err) {
+                        console.log(err);
+                        reject({code: 404, result: err});
                     } else {
-                        console.log(`no posts under ${topicId}`);
-                        reject({code: 404, result: `no posts under ${topicId}`});
+                        if (posts) {
+                            resolve({code: 200, result: posts});
+                        } else {
+                            console.log(`no posts under ${topicId}`);
+                            reject({code: 404, result: `no posts under ${topicId}`});
+                        }
                     }
-                }
-            })
+                });
         });
     }
 
