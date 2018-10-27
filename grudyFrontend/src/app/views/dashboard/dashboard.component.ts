@@ -28,23 +28,31 @@ export class DashboardComponent implements OnInit {
   selectedPost: Post = null;
   selectedPostId: string = null;
 
+  newPostVisibilityState: boolean = false;
   newPostForm: FormGroup;
-  newPostState: boolean = false;
   newPost: PostForm = null;
+
+  newDiscussionsVisibilityState: { [id: string]: boolean } = {};
+  newDiscussionsFormValids: { [id: string]: FormGroup } = {};
+  newDiscussions: { [id: string]: DiscussionForm } = {};
 
   constructor(private grudy: GrudyService, private authService: AuthService, private fb: FormBuilder, private rs: RoutingService, private gs: GlobalsService) {
     this.newPost = this.getEmptyPost();
+
     this.grudy.getUsersCourses(this.authService.userDetails.email)
     .then(courses => {
       this.allEnrolledCourses = courses;
       this.checkedCourses = true;
-
-      this.newPostForm = fb.group({
-        'subjectValidation': [null, Validators.required],
-        'contentValidation': [null, Validators.required]
-      })
+      this.newPostForm = this.getAPostFormGroup();
     })
     .catch(err => console.log(err));
+  }
+
+  getAPostFormGroup() {
+    return this.fb.group({
+      'subjectValidation': [null, Validators.required],
+      'contentValidation': [null, Validators.required]
+    })
   }
 
   getEmptyPost(): PostForm {
@@ -54,8 +62,15 @@ export class DashboardComponent implements OnInit {
     };
   }
 
+  getEmptyDiscussion(): DiscussionForm {
+    return {
+      subject: "hello",
+      content: "world"
+    };
+  }
+
   setNewPostState(newState: boolean) {
-    this.newPostState = newState;
+    this.newPostVisibilityState = newState;
   }
 
   courseChange() {
@@ -79,9 +94,23 @@ export class DashboardComponent implements OnInit {
 
         // update selected post in case a discussion was added
         this.resetSelectedPost();
-        res(true);
-
         this.checkedPosts = true;
+
+        posts.forEach(post => {
+          if (!(this.newDiscussionsFormValids.hasOwnProperty(post._id))) {
+            this.newDiscussionsFormValids[post._id] = this.getAPostFormGroup();
+          }
+
+          if (!(this.newDiscussionsVisibilityState.hasOwnProperty(post._id))) {
+            this.newDiscussionsVisibilityState[post._id] = false;
+          }
+
+          if (!(this.newDiscussions.hasOwnProperty(post._id))) {
+            this.newDiscussions[post._id] = this.getEmptyDiscussion();
+          }
+        });
+
+        res(true);
       })
       .catch(err => {
         console.log(err);
@@ -121,16 +150,21 @@ export class DashboardComponent implements OnInit {
 
   createADiscussion() {
     let tempDiscussion: Discussion = {
-      subject: "discussion subject",
-      content: "discussion content",
+      subject: this.newDiscussions[this.selectedPost._id].subject,
+      content: this.newDiscussions[this.selectedPost._id].content,
       startedBy: this.authService.userDetails._id,
     }
-    this.grudy.createADiscussion(this.selectedPost._id, tempDiscussion)
+    this.grudy.addADiscussion(this.selectedPost._id, tempDiscussion)
     .then(newPost => {
       // need to refresh the posts
       this.refreshPosts();
+      this.newDiscussionsVisibilityState[this.selectedPost._id] = false;
     })
     .catch(err => console.log(err));
+  }
+
+  showSelectedPostsDiscussion(bool: boolean) {
+    this.newDiscussionsVisibilityState[this.selectedPost._id] = bool;
   }
 
   setPostAndDiscussions(post: Post) {
@@ -164,6 +198,11 @@ export class DashboardComponent implements OnInit {
 }
 
 interface PostForm {
+  subject: string,
+  content: string
+}
+
+interface DiscussionForm {
   subject: string,
   content: string
 }

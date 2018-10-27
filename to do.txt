@@ -1,3 +1,2 @@
 Add functionality for adding a discussion
-Set default photourl in the database, not the frontend
 Correct getEmptyPost in dashboard.ts

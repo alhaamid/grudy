@@ -107,7 +107,7 @@ export class GrudyService {
     });
   }
 
-  createADiscussion(postId: string, discussion: Discussion) {
+  addADiscussion(postId: string, discussion: Discussion) {
     return new Promise<Post> ((res, rej) => {
       this.http.post<Post>(this.backendUrl + `/post/${postId}/discussion`, discussion, {headers: new HttpHeaders({'Content-Type':  'application/json'})})
       .subscribe(discussion => {

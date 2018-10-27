@@ -78,20 +78,3 @@ export interface Result {
     code: number;
     result: any;
 }
-
-// public addNewUser(userJSON) {
-//     let newUser = new this.User(userJSON);
-//     return new promise <Result>((resolve, reject) => {
-//         newUser.save((err, user) => {
-//             let toShow = null;
-//             if (err) {
-//                 toShow = "error while creating a new user";
-//                 reject({code: 500, result: err});
-//             } else {
-//                 toShow = `${user["email"]} created successfully`;
-//                 resolve({code: 201, result: user});
-//             }
-//             console.log(toShow);
-//         });
-//     });
-// }

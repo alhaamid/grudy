@@ -62,6 +62,10 @@ textarea {
     border-bottom: 2px solid var(--primary-color);
 }
 
+.avatar {
+    background-size: cover;
+}
+
 .mat-drawer {
     width: 30%;
     max-height: inherit;
