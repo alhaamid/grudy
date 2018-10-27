@@ -24,8 +24,8 @@ export class SignUpComponent implements OnInit {
 
   rForm: FormGroup;
 
-  verificationEmailSent: boolean = false;
-  alreadyInUse: boolean = false;
+  resolveMessage: string = "";
+  rejectMessage: string = "";
   
   constructor(private fb: FormBuilder, private authService: AuthService, private gs: GlobalsService, private rs: RoutingService) { 
 
@@ -39,20 +39,20 @@ export class SignUpComponent implements OnInit {
       'nameValidation': ['', Validators.compose([
         Validators.required, Validators.minLength(this.minPasswordLength)
       ])]
-    })
+    });
+
   }
 
   signUp() {
     this.authService.signUp(this.name, this.email, this.password)
     .then(val => {
-      // this.gs.log("val", val);
-      this.verificationEmailSent = val["code"] === "verification-email-sent";
-      this.alreadyInUse = !this.verificationEmailSent;
+      this.resolveMessage = val["message"];
+      this.rejectMessage = "";
     })
     .catch(err => {
-      // this.gs.log("err", err);
-      this.alreadyInUse = err["code"] === "auth/email-already-in-use";
-      this.verificationEmailSent = !this.alreadyInUse;
+      console.log("err", err);
+      this.rejectMessage = err["message"];
+      this.resolveMessage = "";
     });
   }
 

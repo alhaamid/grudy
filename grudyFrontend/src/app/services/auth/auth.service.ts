@@ -78,26 +78,26 @@ export class AuthService {
           
           // create a user in our own database
           this.grudy.createAUser(email, password, name, this.gs.DEFAULT_PICTURE)
-          .then(user => { this.userInBackendDatabase = true; this.gs.log("new user at our backend created at signup"); })
-          .catch(err => { this.gs.log("some error in creating user on the backend", err); })
-
-          resolve({code: "verification-email-sent", message: "Please verify your email and then login"});
+          .then(user => {
+            this.userInBackendDatabase = true; 
+            resolve({code: "verification-email-sent", message: "Please verify your email and then login"});
+          })
+          .catch(err => {
+            console.log("some error in creating user on the backend", err);
+            reject(err);
+          })
         })
         .catch(err => {
+          console.log("some error in sending email verification", err);
           reject(err);
         })
       })
       .catch(err => {
         // user is already created on Firestore but has not been verified yet
         if (!this.afa.auth && this.afa.auth.currentUser.emailVerified) {
-
-          // if for some reason, the user wasn't created at signup, create one now
-          this.grudy.createAUser(email, password, name, this.gs.DEFAULT_PICTURE)
-          .then(user => { this.userInBackendDatabase = true; this.gs.log("new user at our backend created at signup"); })
-          .catch(err => { this.gs.log("some error in creating user on the backend", err); })
-
           resolve({code: "verification-email-sent", message: "Please verify your email and then login"});
         } else {
+          console.log("some error in creating firestore user with email and password", err);
           reject(err);
         }
       })

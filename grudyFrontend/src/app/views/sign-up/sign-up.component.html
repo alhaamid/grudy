@@ -34,12 +34,12 @@
             </div>
           </div>
 
-          <div class="notification" *ngIf="this.verificationEmailSent">
-            Please verify your email and then login
+          <div class="notification" *ngIf="this.resolveMessage.length>0">
+            {{this.resolveMessage}}
           </div>
 
-          <div class="validationError" *ngIf="this.alreadyInUse">
-            The email address is already registered with us
+          <div class="validationError" *ngIf="this.rejectMessage.length>0">
+            {{this.rejectMessage}}
           </div>
 
           <div class="table">

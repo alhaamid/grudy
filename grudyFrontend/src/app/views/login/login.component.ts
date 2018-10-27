@@ -26,8 +26,8 @@ export class LoginComponent implements OnInit {
 
   rForm: FormGroup;
 
-  isValidationError: boolean = false;
-  validationErrorMsg: string = "";
+  isLoginError: boolean = false;
+  logInErrorMsg: string = "";
   
   constructor(private fb: FormBuilder, private authService: AuthService, private gs: GlobalsService, private router: Router, private rs: RoutingService) { 
 
@@ -44,12 +44,12 @@ export class LoginComponent implements OnInit {
   logIn() {
     this.authService.logIn(this.email, this.password)
     .then(user => {
-      this.isValidationError = false;
+      this.isLoginError = false;
       this.router.navigate(this.rs.LANDING_PAGE.NAV);
     })
     .catch(err => {
-      this.isValidationError = true;
-      this.validationErrorMsg = err["message"];
+      this.isLoginError = true;
+      this.logInErrorMsg = err["message"];
     });
   }
 
