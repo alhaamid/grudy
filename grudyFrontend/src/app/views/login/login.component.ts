@@ -25,6 +25,9 @@ export class LoginComponent implements OnInit {
   noSuchUser: boolean = false;
 
   rForm: FormGroup;
+
+  isValidationError: boolean = false;
+  validationErrorMsg: string = "";
   
   constructor(private fb: FormBuilder, private authService: AuthService, private gs: GlobalsService, private router: Router, private rs: RoutingService) { 
 
@@ -40,17 +43,13 @@ export class LoginComponent implements OnInit {
 
   logIn() {
     this.authService.logIn(this.email, this.password)
-    .then(val => {
-      if (val.hasOwnProperty("code")) {
-        this.verificationEmailSent = val["code"] === "verification-email-sent";
-        this.noSuchUser = !this.verificationEmailSent;
-      } else {
-        this.router.navigate(this.rs.LANDING_PAGE.NAV);
-      }
+    .then(user => {
+      this.isValidationError = false;
+      this.router.navigate(this.rs.LANDING_PAGE.NAV);
     })
     .catch(err => {
-      this.noSuchUser = err["code"] === "auth/user-not-found";
-      this.verificationEmailSent = !this.noSuchUser;
+      this.isValidationError = true;
+      this.validationErrorMsg = err["message"];
     });
   }
 

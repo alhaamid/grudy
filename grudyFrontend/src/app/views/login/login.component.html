@@ -23,12 +23,8 @@
             </div>
           </div>
 
-          <div class="validationError" *ngIf="this.verificationEmailSent">
-            Please verify your email and then login
-          </div>
-
-          <div class="validationError" *ngIf="this.noSuchUser">
-            There is no user with this email and password.
+          <div class="validationError" *ngIf="this.isValidationError">
+            {{validationErrorMsg}}
           </div>
 
           <div class="table">

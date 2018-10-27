@@ -109,7 +109,7 @@ export class AuthService {
       this.afa.auth.signInWithEmailAndPassword(email, password)
       .then(val => {
         if (!val.user.emailVerified) {
-          resolve({code: "verification-email-sent", message: "Please verify your email and then login"});
+          reject({code: "verification-email-sent", message: "Please verify your email and then login"});
         } else {
 
           // make sure that the user logs in only if the user exists in our backend
@@ -120,7 +120,7 @@ export class AuthService {
             resolve(user);
           })
           .catch(err => {
-            resolve({code: "user-not-in-our-backend", message: "Please signup again and then login"});
+            reject({code: "user-not-in-our-backend", message: "Please signup again and then login"});
           });
         }
       })
