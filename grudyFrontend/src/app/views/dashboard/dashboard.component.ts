@@ -49,8 +49,8 @@ export class DashboardComponent implements OnInit {
 
   getEmptyPost(): PostForm {
     return {
-      subject: "",
-      content: ""
+      subject: "hello",
+      content: "world"
     };
   }
 
@@ -116,7 +116,6 @@ export class DashboardComponent implements OnInit {
       this.refreshPosts();
       this.setNewPostState(false);
       this.newPost = this.getEmptyPost();
-      this.newPostForm.reset();
     })
     .catch(err => console.log(err));
   }

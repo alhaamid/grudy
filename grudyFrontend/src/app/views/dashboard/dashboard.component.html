@@ -114,9 +114,18 @@
 
       <div *ngIf="this.selectedPosts.length>0 && this.checkedPosts" class="bigMenu">
         <mat-divider></mat-divider>
+
+        <mat-drawer-container style="height: 2em;">
+          <mat-drawer mode="side" opened>
+            <div class="center" style="border-bottom: 0;"><h3>All Posts</h3></div>
+          </mat-drawer>
+          <mat-drawer-content>
+            <div class="center" style="border-bottom: 0;"><h3>Post</h3></div>
+          </mat-drawer-content>
+        </mat-drawer-container>
+
         <mat-drawer-container>
           <mat-drawer mode="side" opened>
-            <div class="center"><h3>All Posts</h3></div>
             <div *ngFor="let post of this.selectedPosts">
               <mat-card [ngClass]="{'postCard': true, 'clickable': true,
                 'activePost': post?._id == this.selectedPost?._id}" 
@@ -135,7 +144,6 @@
             </div>
           </mat-drawer>
           <mat-drawer-content>
-            <div class="center"><h3>Post</h3></div>
 
             <div *ngIf="this.selectedPost">
 
