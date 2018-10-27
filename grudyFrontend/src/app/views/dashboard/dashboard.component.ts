@@ -109,7 +109,6 @@ export class DashboardComponent implements OnInit {
       subject: this.newPost.subject,
       content: this.newPost.content,
       postedBy: this.authService.userDetails._id,
-      discussions: []
     }
     this.grudy.createAPost(tempPost)
     .then(newPost => {

@@ -48,15 +48,8 @@ export class GrudyService {
     });
   }
 
-  createAUser(email: string, password: string, displayName: string, photoURL: string) {
+  createAUser(user: User) {
     return new Promise<User> ((res, rej) => {
-      const user: User = {
-        displayName: displayName,
-        email: email,
-        password: password,
-        photoURL: photoURL,
-        courses: []
-      }
       this.http.post<User>(this.backendUrl + "/user", user, {headers: new HttpHeaders({'Content-Type':  'application/json'})})
       .subscribe(user => {
         this.gs.log("created a user in createAUser", user);

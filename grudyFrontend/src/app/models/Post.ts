@@ -8,5 +8,5 @@ export interface Post {
   postedWhen?: any,
   postedBy: any,
   isResolved?: boolean,
-  discussions: Discussion[]
+  discussions?: Discussion[]
 }

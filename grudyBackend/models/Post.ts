@@ -28,5 +28,9 @@ export const PostSchema = new Schema({
         default: false,
         required: 'isResolved is required'
     },
-    discussions: [DiscussionSchema]
+    discussions: {
+        type: [DiscussionSchema],
+        default: []
+    }
+    // discussions: [DiscussionSchema]
 });

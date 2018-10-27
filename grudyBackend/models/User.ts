@@ -20,9 +20,18 @@ export const UserSchema = new Schema({
     photoURL: {
         type: String,
         required: false,
+        default: "https://pbs.twimg.com/profile_images/582436192307703809/DqWJEB13_400x400.png"
     },
-    courses: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Course'
-    }]
+    courses: {
+        type: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Course',
+        }],
+        default: []
+    }
+    // courses: [{
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: 'Course',
+    //     default: []
+    // }]
 });

@@ -61,8 +61,6 @@ export class AuthService {
       displayName: name,
       email: email,
       password: password,
-      photoURL: this.gs.DEFAULT_PICTURE,
-      courses: []
     }
     return userRef.set(data);
   }
@@ -77,7 +75,8 @@ export class AuthService {
           // a new user is created on Firestore and verification email is sent here
           
           // create a user in our own database
-          this.grudy.createAUser(email, password, name, this.gs.DEFAULT_PICTURE)
+          const newUser: User = {email: email, password: password, displayName: name}
+          this.grudy.createAUser(newUser)
           .then(user => {
             this.userInBackendDatabase = true; 
             resolve({code: "verification-email-sent", message: "Please verify your email and then login"});

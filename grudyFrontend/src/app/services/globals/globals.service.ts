@@ -10,8 +10,6 @@ export class GlobalsService {
 
   public USERS_COLLECTION: string = 'users';
 
-  public DEFAULT_PICTURE: string = "https://pbs.twimg.com/profile_images/582436192307703809/DqWJEB13_400x400.png";
-
   public ERR_USER_LOGGED_OUT: string = "User is logged out";
   public ERR_USER_NOT_VERIFIED: string = "User is not verified";
   public ERR_USER_NOT_BACKEND_DB: string = "User not in our backend database";

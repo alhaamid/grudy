@@ -6,5 +6,5 @@ export interface User {
     password: string;
     displayName: string;
     photoURL?: string;
-    courses: Course[]
+    courses?: Course[]
 }
