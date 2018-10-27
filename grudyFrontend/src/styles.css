@@ -16,11 +16,11 @@
 .pageContainer {
     min-width: var(--min-all-width);
     width: 80%;
-    margin: auto;
+    margin: 0 5%;
     height: fit-content;
 
     /* background: lightgreen; */
-    text-align: center;
+    /* text-align: center; */
     
     color: var(--primary-color);
 }

@@ -21,6 +21,7 @@ a {
 }
 
 #titleContainer {
+    /* background: lightblue; */
     width: 40%;
     height: inherit;
 
@@ -29,6 +30,7 @@ a {
 }
 
 #navbarContainer {
+    /* background: lightgreen; */
     width: 60%;
     height: inherit;
     
@@ -38,8 +40,8 @@ a {
 
 #titleContent {
     float: left;
-    margin-left: 20%;
-    margin-right: 20%;
+    margin-left: 12.5%;
+    /* margin-right: 20%; */
 }
 
 #titleContent h1 {
@@ -50,6 +52,7 @@ a {
 
 #navbarContent {
     float: right;
+    /* margin-right: 8.3% */
 }
 
 .linkBox {
