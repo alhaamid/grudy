@@ -1,2 +1,2 @@
-Add functionality for adding a discussion
-Correct getEmptyPost in dashboard.ts
+Add functionality for updating a discussion?
+Correct getEmptyPost, getEmptyDiscussion in dashboard.ts

@@ -98,13 +98,15 @@
               </textarea>
             </mat-form-field>
 
-            <button mat-raised-button 
-              color="primary"
-              [disabled]="!this.newPostForm.valid"
-              (click)="this.createAPost()" 
-              title="Post!">
-              <b>Post!</b>
-            </button>
+            <mat-card-actions>
+              <button mat-raised-button 
+                color="primary"
+                [disabled]="!this.newPostForm.valid"
+                (click)="this.createAPost()" 
+                title="Post!">
+                <b>Post!</b>
+              </button>
+            </mat-card-actions>
           </form>
         </mat-card>
       </div>
@@ -141,8 +143,8 @@
 
             </div>
           </mat-drawer>
+          
           <mat-drawer-content>
-
             <div *ngIf="this.selectedPost">
               <mat-card *ngIf="this.selectedPost" [ngClass]="{'postCard': true}">
                 <mat-card-header>
@@ -158,18 +160,26 @@
                 <mat-card-actions>
                   <button *ngIf="this.selectedPost && this.checkedPosts" 
                     mat-raised-button 
-                    color="accent"
+                    color="primary"
                     title="Create a discussion"
                     (click)="this.showSelectedPostsDiscussion(true)">
                     <b>Start a discussion</b>
-                  </button>  
+                  </button>
+
+                  <button *ngIf="this.selectedPost && this.checkedPosts && this.selectedPost.postedBy._id == this.authService.userDetails._id"
+                    mat-raised-button 
+                    color="warn"
+                    title="Delete post"
+                    (click)="this.deleteSelectedPost()">
+                    <b>Delete post</b>
+                  </button>
                 </mat-card-actions>
               </mat-card>
 
 
               <!-- Form for starting a new discussion -->
               <div *ngIf="this.newDiscussionsVisibilityState[this.selectedPost._id]">
-                <mat-card class="fullWidth">
+                <mat-card class="fullWidth" style="padding-bottom: 0">
                   <h3>New Discussion</h3>
         
                   <form [formGroup]="this.newDiscussionsFormValids[this.selectedPost._id]" class="fullWidth">
@@ -205,19 +215,24 @@
                         placeholder="Post content">
                       </textarea>
                     </mat-form-field>
-        
-                    <button mat-raised-button 
-                      color="primary"
-                      [disabled]="!this.newDiscussionsFormValids[this.selectedPost._id].valid"
-                      (click)="this.createADiscussion()" 
-                      title="Discuss!">
-                      <b>Discuss!</b>
-                    </button>
+
+                    <mat-card-actions>
+                      <button mat-raised-button 
+                        color="primary"
+                        [disabled]="!this.newDiscussionsFormValids[this.selectedPost._id].valid"
+                        (click)="this.createADiscussion()" 
+                        title="Discuss!">
+                        <b>Discuss!</b>
+                      </button>
+                      <button mat-raised-button 
+                        (click)="this.cancelADiscussion()" 
+                        title="Cancel">
+                        <b>Cancel</b>
+                      </button>
+                    </mat-card-actions>
                   </form>
                 </mat-card>
               </div>
-
-
 
               <div class="center"><h3>Followup Discussions</h3></div>
               <mat-card [ngClass]="{'postCard': true}" *ngFor="let discussion of this.selectedPost.discussions">
@@ -227,7 +242,18 @@
                   <mat-card-subtitle>Last updated: {{discussion.postedWhen | date: 'short'}}</mat-card-subtitle>  
                 </mat-card-header>
 
-                <mat-card-content>{{discussion.content}}</mat-card-content>                
+                <mat-card-content>{{discussion.content}}</mat-card-content>
+
+                <mat-card-actions *ngIf="this.authService.userDetails._id">
+                  <button *ngIf="this.selectedPost && this.checkedPosts && this.discussion.startedBy._id == this.authService.userDetails._id"
+                    mat-raised-button 
+                    color="warn"
+                    title="Delete"
+                    (click)="this.deleteADiscussion(discussion._id)">
+                    <b>Delete</b>
+                  </button>
+                </mat-card-actions>
+
               </mat-card>
             </div>
 

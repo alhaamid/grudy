@@ -92,6 +92,10 @@ routes.route('/post/:postId')
 })
 // DELETE a post
 .delete((req, res) => {
+    let postId = req.params["postId"];
+    postController.deletePost(postId)
+    .then(obj => {res.status(obj["code"]).send(obj["result"]);})
+    .catch(obj => {res.status(obj["code"]).send(obj["result"]);});
 })
 
 
@@ -111,18 +115,16 @@ routes.route('/post/topic/:topicId')
 routes.route('/post/:postId/discussion')
 .post((req, res) => {
     let postId = req.params["postId"];
-    postController.addNewDiscussion(postId, req.body)
+    postController.addADiscussion(postId, req.body)
     .then(obj => {res.status(obj["code"]).send(obj["result"]);})
     .catch(obj => {res.status(obj["code"]).send(obj["result"]);});
 })
 // GET all discussions in a post
 routes.route('/post/:postId/discussion')
-// Delete a discussion in a post
 .get((req, res) => {
 })
 // GET a discussion in a post
 routes.route('/post/:postId/discussion/:discussionId')
-// Delete a discussion in a post
 .get((req, res) => {
 })
 // UPDATE a discussion in a post
@@ -130,4 +132,9 @@ routes.route('/post/:postId/discussion/:discussionId')
 })
 // DELETE a discussion in a post
 .delete((req, res) => {
+    let postId = req.params["postId"];
+    let discussionId = req.params["discussionId"];
+    postController.deleteADiscussion(postId, discussionId)
+    .then(obj => {res.status(obj["code"]).send(obj["result"]);})
+    .catch(obj => {res.status(obj["code"]).send(obj["result"]);});
 })

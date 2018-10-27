@@ -48,7 +48,14 @@ export class DashboardComponent implements OnInit {
     .catch(err => console.log(err));
   }
 
-  getAPostFormGroup() {
+  getAPostFormGroup(): FormGroup {
+    return this.fb.group({
+      'subjectValidation': [null, Validators.required],
+      'contentValidation': [null, Validators.required]
+    })
+  }
+
+  getADiscussionFormGroup(): FormGroup {
     return this.fb.group({
       'subjectValidation': [null, Validators.required],
       'contentValidation': [null, Validators.required]
@@ -98,7 +105,7 @@ export class DashboardComponent implements OnInit {
 
         posts.forEach(post => {
           if (!(this.newDiscussionsFormValids.hasOwnProperty(post._id))) {
-            this.newDiscussionsFormValids[post._id] = this.getAPostFormGroup();
+            this.newDiscussionsFormValids[post._id] = this.getADiscussionFormGroup();
           }
 
           if (!(this.newDiscussionsVisibilityState.hasOwnProperty(post._id))) {
@@ -148,6 +155,14 @@ export class DashboardComponent implements OnInit {
     .catch(err => console.log(err));
   }
 
+  deleteSelectedPost() {
+    this.grudy.deleteAPost(this.selectedPost._id)
+    .then(oldPost => {
+      this.refreshPosts();
+    })
+    .catch(err => console.log(err));
+  }
+
   createADiscussion() {
     let tempDiscussion: Discussion = {
       subject: this.newDiscussions[this.selectedPost._id].subject,
@@ -158,9 +173,25 @@ export class DashboardComponent implements OnInit {
     .then(newPost => {
       // need to refresh the posts
       this.refreshPosts();
+      this.newDiscussions[this.selectedPost._id] = this.getEmptyDiscussion();
       this.newDiscussionsVisibilityState[this.selectedPost._id] = false;
     })
     .catch(err => console.log(err));
+  }
+
+  deleteADiscussion(discussionId: string) {
+    this.grudy.deleteADiscussion(this.selectedPost._id, discussionId)
+    .then(newPost => {
+      // need to refresh the posts
+      this.refreshPosts();
+      this.newDiscussionsVisibilityState[this.selectedPost._id] = false;
+    })
+    .catch(err => console.log(err));
+  }
+
+  cancelADiscussion() {
+    this.newDiscussions[this.selectedPost._id] = this.getEmptyDiscussion();
+    this.newDiscussionsVisibilityState[this.selectedPost._id] = false;
   }
 
   showSelectedPostsDiscussion(bool: boolean) {
@@ -189,10 +220,6 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
-  }
-
-  print(any) {
-    console.log(any);
   }
 
 }

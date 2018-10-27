@@ -107,6 +107,26 @@ export class GrudyService {
     });
   }
 
+  deleteAPost(postId: string) {
+    return new Promise<Post> ((res, rej) => {
+      this.http.delete<Post>(`${this.backendUrl}/post/${postId}`)
+      .subscribe(
+        post => {res(post);}, 
+        err => {rej(err);}
+      );
+    });
+  }
+
+  deleteADiscussion(postId: string, discussionId: string) {
+    return new Promise<Post> ((res, rej) => {
+      this.http.delete<Post>(`${this.backendUrl}/post/${postId}/discussion/${discussionId}`)
+      .subscribe(
+        post => {res(post);}, 
+        err => {rej(err);}
+      );
+    });
+  }
+
   addADiscussion(postId: string, discussion: Discussion) {
     return new Promise<Post> ((res, rej) => {
       this.http.post<Post>(this.backendUrl + `/post/${postId}/discussion`, discussion, {headers: new HttpHeaders({'Content-Type':  'application/json'})})
