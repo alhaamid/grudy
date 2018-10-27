@@ -19,8 +19,9 @@
         </mat-card>
       </div>
 
-      <div class="subMenu" *ngIf="this.allEnrolledCourses.length>0 && this.checkedCourses">
-        <mat-card>
+      <div *ngIf="this.allEnrolledCourses.length>0 && this.checkedCourses">
+        <mat-card class="fullWidth">
+          <h3>Choose course and topic</h3>
 
           <mat-form-field>
             <mat-select (selectionChange)="this.courseChange()" placeholder="Select a course" [(ngModel)]="this.selectedCourseId">
@@ -45,15 +46,8 @@
               mat-raised-button 
               color="primary"
               title="Create a post"
-              (click)="createAPost()">
+              (click)="setNewPostState(true)">
               <b>Create a post</b>
-            </button>
-            <button *ngIf="this.selectedPost && this.checkedPosts" 
-              mat-raised-button 
-              color="accent"
-              title="Create a discussion"
-              (click)="createADiscussion()">
-              <b>Create a discussion</b>
             </button>
           </mat-card-actions>
 
@@ -64,19 +58,79 @@
         No posts exist for this topic.
       </div>
 
-      <div class="bigMenu">
+      <div *ngIf="this.newPostState">
+        <mat-divider></mat-divider>
 
-        <mat-drawer-container *ngIf="this.selectedPosts.length>0 && this.checkedPosts">
+        <mat-card class="fullWidth">
+          <h3>New Post</h3>
+
+          <form [formGroup]="this.newPostForm" class="fullWidth">
+            <div class="validationError" *ngIf="!this.newPostForm.controls['subjectValidation'].valid && this.newPostForm.controls['subjectValidation'].touched">
+              <div *ngIf="this.newPostForm.controls['subjectValidation'].hasError('required')">
+                Post subject is required.
+              </div>
+            </div>
+            <div class="validationError" *ngIf="!this.newPostForm.controls['contentValidation'].valid && this.newPostForm.controls['contentValidation'].touched">
+              <div *ngIf="this.newPostForm.controls['contentValidation'].hasError('required')">
+                Post content is required.
+              </div>
+            </div>
+
+            <mat-form-field>
+              <input
+                matInput 
+                formControlName="subjectValidation" 
+                [(ngModel)]="this.newPost.subject" 
+                name="Post subject" 
+                placeholder="Post subject">
+            </mat-form-field>
+            <br>
+            <mat-form-field>
+              <textarea 
+                matInput 
+                formControlName="contentValidation" 
+                [(ngModel)]="this.newPost.content" 
+                name="Post content"
+                enabled="true"
+                matAutosizeMaxRows="20"
+                matTextareaAutosize="true"
+                placeholder="Post content">
+
+              </textarea>
+            </mat-form-field>
+
+            <button mat-raised-button 
+              color="primary"
+              [disabled]="!this.newPostForm.valid"
+              (click)="this.createAPost()" 
+              title="Post!">
+              <b>Post!</b>
+            </button>
+          </form>
+        </mat-card>
+
+
+      </div>
+
+      <div *ngIf="this.selectedPosts.length>0 && this.checkedPosts" class="bigMenu">
+        <mat-divider></mat-divider>
+        <mat-drawer-container>
           <mat-drawer mode="side" opened>
             <div class="center"><h3>All Posts</h3></div>
-            <div *ngFor="let post of this.selectedPosts" >
+            <div *ngFor="let post of this.selectedPosts">
               <mat-card [ngClass]="{
                 'postCard': true, 'clickable': true,
                 'activePost': post?._id == this.selectedPost?._id
               }" (click)="setPostAndDiscussions(post)">
-                <mat-card-title [ngClass]="{'activePost': post?._id == this.selectedPost?._id}">{{post.postedWhen | date: 'long'}}</mat-card-title>
-                <mat-card-subtitle [ngClass]="{'activePost': post?._id == this.selectedPost?._id}" class="restrictHeight">{{post.content}}</mat-card-subtitle>
+                <mat-card-header>
+                  <!-- <img mat-card-avatar [src]="post.postedBy.photoURL" style="background-size: cover;"> -->
+                  <mat-card-title [ngClass]="{'activePost': post?._id == this.selectedPost?._id}"><h3>{{post.subject}}</h3></mat-card-title>
+                  <mat-card-subtitle [ngClass]="{'activePost': post?._id == this.selectedPost?._id}" class="restrictHeight">{{post.content}}</mat-card-subtitle>  
+                </mat-card-header>
+
+                <mat-card-footer [ngClass]="{'activePost': post?._id == this.selectedPost?._id}">{{post.postedWhen | date: 'short'}}</mat-card-footer>
               </mat-card>
+
             </div>
           </mat-drawer>
           <mat-drawer-content>
@@ -85,14 +139,35 @@
             <div *ngIf="this.selectedPost">
 
               <mat-card *ngIf="this.selectedPost" [ngClass]="{'postCard': true}">
-                <mat-card-title>{{this.selectedPost.subject}}</mat-card-title>
-                <mat-card-subtitle>{{this.selectedPost.content}}</mat-card-subtitle>
+                <mat-card-header>
+                  <!-- <img mat-card-avatar [src]="this.selectedPost.postedBy.photoURL" style="background-size: cover;"> -->
+                  <mat-card-title><h3>{{this.selectedPost.subject}}</h3></mat-card-title>
+                  <mat-card-subtitle>Last updated: {{this.selectedPost.postedWhen | date: 'short'}}</mat-card-subtitle>  
+                </mat-card-header>
+
+                <mat-card-content>{{this.selectedPost.content}}</mat-card-content>
+
+                <mat-card-actions>
+                  <button *ngIf="this.selectedPost && this.checkedPosts" 
+                    mat-raised-button 
+                    color="accent"
+                    title="Create a discussion"
+                    (click)="createADiscussion()">
+                    <b>Start a discussion</b>
+                  </button>  
+                </mat-card-actions>
+                
               </mat-card>
 
               <div class="center"><h3>Followup Discussions</h3></div>
               <mat-card [ngClass]="{'postCard': true}" *ngFor="let discussion of this.selectedPost.discussions">
-                <mat-card-title>{{discussion.postedWhen | date: 'long'}}</mat-card-title>
-                <mat-card-subtitle>{{discussion.content}}</mat-card-subtitle>
+                <mat-card-header>
+                  <!-- <img mat-card-avatar [src]="discussion.startedBy.photoURL" style="background-size: cover;"> -->
+                  <mat-card-title><h3>{{discussion.subject}}</h3></mat-card-title>
+                  <mat-card-subtitle>Last updated: {{discussion.postedWhen | date: 'short'}}</mat-card-subtitle>  
+                </mat-card-header>
+
+                <mat-card-content>{{discussion.content}}</mat-card-content>                
               </mat-card>
 
             </div>
@@ -100,6 +175,7 @@
         </mat-drawer-container>
 
       </div>
+
     </div>
   </div>
 </div>

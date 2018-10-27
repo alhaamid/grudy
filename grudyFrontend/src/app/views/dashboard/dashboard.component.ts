@@ -28,13 +28,34 @@ export class DashboardComponent implements OnInit {
   selectedPost: Post = null;
   selectedPostId: string = null;
 
+  newPostForm: FormGroup;
+  newPostState: boolean = false;
+  newPost: PostForm = null;
+
   constructor(private grudy: GrudyService, private authService: AuthService, private fb: FormBuilder, private rs: RoutingService, private gs: GlobalsService) {
+    this.newPost = this.getEmptyPost();
     this.grudy.getUsersCourses(this.authService.userDetails.email)
     .then(courses => {
       this.allEnrolledCourses = courses;
       this.checkedCourses = true;
+
+      this.newPostForm = fb.group({
+        'subjectValidation': [null, Validators.required],
+        'contentValidation': [null, Validators.required]
+      })
     })
     .catch(err => console.log(err));
+  }
+
+  getEmptyPost(): PostForm {
+    return {
+      subject: "",
+      content: ""
+    };
+  }
+
+  setNewPostState(newState: boolean) {
+    this.newPostState = newState;
   }
 
   courseChange() {
@@ -82,18 +103,17 @@ export class DashboardComponent implements OnInit {
   createAPost() {
     let tempPost: Post = {
       topicId: this.selectedTopicId,
-      subject: "Post subject",
-      content: `
-        What is going on over here. I am waiting for your answer as this is getting absolutely ridiculous.
-        Do you really think I will put up with this after what you have done?
-        Maybe I will. I dont know. I will have to think about it.
-      `,
+      subject: this.newPost.subject,
+      content: this.newPost.content,
       postedBy: this.authService.userDetails.email,
       discussions: []
     }
     this.grudy.createAPost(tempPost)
     .then(newPost => {
-      this.refreshPosts()
+      this.refreshPosts();
+      this.setNewPostState(false);
+      this.newPost = this.getEmptyPost();
+      this.newPostForm.reset();
     })
     .catch(err => console.log(err));
   }
@@ -136,4 +156,13 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
   }
 
+  print(any) {
+    console.log(any);
+  }
+
+}
+
+interface PostForm {
+  subject: string,
+  content: string
 }

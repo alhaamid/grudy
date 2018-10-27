@@ -8,10 +8,35 @@
     width: 100%;
 }
 
+.table {
+    min-width: 100%;
+}
+
 .mat-card {
-    width: 600px;
     color: var(--primary-color);
+}
+
+.mat-card-subtitle {
+    color: var(--primary-color);
+}
+
+.mat-card-footer {
+    text-align: right;
+    font-style: italic;
+    padding-right: 1em;
+}
+
+.fullWidth {
+    width: 100%;
     /* background: lightblue; */
+}
+
+input {
+    min-width: 100%;
+}
+
+textarea {
+    min-width: 100%;
 }
 
 .subMenu {
@@ -19,7 +44,7 @@
 }
 
 .bigMenu {
-    margin: 2em 0;
+    /* margin: 2em 0; */
     height: fit-content;
 }
 
@@ -27,9 +52,6 @@
     min-width: 100%;
     min-height: var(--input-height);
     height: auto;
-    display: table-cell;
-    padding-right: 1em;
-    /* background: lightgray; */
 }
 
 .mat-drawer-container {
@@ -61,6 +83,10 @@
     /* background: lightgreen; */
 }
 
+.mat-divider {
+    margin: 2em 0;
+}
+
 .clickable {
     cursor: pointer;
 }
@@ -89,4 +115,8 @@
 .notification {
     color: blue;
     margin-bottom: 10px;
+}
+
+.noMargin {
+    margin: 0;
 }
