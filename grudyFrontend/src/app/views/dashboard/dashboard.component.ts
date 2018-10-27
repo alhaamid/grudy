@@ -163,6 +163,11 @@ export class DashboardComponent implements OnInit {
     .catch(err => console.log(err));
   }
 
+  cancelNewPost() {
+    this.newPost = this.getEmptyPost();
+    this.newPostVisibilityState = false;
+  }
+
   createADiscussion() {
     let tempDiscussion: Discussion = {
       subject: this.newDiscussions[this.selectedPost._id].subject,
@@ -205,20 +210,6 @@ export class DashboardComponent implements OnInit {
     /* update and sort relevant discussions when the a post selection changes */
   }
 
-  temp() {
-    // this.grudy.enrollUser(this.authService.userDetails.email, "CS 6476")
-    // .then(val => {console.log(val);})
-    // .catch(err => {console.log("got error in enrollUser", err);});
-
-    // this.grudy.getAUser('haamid@gatech.edu')
-    // .then(val => {console.log(val);})
-    // .catch(err => {console.log("got error in getAUser", err);});
-    // this.grudy.getAllOfferedCourses();
-    // this.grudy.getACourse("5bcfb5c0a267d44bc44f484e")
-    // .then(val => {console.log(val);})
-    // .catch(err => {console.log("got error in getACourse", err);});
-  }
-
   ngOnInit() {
   }
 
@@ -233,3 +224,18 @@ interface DiscussionForm {
   subject: string,
   content: string
 }
+
+
+// temp() {
+//   // this.grudy.enrollUser(this.authService.userDetails.email, "CS 6476")
+//   // .then(val => {console.log(val);})
+//   // .catch(err => {console.log("got error in enrollUser", err);});
+
+//   // this.grudy.getAUser('haamid@gatech.edu')
+//   // .then(val => {console.log(val);})
+//   // .catch(err => {console.log("got error in getAUser", err);});
+//   // this.grudy.getAllOfferedCourses();
+//   // this.grudy.getACourse("5bcfb5c0a267d44bc44f484e")
+//   // .then(val => {console.log(val);})
+//   // .catch(err => {console.log("got error in getACourse", err);});
+// }
