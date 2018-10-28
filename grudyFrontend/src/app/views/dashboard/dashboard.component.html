@@ -157,7 +157,7 @@
           
           <mat-drawer-content>
             <div *ngIf="this.selectedPost">
-              <mat-card *ngIf="this.selectedPost && this.authService.userDetails" [ngClass]="{'postCard': true}">
+              <mat-card *ngIf="this.authService.userDetails && !this.postEditState[this.selectedPost._id]" [ngClass]="{'postCard': true}">
                 <mat-card-header>
                   <img mat-card-avatar [src]="this.selectedPost.postedBy.photoURL" class="avatar">
                   <mat-card-title><h3>{{this.selectedPost.subject}}</h3></mat-card-title>
@@ -171,32 +171,101 @@
                 <mat-checkbox
                   [disabled] = "this.selectedPost.postedBy._id != this.authService.userDetails._id"
                   [(ngModel)]="this.selectedPost.isResolved"
-                  (change)="this.updatePost()">
+                  (change)="this.updateAPost(this.selectedPost._id, this.selectedPost)">
                   Resolved
                 </mat-checkbox>
                 
                 <mat-card-actions>
-                  <button *ngIf="this.selectedPost && this.checkedPosts" 
+                  <button
+                    [disabled]="this.selectedPost.postedBy._id != this.authService.userDetails._id"
                     mat-raised-button 
                     color="primary"
-                    title="Create a discussion"
-                    (click)="this.showSelectedPostsDiscussion(true)">
-                    <b>Start a discussion</b>
+                    title="Edit post"
+                    (click)="this.setPostEditState(this.selectedPost._id, true)">
+                    <b>Edit</b>
                   </button>
-
                   <button
                     [disabled]="this.selectedPost.postedBy._id != this.authService.userDetails._id"
                     mat-raised-button 
                     color="warn"
                     title="Delete post"
                     (click)="this.deleteSelectedPost()">
-                    <b>Delete post</b>
+                    <b>Delete</b>
+                  </button>
+                  <button *ngIf="this.selectedPost && this.checkedPosts" 
+                    mat-raised-button 
+                    color="accent"
+                    title="Create a discussion"
+                    (click)="this.showSelectedPostsDiscussion(true)">
+                    <b>Start a discussion</b>
                   </button>
                 </mat-card-actions>
               </mat-card>
 
+              <!-- EDIT A POST -->
+              <mat-card *ngIf="this.authService.userDetails && this.postEditState[this.selectedPost._id]" [ngClass]="{'postCard': true}" style="padding-bottom: 0">
+                <h3>Edit Post</h3>
 
-              <!-- Form for starting a new discussion -->
+                <form [formGroup]="this.postFormValids[this.selectedPost._id]" class="fullWidth">
+                  <div class="validationError" *ngIf="!this.postFormValids[this.selectedPost._id].controls['subjectValidation'].valid && this.postFormValids[this.selectedPost._id].controls['subjectValidation'].touched">
+                    <div *ngIf="this.postFormValids[this.selectedPost._id].controls['subjectValidation'].hasError('required')">
+                      Post subject is required.
+                    </div>
+                  </div>
+                  <div class="validationError" *ngIf="!this.postFormValids[this.selectedPost._id].controls['contentValidation'].valid && this.postFormValids[this.selectedPost._id].controls['contentValidation'].touched">
+                    <div *ngIf="this.postFormValids[this.selectedPost._id].controls['contentValidation'].hasError('required')">
+                      Post content is required.
+                    </div>
+                  </div>
+      
+                  <mat-form-field>
+                    <input
+                      matInput 
+                      formControlName="subjectValidation" 
+                      [(ngModel)]="this.postEditTemps[this.selectedPost._id].subject" 
+                      name="Post subject" 
+                      placeholder="Post subject">
+                  </mat-form-field>
+                  <br>
+                  <mat-form-field>
+                    <textarea 
+                      matInput 
+                      formControlName="contentValidation" 
+                      [(ngModel)]="this.postEditTemps[this.selectedPost._id].content" 
+                      name="Post content"
+                      enabled="true"
+                      matAutosizeMaxRows="20"
+                      matTextareaAutosize="true"
+                      placeholder="Post content">
+      
+                    </textarea>
+                  </mat-form-field>
+      
+                  <mat-checkbox
+                    [ngModelOptions]="{standalone: true}"
+                    [(ngModel)]="this.postEditTemps[this.selectedPost._id].isResolved">
+                    Resolved
+                  </mat-checkbox>
+      
+                  <mat-card-actions>
+                    <button mat-raised-button 
+                      color="primary"
+                      [disabled]="!this.postFormValids[this.selectedPost._id].valid"
+                      (click)="this.setPostEditState(this.selectedPost._id, false); this.updateAPost(this.selectedPost._id, this.postEditTemps[this.selectedPost._id]);" 
+                      title="Save">
+                      <b>Save</b>
+                    </button>
+                    <button mat-raised-button 
+                      (click)="this.cancelPostEdit(this.selectedPost._id)" 
+                      title="Cancel">
+                      <b>Cancel</b>
+                    </button>
+                  </mat-card-actions>
+                </form>
+              </mat-card>
+
+
+              <!-- START A NEW DISCUSSION -->
               <div *ngIf="this.newDiscussionsVisibilityState[this.selectedPost._id]">
                 <mat-card class="fullWidth" style="padding-bottom: 0">
                   <h3>New Discussion</h3>

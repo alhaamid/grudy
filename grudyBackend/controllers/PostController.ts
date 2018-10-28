@@ -84,7 +84,6 @@ export class PostController {
                     reject({code: 500, result: `Could not update post: ${postId}`});
                 } else {
                     if (updatedPost) {
-                        console.log(updatedPost);
                         resolve({code: 200, result: updatedPost});
                     } else {
                         console.log(`no post with id: ${postId}`);

@@ -36,8 +36,9 @@ export class DashboardComponent implements OnInit {
   newDiscussionsFormValids: { [id: string]: FormGroup } = {};
   newDiscussions: { [id: string]: DiscussionForm } = {};
 
-  existingPostEditState: { [id: string]: boolean } = {};
-  existingPostFormValids: { [id: string]: FormGroup } = {};
+  postEditState: { [id: string]: boolean } = {};
+  postFormValids: { [id: string]: FormGroup } = {};
+  postEditTemps: { [id: string]: Post } = {};
 
   constructor(private grudy: GrudyService, private authService: AuthService, private fb: FormBuilder, private rs: RoutingService, private gs: GlobalsService) {
     this.newPost = this.getEmptyPost();
@@ -75,13 +76,15 @@ export class DashboardComponent implements OnInit {
             this.newDiscussions[post._id] = this.getEmptyDiscussion();
           }
 
-          if (!(this.existingPostEditState.hasOwnProperty(post._id))) {
-            this.existingPostEditState[post._id] = false;
+          if (!(this.postEditState.hasOwnProperty(post._id))) {
+            this.postEditState[post._id] = false;
           }
 
-          if (!(this.existingPostFormValids.hasOwnProperty(post._id))) {
-            this.existingPostFormValids[post._id] = this.getAPostFormGroup();
+          if (!(this.postFormValids.hasOwnProperty(post._id))) {
+            this.postFormValids[post._id] = this.getAPostFormGroup();
           }
+
+          this.postEditTemps[post._id] = Object.assign({}, post);
         });
 
         res(true);
@@ -91,6 +94,15 @@ export class DashboardComponent implements OnInit {
         res(false);
       });
     });
+  }
+
+  cancelPostEdit(postId: string) {
+    this.postEditState[postId] = false;
+    this.postEditTemps[postId] = Object.assign({}, this.selectedPost);
+  }
+
+  setPostEditState(postId: string, bool: boolean) {
+    this.postEditState[postId] = bool;
   }
 
   getAPostFormGroup(): FormGroup {
@@ -176,8 +188,8 @@ export class DashboardComponent implements OnInit {
     .catch(err => console.log(err));
   }
 
-  updatePost() {
-    this.grudy.updateAPost(this.selectedPost._id, this.selectedPost)
+  updateAPost(postId: string, post: Post) {
+    this.grudy.updateAPost(postId, post)
     .then(newPost => {
       this.refreshPosts();
     })
