@@ -65,14 +65,15 @@ export class DashboardComponent implements OnInit {
   getEmptyPost(): PostForm {
     return {
       subject: "hello",
-      content: "world"
+      content: "world",
+      isResolved: false
     };
   }
 
   getEmptyDiscussion(): DiscussionForm {
     return {
       subject: "hello",
-      content: "world"
+      content: "world",
     };
   }
 
@@ -144,6 +145,7 @@ export class DashboardComponent implements OnInit {
       topicId: this.selectedTopicId,
       subject: this.newPost.subject,
       content: this.newPost.content,
+      isResolved: this.newPost.isResolved,
       postedBy: this.authService.userDetails._id,
     }
     this.grudy.createAPost(tempPost)
@@ -163,10 +165,21 @@ export class DashboardComponent implements OnInit {
     .catch(err => console.log(err));
   }
 
+  updatePostIsResolved(bool: boolean) {
+    let update = {isResolved: bool};
+    this.grudy.updatePost(this.selectedPost._id, update)
+    .then(newPost => {
+      this.refreshPosts();
+    })
+    .catch(err => console.log(err));
+  }
+
   cancelNewPost() {
     this.newPost = this.getEmptyPost();
     this.newPostVisibilityState = false;
   }
+
+
 
   createADiscussion() {
     let tempDiscussion: Discussion = {
@@ -210,7 +223,12 @@ export class DashboardComponent implements OnInit {
     /* update and sort relevant discussions when the a post selection changes */
   }
 
+
   ngOnInit() {
+  }
+
+  print(any) {
+    console.log(any, this.selectedPost);
   }
 
 }
@@ -218,6 +236,7 @@ export class DashboardComponent implements OnInit {
 interface PostForm {
   subject: string,
   content: string
+  isResolved: boolean
 }
 
 interface DiscussionForm {

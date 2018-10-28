@@ -89,6 +89,10 @@ routes.route('/post/:postId')
 })
 // UPDATE a post
 .put((req, res) => {
+    let postId = req.params["postId"];
+    postController.updatePost(postId, req.body)
+    .then(obj => {res.status(obj["code"]).send(obj["result"]);})
+    .catch(obj => {res.status(obj["code"]).send(obj["result"]);});
 })
 // DELETE a post
 .delete((req, res) => {

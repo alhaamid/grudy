@@ -60,7 +60,7 @@
 
       <div *ngIf="this.newPostVisibilityState">
         <mat-divider></mat-divider>
-        <mat-card class="fullWidth">
+        <mat-card class="fullWidth" style="padding-bottom: 0">
           <h3>New Post</h3>
 
           <form [formGroup]="this.newPostForm" class="fullWidth">
@@ -97,6 +97,12 @@
 
               </textarea>
             </mat-form-field>
+
+            <mat-checkbox
+              [ngModelOptions]="{standalone: true}"
+              [(ngModel)]="this.newPost.isResolved">
+              Resolved
+            </mat-checkbox>
 
             <mat-card-actions>
               <button mat-raised-button 
@@ -151,7 +157,7 @@
           
           <mat-drawer-content>
             <div *ngIf="this.selectedPost">
-              <mat-card *ngIf="this.selectedPost" [ngClass]="{'postCard': true}">
+              <mat-card *ngIf="this.selectedPost && this.authService.userDetails" [ngClass]="{'postCard': true}">
                 <mat-card-header>
                   <img mat-card-avatar [src]="this.selectedPost.postedBy.photoURL" class="avatar">
                   <mat-card-title><h3>{{this.selectedPost.subject}}</h3></mat-card-title>
@@ -161,6 +167,13 @@
                 </mat-card-header>
 
                 <mat-card-content>{{this.selectedPost.content}}</mat-card-content>
+
+                <mat-checkbox
+                  [disabled] = "this.selectedPost.postedBy._id != this.authService.userDetails._id"
+                  [(ngModel)]="this.selectedPost.isResolved"
+                  (change)="this.updatePostIsResolved($event.checked)">
+                  Resolved
+                </mat-checkbox>
                 
                 <mat-card-actions>
                   <button *ngIf="this.selectedPost && this.checkedPosts" 
@@ -171,7 +184,8 @@
                     <b>Start a discussion</b>
                   </button>
 
-                  <button *ngIf="this.selectedPost && this.checkedPosts && this.selectedPost.postedBy._id == this.authService.userDetails._id"
+                  <button
+                    [disabled]="this.selectedPost.postedBy._id != this.authService.userDetails._id"
                     mat-raised-button 
                     color="warn"
                     title="Delete post"
@@ -249,9 +263,10 @@
 
                 <mat-card-content>{{discussion.content}}</mat-card-content>
 
-                <mat-card-actions *ngIf="this.authService.userDetails._id">
-                  <button *ngIf="this.selectedPost && this.checkedPosts && this.discussion.startedBy._id == this.authService.userDetails._id"
-                    mat-raised-button 
+                <mat-card-actions *ngIf="this.authService.userDetails">
+                  <button
+                    mat-raised-button
+                    [disabled]="discussion.startedBy._id != this.authService.userDetails._id"
                     color="warn"
                     title="Delete"
                     (click)="this.deleteADiscussion(discussion._id)">

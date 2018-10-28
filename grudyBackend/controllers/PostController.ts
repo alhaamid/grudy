@@ -72,6 +72,29 @@ export class PostController {
         });
     }
 
+    public updatePost(postId: string, clientUpdate: {}) {
+        return new promise<Result> ((resolve, reject) => {
+            let options = {new: true};
+            this.Post.findByIdAndUpdate(postId, clientUpdate, options)
+                .populate('postedBy')
+                .populate('discussions.startedBy')
+                .exec((err, updatedPost) => {
+                    if (err) {
+                        console.log(err);
+                        reject({code: 500, result: `Could not update post: ${postId}`});
+                    } else {
+                        if (updatedPost) {
+                            resolve({code: 200, result: updatedPost});
+                        } else {
+                            console.log(`no post with id: ${postId}`);
+                            reject({code: 404, result: `no post with id: ${postId}`});
+                        }
+                    }
+                });
+        });
+    }
+
+
     public addADiscussion(postId: string, discussionJSON) {
         return new promise <Result> ((resolve, reject) => {
             let update = {$addToSet: { discussions: { $each: [discussionJSON] } }};

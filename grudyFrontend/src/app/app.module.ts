@@ -16,6 +16,10 @@ import { DashboardComponent } from './views/dashboard/dashboard.component';
 import { MenuComponent } from './views/menu/menu.component';
 import { YourAccountComponent } from './views/your-account/your-account.component';
 import { SignUpComponent } from './views/sign-up/sign-up.component';
+import { ProfileComponent } from './views/your-account/profile/profile.component';
+import { EnrollComponent } from './views/enroll/enroll.component';
+import { DropComponent } from './views/drop/drop.component';
+import { EnrolledCoursesComponent } from './views/your-account/enrolled-courses/enrolled-courses.component';
 
 import { AuthService } from './services/auth/auth.service';
 import { GlobalsService } from './services/globals/globals.service';
@@ -36,10 +40,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { HttpClientModule } from '@angular/common/http';
 import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
-import { ProfileComponent } from './views/your-account/profile/profile.component';
-import { EnrollComponent } from './views/enroll/enroll.component';
-import { DropComponent } from './views/drop/drop.component';
-import { EnrolledCoursesComponent } from './views/your-account/enrolled-courses/enrolled-courses.component';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @NgModule({
   declarations: [
@@ -76,7 +77,8 @@ import { EnrolledCoursesComponent } from './views/your-account/enrolled-courses/
     MatProgressBarModule,
     MatListModule,
     MatSelectModule,
-    MatSidenavModule
+    MatSidenavModule,
+    MatSlideToggleModule
   ],
   providers: [
     GlobalsService, AuthService, RoutingService, AuthGuardService, GrudyService

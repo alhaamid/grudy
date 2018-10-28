@@ -12,6 +12,7 @@ import { Discussion } from "../../models/Discussion";
 export class GrudyService {
   private backendUrl: string = "http://localhost:4201";
   public listOfCourses: Course[] = null;
+  private headerObj = {headers: new HttpHeaders({'Content-Type':  'application/json'})};
 
   constructor(private http: HttpClient, private gs: GlobalsService) {
     this.getAllOfferedCourses();
@@ -50,7 +51,7 @@ export class GrudyService {
 
   createAUser(user: User) {
     return new Promise<User> ((res, rej) => {
-      this.http.post<User>(this.backendUrl + "/user", user, {headers: new HttpHeaders({'Content-Type':  'application/json'})})
+      this.http.post<User>(this.backendUrl + "/user", user, this.headerObj)
       .subscribe(user => {
         this.gs.log("created a user in createAUser", user);
         res(user);
@@ -63,7 +64,7 @@ export class GrudyService {
 
   enrollACourse(email, id) {
     return new Promise<User> ((res, rej) => {
-      this.http.post<User>(this.backendUrl + `/user/${email}/enroll/${id}`, {}, {headers: new HttpHeaders({'Content-Type':  'application/json'})})
+      this.http.post<User>(this.backendUrl + `/user/${email}/enroll/${id}`, {}, this.headerObj)
       .subscribe(user => {
         // console.log("enrollUser result", user);
         res(user);
@@ -76,7 +77,7 @@ export class GrudyService {
 
   dropACourse(email, id) {
     return new Promise<User> ((res, rej) => {
-      this.http.delete<User>(this.backendUrl + `/user/${email}/drop/${id}`, {headers: new HttpHeaders({'Content-Type':  'application/json'})})
+      this.http.delete<User>(this.backendUrl + `/user/${email}/drop/${id}`, this.headerObj)
       .subscribe(user => {
         res(user);
       }, err => {
@@ -96,7 +97,7 @@ export class GrudyService {
   /* Posts related */
   createAPost(post: Post) {
     return new Promise<Post> ((res, rej) => {
-      this.http.post<Post>(this.backendUrl + "/post", post, {headers: new HttpHeaders({'Content-Type':  'application/json'})})
+      this.http.post<Post>(this.backendUrl + "/post", post, this.headerObj)
       .subscribe(post => {
         // this.gs.log("created a post in createAPost", post);
         res(post);
@@ -117,6 +118,17 @@ export class GrudyService {
     });
   }
 
+  updatePost(postId: string, update: {}) {
+    return new Promise<Post>((res, rej) => {
+      this.http.put<Post>(`${this.backendUrl}/post/${postId}`, update, this.headerObj)
+      .subscribe(
+        post => {res(post);}, 
+        err => {rej(err);}
+      );
+    });
+  }
+
+
   deleteADiscussion(postId: string, discussionId: string) {
     return new Promise<Post> ((res, rej) => {
       this.http.delete<Post>(`${this.backendUrl}/post/${postId}/discussion/${discussionId}`)
@@ -129,7 +141,7 @@ export class GrudyService {
 
   addADiscussion(postId: string, discussion: Discussion) {
     return new Promise<Post> ((res, rej) => {
-      this.http.post<Post>(this.backendUrl + `/post/${postId}/discussion`, discussion, {headers: new HttpHeaders({'Content-Type':  'application/json'})})
+      this.http.post<Post>(this.backendUrl + `/post/${postId}/discussion`, discussion, this.headerObj)
       .subscribe(discussion => {
         res(discussion);
       }, err => {
