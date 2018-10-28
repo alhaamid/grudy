@@ -36,6 +36,9 @@ export class DashboardComponent implements OnInit {
   newDiscussionsFormValids: { [id: string]: FormGroup } = {};
   newDiscussions: { [id: string]: DiscussionForm } = {};
 
+  existingPostEditState: { [id: string]: boolean } = {};
+  existingPostFormValids: { [id: string]: FormGroup } = {};
+
   constructor(private grudy: GrudyService, private authService: AuthService, private fb: FormBuilder, private rs: RoutingService, private gs: GlobalsService) {
     this.newPost = this.getEmptyPost();
 
@@ -46,51 +49,6 @@ export class DashboardComponent implements OnInit {
       this.newPostForm = this.getAPostFormGroup();
     })
     .catch(err => console.log(err));
-  }
-
-  getAPostFormGroup(): FormGroup {
-    return this.fb.group({
-      'subjectValidation': [null, Validators.required],
-      'contentValidation': [null, Validators.required]
-    })
-  }
-
-  getADiscussionFormGroup(): FormGroup {
-    return this.fb.group({
-      'subjectValidation': [null, Validators.required],
-      'contentValidation': [null, Validators.required]
-    })
-  }
-
-  getEmptyPost(): PostForm {
-    return {
-      subject: "hello",
-      content: "world",
-      isResolved: false
-    };
-  }
-
-  getEmptyDiscussion(): DiscussionForm {
-    return {
-      subject: "hello",
-      content: "world",
-    };
-  }
-
-  setNewPostState(newState: boolean) {
-    this.newPostVisibilityState = newState;
-  }
-
-  courseChange() {
-    let result = this.allEnrolledCourses.filter(course => course._id === this.selectedCourseId);
-    if (result.length > 0) {
-      this.selectedTopics = result[0].topics;
-      this.checkedTopics = true;
-    } else {
-      this.selectedTopics = null;
-      this.checkedTopics = null;
-      console.log("selected course id is not in user's courses");
-    }
   }
 
   refreshPosts() {
@@ -116,6 +74,14 @@ export class DashboardComponent implements OnInit {
           if (!(this.newDiscussions.hasOwnProperty(post._id))) {
             this.newDiscussions[post._id] = this.getEmptyDiscussion();
           }
+
+          if (!(this.existingPostEditState.hasOwnProperty(post._id))) {
+            this.existingPostEditState[post._id] = false;
+          }
+
+          if (!(this.existingPostFormValids.hasOwnProperty(post._id))) {
+            this.existingPostFormValids[post._id] = this.getAPostFormGroup();
+          }
         });
 
         res(true);
@@ -125,6 +91,51 @@ export class DashboardComponent implements OnInit {
         res(false);
       });
     });
+  }
+
+  getAPostFormGroup(): FormGroup {
+    return this.fb.group({
+      'subjectValidation': [null, Validators.required],
+      'contentValidation': [null, Validators.required]
+    })
+  }
+
+  getADiscussionFormGroup(): FormGroup {
+    return this.fb.group({
+      'subjectValidation': [null, Validators.required],
+      'contentValidation': [null, Validators.required]
+    })
+  }
+
+  getEmptyPost(): PostForm {
+    return {
+      subject: "post subject",
+      content: "post content",
+      isResolved: false
+    };
+  }
+
+  getEmptyDiscussion(): DiscussionForm {
+    return {
+      subject: "discussion subject",
+      content: "discussion content",
+    };
+  }
+
+  setNewPostState(newState: boolean) {
+    this.newPostVisibilityState = newState;
+  }
+
+  courseChange() {
+    let result = this.allEnrolledCourses.filter(course => course._id === this.selectedCourseId);
+    if (result.length > 0) {
+      this.selectedTopics = result[0].topics;
+      this.checkedTopics = true;
+    } else {
+      this.selectedTopics = null;
+      this.checkedTopics = null;
+      console.log("selected course id is not in user's courses");
+    }
   }
 
   resetSelectedPost() {
