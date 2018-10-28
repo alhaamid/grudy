@@ -118,7 +118,7 @@ export class GrudyService {
     });
   }
 
-  updatePost(postId: string, update: {}) {
+  updateAPost(postId: string, update: {}) {
     return new Promise<Post>((res, rej) => {
       this.http.put<Post>(`${this.backendUrl}/post/${postId}`, update, this.headerObj)
       .subscribe(
@@ -128,6 +128,17 @@ export class GrudyService {
     });
   }
 
+
+  addADiscussion(postId: string, discussion: Discussion) {
+    return new Promise<Post> ((res, rej) => {
+      this.http.post<Post>(this.backendUrl + `/post/${postId}/discussion`, discussion, this.headerObj)
+      .subscribe(discussion => {
+        res(discussion);
+      }, err => {
+        rej(err);
+      });
+    });
+  }
 
   deleteADiscussion(postId: string, discussionId: string) {
     return new Promise<Post> ((res, rej) => {
@@ -139,14 +150,13 @@ export class GrudyService {
     });
   }
 
-  addADiscussion(postId: string, discussion: Discussion) {
-    return new Promise<Post> ((res, rej) => {
-      this.http.post<Post>(this.backendUrl + `/post/${postId}/discussion`, discussion, this.headerObj)
-      .subscribe(discussion => {
-        res(discussion);
-      }, err => {
-        rej(err);
-      });
+  updateADiscussion(postId: string, discussionId: string, discussion: Discussion) {
+    return new Promise<Post>((res, rej) => {
+      this.http.put<Post>(`${this.backendUrl}/post/${postId}/discussion/${discussionId}`, discussion, this.headerObj)
+      .subscribe(
+        post => {res(post);}, 
+        err => {rej(err);}
+      );
     });
   }
 

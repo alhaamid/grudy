@@ -171,7 +171,7 @@
                 <mat-checkbox
                   [disabled] = "this.selectedPost.postedBy._id != this.authService.userDetails._id"
                   [(ngModel)]="this.selectedPost.isResolved"
-                  (change)="this.updatePostIsResolved($event.checked)">
+                  (change)="this.updatePost()">
                   Resolved
                 </mat-checkbox>
                 
@@ -262,6 +262,13 @@
                 </mat-card-header>
 
                 <mat-card-content>{{discussion.content}}</mat-card-content>
+
+                <mat-checkbox
+                  [disabled] = "discussion.startedBy._id != this.authService.userDetails._id"
+                  [(ngModel)]="discussion.isResolved"
+                  (change)="this.updateDiscussion(discussion)">
+                  Resolved
+                </mat-checkbox>
 
                 <mat-card-actions *ngIf="this.authService.userDetails">
                   <button

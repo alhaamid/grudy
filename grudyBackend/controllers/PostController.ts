@@ -35,21 +35,21 @@ export class PostController {
         return new promise<Result>((resolve, reject) => {
             let condition = {topicId: { $eq: topicId} };
             this.Post.find(condition)
-                .populate('postedBy')
-                .populate('discussions.startedBy')
-                .exec((err, posts: mongoose.Document[]) => {
-                    if (err) {
-                        console.log(err);
-                        reject({code: 404, result: err});
+            .populate('postedBy')
+            .populate('discussions.startedBy')
+            .exec((err, posts: mongoose.Document[]) => {
+                if (err) {
+                    console.log(err);
+                    reject({code: 404, result: err});
+                } else {
+                    if (posts) {
+                        resolve({code: 200, result: posts});
                     } else {
-                        if (posts) {
-                            resolve({code: 200, result: posts});
-                        } else {
-                            console.log(`no posts under ${topicId}`);
-                            reject({code: 404, result: `no posts under ${topicId}`});
-                        }
+                        console.log(`no posts under ${topicId}`);
+                        reject({code: 404, result: `no posts under ${topicId}`});
                     }
-                });
+                }
+            });
         });
     }
 
@@ -76,21 +76,22 @@ export class PostController {
         return new promise<Result> ((resolve, reject) => {
             let options = {new: true};
             this.Post.findByIdAndUpdate(postId, clientUpdate, options)
-                .populate('postedBy')
-                .populate('discussions.startedBy')
-                .exec((err, updatedPost) => {
-                    if (err) {
-                        console.log(err);
-                        reject({code: 500, result: `Could not update post: ${postId}`});
+            .populate('postedBy')
+            .populate('discussions.startedBy')
+            .exec((err, updatedPost) => {
+                if (err) {
+                    console.log(err);
+                    reject({code: 500, result: `Could not update post: ${postId}`});
+                } else {
+                    if (updatedPost) {
+                        console.log(updatedPost);
+                        resolve({code: 200, result: updatedPost});
                     } else {
-                        if (updatedPost) {
-                            resolve({code: 200, result: updatedPost});
-                        } else {
-                            console.log(`no post with id: ${postId}`);
-                            reject({code: 404, result: `no post with id: ${postId}`});
-                        }
+                        console.log(`no post with id: ${postId}`);
+                        reject({code: 404, result: `no post with id: ${postId}`});
                     }
-                });
+                }
+            });
         });
     }
 
@@ -100,21 +101,21 @@ export class PostController {
             let update = {$addToSet: { discussions: { $each: [discussionJSON] } }};
             let options = {new: true};
             this.Post.findByIdAndUpdate(postId, update, options)
-                .populate('postedBy')
-                .populate('discussions.startedBy')
-                .exec((err, updatedPost) => {
-                    if (err) {
-                        console.log(err);
-                        reject({code: 500, result: `Invalid post given for adding a discussion. ${postId}`});
+            .populate('postedBy')
+            .populate('discussions.startedBy')
+            .exec((err, updatedPost) => {
+                if (err) {
+                    console.log(err);
+                    reject({code: 500, result: `Invalid post given for adding a discussion. ${postId}`});
+                } else {
+                    if (updatedPost) {
+                        resolve({code: 200, result: updatedPost});
                     } else {
-                        if (updatedPost) {
-                            resolve({code: 200, result: updatedPost});
-                        } else {
-                            console.log(`no post with id: ${postId}`);
-                            reject({code: 404, result: `no post with id: ${postId}`});
-                        }
+                        console.log(`no post with id: ${postId}`);
+                        reject({code: 404, result: `no post with id: ${postId}`});
                     }
-                });
+                }
+            });
         });
     }
 
@@ -123,21 +124,50 @@ export class PostController {
             let update = {$pull: { discussions: { _id: discussionId } }};
             let options = {new: true};
             this.Post.findByIdAndUpdate(postId, update, options)
-                .populate('postedBy')
-                .populate('discussions.startedBy')
-                .exec((err, updatedPost) => {
-                    if (err) {
-                        console.log(err);
-                        reject({code: 500, result: `Invalid post given for deleting a discussion. ${postId}`});
+            .populate('postedBy')
+            .populate('discussions.startedBy')
+            .exec((err, updatedPost) => {
+                if (err) {
+                    console.log(err);
+                    reject({code: 500, result: `Invalid post given for deleting a discussion. ${postId}`});
+                } else {
+                    if (updatedPost) {
+                        resolve({code: 200, result: updatedPost});
                     } else {
-                        if (updatedPost) {
-                            resolve({code: 200, result: updatedPost});
-                        } else {
-                            console.log(`no post with id: ${postId}`);
-                            reject({code: 404, result: `no post with id: ${postId}`});
-                        }
+                        console.log(`no post with id: ${postId}`);
+                        reject({code: 404, result: `no post with id: ${postId}`});
                     }
-                });
+                }
+            });
+        });
+    }
+
+    public updateADiscussion(postId: string, discussionId: string, discussionJSON) {
+        return new promise<Result> ((resolve, reject) => {
+            let conditions = { _id: postId, "discussions._id": discussionId};
+            let attrUpdate = {};
+            Object.keys(discussionJSON).forEach(key => {
+                // if (key == "startedB")
+                attrUpdate[`discussions.$.${key}`] = discussionJSON[key];
+            });
+            let update = {$set: attrUpdate};
+            let options = {new: true};
+            this.Post.findOneAndUpdate(conditions, update, options)
+            .populate('postedBy')
+            .populate('discussions.startedBy')
+            .exec((err, updatedPost) => {
+                if (err) {
+                    console.log(err);
+                    reject({code: 500, result: `Could not update post: ${postId}`});
+                } else {
+                    if (updatedPost) {
+                        resolve({code: 200, result: updatedPost});
+                    } else {
+                        console.log(`no post with id: ${postId}`);
+                        reject({code: 404, result: `no post with id: ${postId}`});
+                    }
+                }
+            });
         });
     }
 }

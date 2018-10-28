@@ -133,6 +133,11 @@ routes.route('/post/:postId/discussion/:discussionId')
 })
 // UPDATE a discussion in a post
 .put((req, res) => {
+    let postId = req.params["postId"];
+    let discussionId = req.params["discussionId"];
+    postController.updateADiscussion(postId, discussionId, req.body)
+    .then(obj => {res.status(obj["code"]).send(obj["result"]);})
+    .catch(obj => {res.status(obj["code"]).send(obj["result"]);});
 })
 // DELETE a discussion in a post
 .delete((req, res) => {

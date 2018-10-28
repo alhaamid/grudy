@@ -165,9 +165,8 @@ export class DashboardComponent implements OnInit {
     .catch(err => console.log(err));
   }
 
-  updatePostIsResolved(bool: boolean) {
-    let update = {isResolved: bool};
-    this.grudy.updatePost(this.selectedPost._id, update)
+  updatePost() {
+    this.grudy.updateAPost(this.selectedPost._id, this.selectedPost)
     .then(newPost => {
       this.refreshPosts();
     })
@@ -210,6 +209,14 @@ export class DashboardComponent implements OnInit {
   cancelADiscussion() {
     this.newDiscussions[this.selectedPost._id] = this.getEmptyDiscussion();
     this.newDiscussionsVisibilityState[this.selectedPost._id] = false;
+  }
+
+  updateDiscussion(discussion: Discussion) {
+    this.grudy.updateADiscussion(this.selectedPost._id, discussion._id, discussion)
+    .then(newPost => {
+      this.refreshPosts();
+    })
+    .catch(err => console.log(err));
   }
 
   showSelectedPostsDiscussion(bool: boolean) {
