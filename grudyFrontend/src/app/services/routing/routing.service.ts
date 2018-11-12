@@ -10,7 +10,6 @@ export class RoutingService {
   public SIGNUP_PAGE = new PageDetails('sign-up', '/sign-up', ['sign-up']);
   public ENROLL_PAGE = new PageDetails('enroll', '/enroll', ['enroll']);
   public DROP_PAGE = new PageDetails('drop', '/drop', ['drop']);
-  public SEARCH_PAGE = new PageDetails('search', '/search', ['search']);
 
   constructor() { }
 }

@@ -17,9 +17,6 @@
         <div *ngIf="this.authService.isLoggedIn()" title="{{yourAccountTitle}}" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="linkBox">
           <a class="centerBoth" routerLink="{{rs.YOUR_ACCOUNT_PAGE.ROUTE}}"><i class="material-icons">account_box</i></a>
         </div>
-        <div *ngIf="this.authService.isLoggedIn()" title="{{yourAccountTitle}}" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="linkBox">
-          <a class="centerBoth" routerLink="{{rs.SEARCH_PAGE.ROUTE}}"><i class="material-icons">search</i></a>
-        </div>
         <div *ngIf="this.authService.isLoggedIn()" title={{dashboardTitle}} routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="linkBox">
           <a class="centerBoth" routerLink="{{rs.LANDING_PAGE.ROUTE}}"><i class="material-icons">dashboard</i></a>
         </div>

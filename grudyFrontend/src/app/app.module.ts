@@ -41,7 +41,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { SearchComponent } from './views/search/search.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +54,6 @@ import { SearchComponent } from './views/search/search.component';
     ProfileComponent,
     DropComponent,
     EnrolledCoursesComponent,
-    SearchComponent,
   ],
   imports: [
     BrowserModule,
