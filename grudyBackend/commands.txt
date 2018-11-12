@@ -1,6 +1,4 @@
-node_modules/.bin/ts-node-dev server.ts
 npm start
-nodemon --exec npm start
 
 connect to remote mongo db:
     mongo "mongodb+srv://grudycluster1-bevsd.mongodb.net/test" --username haamid

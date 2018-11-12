@@ -7,6 +7,7 @@ import { YourAccountComponent } from '../views/your-account/your-account.compone
 import { SignUpComponent } from '../views/sign-up/sign-up.component';
 import { EnrollComponent } from '../views/enroll/enroll.component';
 import { DropComponent } from '../views/drop/drop.component';
+import { SearchComponent } from '../views/search/search.component';
 
 const routes: Routes = [
   {
@@ -37,6 +38,11 @@ const routes: Routes = [
   {
     path: 'drop',
     component: DropComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'search',
+    component: SearchComponent,
     canActivate: [AuthGuardService]
   }
 ];
