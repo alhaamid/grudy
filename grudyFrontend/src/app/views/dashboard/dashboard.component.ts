@@ -9,6 +9,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { RoutingService } from 'src/app/services/routing/routing.service';
 import { GlobalsService } from 'src/app/services/globals/globals.service';
+import { reject } from "q";
 
 @Component({
   selector: 'app-dashboard',
@@ -40,6 +41,13 @@ export class DashboardComponent implements OnInit {
   postFormValids: { [id: string]: FormGroup } = {};
   postEditTemps: { [id: string]: Post } = {};
 
+  searchMode: boolean = false;
+  searchMethods: string[] = ["search in posts' content"];
+  selectedSearchMethod: string = this.searchMethods[0];
+  searchFormGroup: FormGroup = null;
+  searchQuery: string = "HelloWorld";
+  searched: boolean = false;
+
   constructor(private grudy: GrudyService, private authService: AuthService, private fb: FormBuilder, private rs: RoutingService, private gs: GlobalsService) {
     this.newPost = this.getEmptyPost();
 
@@ -48,51 +56,59 @@ export class DashboardComponent implements OnInit {
       this.allEnrolledCourses = courses;
       this.checkedCourses = true;
       this.newPostForm = this.getAPostFormGroup();
+      this.searchFormGroup = this.fb.group({
+        'searchValidation': [null, Validators.required],
+      })
     })
     .catch(err => console.log(err));
   }
 
   refreshPosts() {
-    return new Promise<Boolean>((res, rej) => {
+    if (!this.searchMode) {
       this.grudy.getAllPostsByTopicId(this.selectedTopicId)
       .then(posts => {
-        this.selectedPosts = posts;
         this.gs.sortOn(this.selectedPosts, "postedWhen", true);
-
-        // update selected post in case a discussion was added
-        this.resetSelectedPost();
-        this.checkedPosts = true;
-
-        posts.forEach(post => {
-          if (!(this.newDiscussionsFormValids.hasOwnProperty(post._id))) {
-            this.newDiscussionsFormValids[post._id] = this.getADiscussionFormGroup();
-          }
-
-          if (!(this.newDiscussionsVisibilityState.hasOwnProperty(post._id))) {
-            this.newDiscussionsVisibilityState[post._id] = false;
-          }
-
-          if (!(this.newDiscussions.hasOwnProperty(post._id))) {
-            this.newDiscussions[post._id] = this.getEmptyDiscussion();
-          }
-
-          if (!(this.postEditState.hasOwnProperty(post._id))) {
-            this.postEditState[post._id] = false;
-          }
-
-          if (!(this.postFormValids.hasOwnProperty(post._id))) {
-            this.postFormValids[post._id] = this.getAPostFormGroup();
-          }
-
-          this.postEditTemps[post._id] = Object.assign({}, post);
-        });
-
-        res(true);
+        this.processPosts(posts);
       })
-      .catch(err => {
-        console.log(err);
-        res(false);
-      });
+      .catch(err => {console.log(err);});
+    } else {
+      this.search()
+      .then(posts => {
+        this.processPosts(posts);
+      })
+      .catch(err => {console.log(err);});
+    }
+  }
+
+  processPosts(posts: Post[]) {
+    this.selectedPosts = posts;
+
+    // update selected post in case a discussion was added
+    this.resetSelectedPost();
+    this.checkedPosts = true;
+
+    posts.forEach(post => {
+      if (!(this.newDiscussionsFormValids.hasOwnProperty(post._id))) {
+        this.newDiscussionsFormValids[post._id] = this.getADiscussionFormGroup();
+      }
+
+      if (!(this.newDiscussionsVisibilityState.hasOwnProperty(post._id))) {
+        this.newDiscussionsVisibilityState[post._id] = false;
+      }
+
+      if (!(this.newDiscussions.hasOwnProperty(post._id))) {
+        this.newDiscussions[post._id] = this.getEmptyDiscussion();
+      }
+
+      if (!(this.postEditState.hasOwnProperty(post._id))) {
+        this.postEditState[post._id] = false;
+      }
+
+      if (!(this.postFormValids.hasOwnProperty(post._id))) {
+        this.postFormValids[post._id] = this.getAPostFormGroup();
+      }
+
+      this.postEditTemps[post._id] = Object.assign({}, post);
     });
   }
 
@@ -121,8 +137,8 @@ export class DashboardComponent implements OnInit {
 
   getEmptyPost(): PostForm {
     return {
-      subject: "post subject",
-      content: "post content",
+      subject: "helloWorld",
+      content: "HelloWorld",
       isResolved: false
     };
   }
@@ -132,10 +148,6 @@ export class DashboardComponent implements OnInit {
       subject: "discussion subject",
       content: "discussion content",
     };
-  }
-
-  setNewPostState(newState: boolean) {
-    this.newPostVisibilityState = newState;
   }
 
   courseChange() {
@@ -174,7 +186,7 @@ export class DashboardComponent implements OnInit {
     this.grudy.createAPost(tempPost)
     .then(newPost => {
       this.refreshPosts();
-      this.setNewPostState(false);
+      this.hideNewPostForm();
       this.newPost = this.getEmptyPost();
     })
     .catch(err => console.log(err));
@@ -196,9 +208,34 @@ export class DashboardComponent implements OnInit {
     .catch(err => console.log(err));
   }
 
-  cancelNewPost() {
+  showNewPostForm() {
+    this.newPostVisibilityState = true;
+  }
+
+  hideNewPostForm() {
     this.newPost = this.getEmptyPost();
     this.newPostVisibilityState = false;
+  }
+
+  search() {
+    return new Promise<Post[]> ((resolve, reject) => {
+      let encodedQuery = encodeURI(this.searchQuery);
+      this.grudy.search(this.selectedTopicId, this.selectedSearchMethod, encodedQuery)
+      .then(posts => {
+        this.searched = true;
+        this.selectedPosts = posts;
+        resolve(posts);
+      })
+      .catch(err => {
+        reject(err);
+      })
+    });
+  }
+
+  searchModeChange(mode){
+    if (!mode) {
+      this.refreshPosts();
+    }
   }
 
 
@@ -250,7 +287,6 @@ export class DashboardComponent implements OnInit {
     this.selectedPost = post;
     this.selectedPostId = post._id;
     this.gs.sortOn(this.selectedPost.discussions, "postedWhen", true);
-    /* update and sort relevant discussions when the a post selection changes */
   }
 
 

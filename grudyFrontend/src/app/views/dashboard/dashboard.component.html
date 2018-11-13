@@ -41,12 +41,19 @@
 
           </mat-form-field>
 
+          <mat-checkbox *ngIf="this.selectedTopicId"
+            (change)="this.searchModeChange($event.checked)"
+            [ngModelOptions]="{standalone: true}"
+            [(ngModel)]="this.searchMode">
+            Toggle Search Mode
+          </mat-checkbox>
+
           <mat-card-actions>
-            <button *ngIf="this.selectedTopicId" 
+            <button *ngIf="this.selectedTopicId"
               mat-raised-button 
               color="primary"
               title="Create a post"
-              (click)="setNewPostState(true)">
+              (click)="showNewPostForm()">
               <b>Create a post</b>
             </button>
           </mat-card-actions>
@@ -56,6 +63,53 @@
 
       <div class="notification" *ngIf="this.selectedPosts.length == 0 && this.checkedPosts">
         No posts exist for this topic.
+      </div>
+
+      <div class="notification" *ngIf="this.searchMode && this.searched && this.selectedPosts.length==0">
+        No posts exist for this search query.
+      </div>
+
+      <div *ngIf="this.searchMode">
+        <mat-divider></mat-divider>
+        <mat-card class="fullWidth" style="padding-bottom: 0">
+          <h3>Search parameters</h3>
+
+          <mat-form-field>
+            <mat-select placeholder="Search method" [(ngModel)]="this.selectedSearchMethod">
+              <mat-option *ngFor="let method of this.searchMethods" [value]="method">
+                {{method | titlecase}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <form [formGroup]="this.searchFormGroup" class="fullWidth">
+            <div class="validationError" *ngIf="!this.searchFormGroup.controls['searchValidation'].valid && this.searchFormGroup.controls['searchValidation'].touched">
+              <div *ngIf="this.searchFormGroup.controls['searchValidation'].hasError('required')">
+                A search parameter is required.
+              </div>
+            </div>
+
+            <mat-form-field>
+              <input
+                matInput 
+                formControlName="searchValidation" 
+                [(ngModel)]="this.searchQuery" 
+                name="Search Query" 
+                placeholder="What are you looking for">
+            </mat-form-field>
+
+            <mat-card-actions>
+              <button
+                mat-raised-button 
+                color="primary"
+                [disabled]="!this.searchFormGroup.valid"
+                title="Search"
+                (click)="search()">
+                <b>Search</b>
+              </button>
+            </mat-card-actions>
+          </form>
+        </mat-card>
       </div>
 
       <div *ngIf="this.newPostVisibilityState">
@@ -113,7 +167,7 @@
                 <b>Post!</b>
               </button>
               <button mat-raised-button 
-                (click)="this.cancelNewPost()" 
+                (click)="this.hideNewPostForm()" 
                 title="Cancel">
                 <b>Cancel</b>
               </button>
@@ -162,7 +216,7 @@
                   <img mat-card-avatar [src]="this.selectedPost.postedBy.photoURL" class="avatar">
                   <mat-card-title><h3>{{this.selectedPost.subject}}</h3></mat-card-title>
                   <mat-card-subtitle>
-                    Posted by {{this.selectedPost.postedBy.displayName}} on {{this.selectedPost.postedWhen | date: 'shortDate'}} at {{this.selectedPost.postedWhen | date: 'shortTime'}}
+                    Posted by <b>{{this.selectedPost.postedBy.displayName}}</b> on {{this.selectedPost.postedWhen | date: 'shortDate'}} at {{this.selectedPost.postedWhen | date: 'shortTime'}}
                   </mat-card-subtitle>  
                 </mat-card-header>
 

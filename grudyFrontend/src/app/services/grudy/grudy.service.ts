@@ -170,4 +170,15 @@ export class GrudyService {
       );
     });
   }
+
+  search(topicId: string, method: string, query: string) {
+    return new Promise<Post[]> ((resolve, reject) => {
+      var str = `/post/search/subject/${topicId}/${method}/${query}`;
+      this.http.get<Post[]>(this.backendUrl + str)
+      .subscribe(
+        posts => {resolve(posts);}, 
+        err => {reject(err);}
+      );
+    })
+  }
 }
