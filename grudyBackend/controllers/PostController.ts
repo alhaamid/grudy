@@ -1,6 +1,7 @@
 import mongoose, { Promise } from "mongoose";
 import { PostSchema } from "../models/Post";
 import promise from "promise";
+import { resolve } from "url";
 
 export class PostController {
     Post: mongoose.Model<mongoose.Document> = mongoose.model('Post', PostSchema);
@@ -164,6 +165,34 @@ export class PostController {
                     } else {
                         console.log(`no post with id: ${postId}`);
                         reject({code: 404, result: `no post with id: ${postId}`});
+                    }
+                }
+            });
+        });
+    }
+
+    public search(method: string, topicId: string, query: string) {
+        return new promise <Result> ((resolve, reject) => {
+            let options = {score: { $meta: "textScore"}};
+            let condition = {
+                topicId: topicId,
+                $text: { $search: query, $caseSensitive: false, $diacriticSensitive: false}
+            };
+            
+            this.Post.find(condition, options)
+            .sort(options)
+            .populate('postedBy')
+            .populate('discussions.startedBy')
+            .exec((err, posts: mongoose.Document[]) => {
+                if (err) {
+                    console.log(err);
+                    reject({code: 404, result: err});
+                } else {
+                    if (posts) {
+                        resolve({code: 200, result: posts});
+                    } else {
+                        console.log(`no posts under ${topicId}`);
+                        reject({code: 404, result: `no posts under ${topicId}`});
                     }
                 }
             });

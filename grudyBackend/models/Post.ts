@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 import { DiscussionSchema } from "./Discussion";
 
-export const PostSchema = new Schema({
+const PostSchema = new Schema({
     topicId: {
         type: mongoose.Schema.Types.ObjectId
     },
@@ -34,3 +34,7 @@ export const PostSchema = new Schema({
     }
     // discussions: [DiscussionSchema]
 });
+
+PostSchema.index({subject: 'text', content: 'text'});
+
+export {PostSchema};

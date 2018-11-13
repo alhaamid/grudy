@@ -102,7 +102,17 @@ routes.route('/post/:postId')
     .catch(obj => {res.status(obj["code"]).send(obj["result"]);});
 })
 
-
+// Search posts
+routes.route('/post/search/subject/:topicId/:method/:query')
+.get((req, res) => {
+    let topicId = req.params["topicId"];
+    let method = req.params["method"];
+    let query = req.params["query"];
+    let decodedQuery = decodeURI(query);
+    postController.search(method, topicId, decodedQuery)
+    .then(obj => {res.status(obj["code"]).send(obj["result"]);})
+    .catch(obj => {res.status(obj["code"]).send(obj["result"]);});
+})
 
 // GET all posts by a topic
 routes.route('/post/topic/:topicId')
