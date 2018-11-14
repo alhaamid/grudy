@@ -39,7 +39,6 @@ export class DashboardComponent implements OnInit {
 
   postEditState: { [id: string]: boolean } = {};
   postFormValids: { [id: string]: FormGroup } = {};
-  postEditTemps: { [id: string]: Post } = {};
 
   searchMode: boolean = false;
   searchMethods: string[] = ["search in posts' content"];
@@ -108,13 +107,17 @@ export class DashboardComponent implements OnInit {
         this.postFormValids[post._id] = this.getAPostFormGroup();
       }
 
-      this.postEditTemps[post._id] = Object.assign({}, post);
-    });
-  }
+      post.discussions.forEach(discussion => {
+        if (!(this.postEditState.hasOwnProperty(discussion._id))) {
+          this.postEditState[discussion._id] = false;
+        }
 
-  cancelPostEdit(postId: string) {
-    this.postEditState[postId] = false;
-    this.postEditTemps[postId] = Object.assign({}, this.selectedPost);
+        if (!(this.postFormValids.hasOwnProperty(discussion._id))) {
+          this.postFormValids[discussion._id] = this.getADiscussionFormGroup();
+        }
+  
+      })
+    });
   }
 
   setPostEditState(postId: string, bool: boolean) {
@@ -294,7 +297,7 @@ export class DashboardComponent implements OnInit {
   }
 
   print(any) {
-    console.log(any, this.selectedPost);
+    console.log(any);
   }
 
 }
