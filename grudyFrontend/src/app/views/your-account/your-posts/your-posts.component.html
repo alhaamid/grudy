@@ -1,0 +1,34 @@
+<mat-card>
+  <h3>Your Posts</h3>
+</mat-card>
+
+<div *ngIf="this.usersPosts?.length==0" class="notification">
+  You havent posted any posts.
+</div>
+
+<div *ngIf="this.usersPosts?.length>0">
+  <div *ngFor="let post of this.usersPosts">
+    <mat-card [ngClass]="{'postCard': true}">
+      <mat-card-header>
+        <img mat-card-avatar [src]="post.postedBy.photoURL" class="avatar">
+        <mat-card-title><h3>{{post.subject}}</h3></mat-card-title>
+        <mat-card-subtitle>
+          Posted on {{post.postedWhen | date: 'shortDate'}} at {{post.postedWhen | date: 'shortTime'}}
+        </mat-card-subtitle>  
+      </mat-card-header>
+
+      <mat-card-content>{{post.content}}</mat-card-content>
+
+      <mat-checkbox
+        [disabled] = "true"
+        [(ngModel)]="post.isResolved">
+        Resolved
+      </mat-checkbox>
+
+      <mat-card-footer>
+        Course: {{post.course.courseCode}} - {{post.course.courseName}}, Topic: {{ this.getTopic(post.course, post.topicId) }}
+      </mat-card-footer>
+    </mat-card>
+
+  </div>
+</div>

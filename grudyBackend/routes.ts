@@ -122,6 +122,13 @@ routes.route('/post/topic/:topicId')
     .catch(obj => {res.status(obj["code"]).send(obj["result"]);});
 });
 
+// GET all posts by a user
+routes.route('/post/user/:email')
+.get((req, res) => {
+    postController.getAllPostsByUser(req.params["email"])
+    .then(obj => {res.status(obj["code"]).send(obj["result"]);})
+    .catch(obj => {res.status(obj["code"]).send(obj["result"]);});
+});
 
 
 /* Discussion related */

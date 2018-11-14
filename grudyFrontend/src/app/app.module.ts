@@ -41,6 +41,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { YourPostsComponent } from './views/your-account/your-posts/your-posts.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     ProfileComponent,
     DropComponent,
     EnrolledCoursesComponent,
+    YourPostsComponent,
   ],
   imports: [
     BrowserModule,

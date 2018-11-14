@@ -1,0 +1,23 @@
+.notification {
+    color: blue;
+    margin-bottom: 10px;
+}
+
+.mat-card {
+    color: var(--primary-color);
+}
+
+.mat-card-subtitle {
+    color: var(--primary-color);
+}
+
+.mat-card-footer {
+    text-align: right;
+    padding-right: 1em;
+}
+
+.postCard {
+    margin: 0px 0px 5px 0px;
+    width: 100%; 
+    /* max-height: inherit; */
+}

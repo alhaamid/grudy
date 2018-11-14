@@ -3,8 +3,12 @@ const Schema = mongoose.Schema;
 import { DiscussionSchema } from "./Discussion";
 
 const PostSchema = new Schema({
+    course: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Course'
+    },
     topicId: {
-        type: mongoose.Schema.Types.ObjectId
+        type: mongoose.Schema.Types.ObjectId,
     },
     subject: {
         type: String,

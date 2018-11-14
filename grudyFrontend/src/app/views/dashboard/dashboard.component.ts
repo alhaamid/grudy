@@ -180,6 +180,7 @@ export class DashboardComponent implements OnInit {
 
   createAPost() {
     let tempPost: Post = {
+      course: this.selectedCourseId,
       topicId: this.selectedTopicId,
       subject: this.newPost.subject,
       content: this.newPost.content,

@@ -374,6 +374,42 @@
               <div class="center"><h3>Followup Discussions</h3></div>
               <div *ngFor="let discussion of this.selectedPost.discussions">
 
+                <mat-card *ngIf="!this.postEditState[discussion._id]" [ngClass]="{'postCard': true}">
+                  <mat-card-header>
+                    <img mat-card-avatar [src]="discussion.startedBy.photoURL" class="avatar">
+                    <mat-card-title><h3>{{discussion.subject}}</h3></mat-card-title>
+                    <mat-card-subtitle>Last updated: {{discussion.postedWhen | date: 'short'}}</mat-card-subtitle>  
+                  </mat-card-header>
+
+                  <mat-card-content>{{discussion.content}}</mat-card-content>
+
+                  <mat-checkbox
+                    [disabled] = "discussion.startedBy._id != this.authService.userDetails._id"
+                    [(ngModel)]="discussion.isResolved"
+                    (change)="this.updateDiscussion(discussion)">
+                    Resolved
+                  </mat-checkbox>
+
+                  <mat-card-actions *ngIf="this.authService.userDetails">
+                    <button
+                      mat-raised-button
+                      [disabled]="discussion.startedBy._id != this.authService.userDetails._id"
+                      color="primary"
+                      title="Delete"
+                      (click)="this.setPostEditState(discussion._id, true)">
+                      <b>Edit</b>
+                    </button>
+                    <button
+                      mat-raised-button
+                      [disabled]="discussion.startedBy._id != this.authService.userDetails._id"
+                      color="warn"
+                      title="Delete"
+                      (click)="this.deleteADiscussion(discussion._id)">
+                      <b>Delete</b>
+                    </button>
+                  </mat-card-actions>
+                </mat-card>
+
                 <!-- EDIT A DISCUSSION -->
                 <mat-card *ngIf="this.postEditState[discussion._id]" class="fullWidth" style="padding-bottom: 0">
                   <h3>Edit Discussion</h3>
@@ -427,43 +463,6 @@
                       </button>
                     </mat-card-actions>
                   </form>
-                </mat-card>
-
-
-                <mat-card *ngIf="!this.postEditState[discussion._id]" [ngClass]="{'postCard': true}">
-                  <mat-card-header>
-                    <img mat-card-avatar [src]="discussion.startedBy.photoURL" class="avatar">
-                    <mat-card-title><h3>{{discussion.subject}}</h3></mat-card-title>
-                    <mat-card-subtitle>Last updated: {{discussion.postedWhen | date: 'short'}}</mat-card-subtitle>  
-                  </mat-card-header>
-
-                  <mat-card-content>{{discussion.content}}</mat-card-content>
-
-                  <mat-checkbox
-                    [disabled] = "discussion.startedBy._id != this.authService.userDetails._id"
-                    [(ngModel)]="discussion.isResolved"
-                    (change)="this.updateDiscussion(discussion)">
-                    Resolved
-                  </mat-checkbox>
-
-                  <mat-card-actions *ngIf="this.authService.userDetails">
-                    <button
-                      mat-raised-button
-                      [disabled]="discussion.startedBy._id != this.authService.userDetails._id"
-                      color="primary"
-                      title="Delete"
-                      (click)="this.setPostEditState(discussion._id, true)">
-                      <b>Edit</b>
-                    </button>
-                    <button
-                      mat-raised-button
-                      [disabled]="discussion.startedBy._id != this.authService.userDetails._id"
-                      color="warn"
-                      title="Delete"
-                      (click)="this.deleteADiscussion(discussion._id)">
-                      <b>Delete</b>
-                    </button>
-                  </mat-card-actions>
                 </mat-card>
 
               </div>

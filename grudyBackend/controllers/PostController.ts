@@ -1,10 +1,11 @@
-import mongoose, { Promise } from "mongoose";
+import mongoose from "mongoose";
 import { PostSchema } from "../models/Post";
+import { UserController } from ".././controllers/UserController";
 import promise from "promise";
-import { resolve } from "url";
 
 export class PostController {
     Post: mongoose.Model<mongoose.Document> = mongoose.model('Post', PostSchema);
+    userController: UserController = new UserController();
 
     constructor() {}
 
@@ -196,6 +197,35 @@ export class PostController {
                     }
                 }
             });
+        });
+    }
+
+    getAllPostsByUser(email: string) {
+        return new promise <Result> ((resolve, reject) => {
+            this.userController.getAUser(email)
+            .then(result => {
+                let condition = {postedBy: { $eq: result.result._id} };
+                this.Post.find(condition)
+                .populate('course')
+                .populate('postedBy')
+                .populate('discussions.startedBy')
+                .exec((err, posts: mongoose.Document[]) => {
+                    if (err) {
+                        console.log(err);
+                        reject({code: 404, result: err});
+                    } else {
+                        if (posts) {
+                            resolve({code: 200, result: posts});
+                        } else {
+                            console.log(`no posts posted by ${email}`);
+                            reject({code: 404, result: `no posts posted by ${email}`});
+                        }
+                    }
+                });
+            })
+            .catch(err => {
+                reject(err);
+            })
         });
     }
 }
