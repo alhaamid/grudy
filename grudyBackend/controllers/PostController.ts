@@ -1,10 +1,12 @@
 import mongoose from "mongoose";
 import { PostSchema } from "../models/Post";
+import { UserSchema } from "../models/User";
 import { UserController } from ".././controllers/UserController";
 import promise from "promise";
 
 export class PostController {
     Post: mongoose.Model<mongoose.Document> = mongoose.model('Post', PostSchema);
+    User: mongoose.Model<mongoose.Document> = mongoose.model('User', UserSchema);
     userController: UserController = new UserController();
 
     constructor() {}
@@ -30,7 +32,7 @@ export class PostController {
                     resolve({code: 201, result: post});
                 }
             });
-        });      
+        });
     }
 
     public getAllPostsByTopic(topicId: string) {
@@ -173,31 +175,91 @@ export class PostController {
     }
 
     public search(method: string, topicId: string, query: string) {
-        return new promise <Result> ((resolve, reject) => {
-            let options = {score: { $meta: "textScore"}};
-            let condition = {
-                topicId: topicId,
-                $text: { $search: query, $caseSensitive: false, $diacriticSensitive: false}
-            };
-            
-            this.Post.find(condition, options)
-            .sort(options)
-            .populate('postedBy')
-            .populate('discussions.startedBy')
-            .exec((err, posts: mongoose.Document[]) => {
-                if (err) {
-                    console.log(err);
-                    reject({code: 404, result: err});
-                } else {
-                    if (posts) {
-                        resolve({code: 200, result: posts});
-                    } else {
-                        console.log(`no posts under ${topicId}`);
-                        reject({code: 404, result: `no posts under ${topicId}`});
-                    }
+        if (method == "search by content") {
+            return new promise <Result> ((resolve, reject) => {
+                let condition = {
+                    topicId: topicId,
+                    $or: [
+                        {'subject': {'$regex': query, '$options': 'ix'}},
+                        {'content': {'$regex': query, '$options': 'ix'}},
+                        {'discussions.subject': {'$regex': query, '$options': 'ix'}},
+                        {'discussions.content': {'$regex': query, '$options': 'ix'}},
+                    ]
                 }
+                this.Post.find(condition)
+                .populate('postedBy')
+                .populate('discussions.startedBy')
+                .exec((err, posts: mongoose.Document[]) => {
+                    if (err) {
+                        console.log(err);
+                        reject({code: 404, result: err});
+                    } else {
+                        if (posts) {
+                            resolve({code: 200, result: posts});
+                        } else {
+                            console.log(`no posts with ${query} under ${topicId}`);
+                            reject({code: 404, result: `no posts under ${topicId}`});
+                        }
+                    }
+                });
             });
-        });
+        } else if (method == "search by user") {
+            return new promise <Result> ((resolve, reject) => {
+                let allRelevantUserIds = []
+                let condition = {
+                    $or: [
+                        {'displayName': {'$regex': query, '$options': 'ix'}},
+                    ] }
+                this.User.find(condition)
+                .exec((err, users: mongoose.Document[]) => {
+                    if (err) {
+                        console.log(err);
+                        reject({code: 404, result: err});
+                    } else {
+                        if (users.length>0) {
+                            users.forEach(user => {
+                                console.log(user);
+                                allRelevantUserIds.push(user._id);
+                            });
+                            let or = []
+                            allRelevantUserIds.forEach(id => {
+                                or.push({'postedBy': id});
+                                or.push({'discussions.startedBy': id});
+                            })
+
+                            let condition = {
+                                topicId: topicId,
+                                $or: or
+                            }
+                            this.Post.find(condition)
+                            .populate('postedBy')
+                            .populate('discussions.startedBy')
+                            .exec((err, posts: mongoose.Document[]) => {
+                                if (err) {
+                                    console.log(err);
+                                    reject({code: 404, result: err});
+                                } else {
+                                    if (posts) {
+                                        resolve({code: 200, result: posts});
+                                    } else {
+                                        console.log(`no users with ${query} who have posted under ${topicId}`);
+                                        reject({code: 404, result: `no users with ${query} who have posted under ${topicId}`});
+                                    }
+                                }
+                            });
+                        } else {
+                            console.log(`no posts with ${query} under ${topicId}`);
+                            reject({code: 404, result: `no posts under ${topicId}`});
+                        }
+                    }
+                });
+            });
+        } else {
+            return new promise <Result> ((resolve, reject) => {
+                console.log(`unknown method: ${method}`);
+                reject({code: 404, result: method});
+            });
+        }
     }
 
     getAllPostsByUser(email: string) {

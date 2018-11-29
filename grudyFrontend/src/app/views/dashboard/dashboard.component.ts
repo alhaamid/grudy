@@ -9,7 +9,6 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { RoutingService } from 'src/app/services/routing/routing.service';
 import { GlobalsService } from 'src/app/services/globals/globals.service';
-import { reject } from "q";
 
 @Component({
   selector: 'app-dashboard',
@@ -20,7 +19,7 @@ export class DashboardComponent implements OnInit {
   checkedCourses: boolean = false;
   checkedTopics: boolean = false;
   checkedPosts: boolean = false;
-  
+
   allEnrolledCourses: Course[] = [];
   selectedCourseId: string = null;
   selectedTopics: Topic[] = null;
@@ -41,7 +40,7 @@ export class DashboardComponent implements OnInit {
   postFormValids: { [id: string]: FormGroup } = {};
 
   searchMode: boolean = false;
-  searchMethods: string[] = ["search in posts' content"];
+  searchMethods: string[] = ["search by content", "search by user"];
   selectedSearchMethod: string = this.searchMethods[0];
   searchFormGroup: FormGroup = null;
   searchQuery: string = "HelloWorld";
@@ -66,7 +65,6 @@ export class DashboardComponent implements OnInit {
     if (!this.searchMode) {
       this.grudy.getAllPostsByTopicId(this.selectedTopicId)
       .then(posts => {
-        this.gs.sortOn(this.selectedPosts, "postedWhen", true);
         this.processPosts(posts);
       })
       .catch(err => {console.log(err);});
@@ -81,6 +79,7 @@ export class DashboardComponent implements OnInit {
 
   processPosts(posts: Post[]) {
     this.selectedPosts = posts;
+    this.gs.sortOn(this.selectedPosts, "postedWhen", true);
 
     // update selected post in case a discussion was added
     this.resetSelectedPost();
@@ -115,7 +114,7 @@ export class DashboardComponent implements OnInit {
         if (!(this.postFormValids.hasOwnProperty(discussion._id))) {
           this.postFormValids[discussion._id] = this.getADiscussionFormGroup();
         }
-  
+
       })
     });
   }
