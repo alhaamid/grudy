@@ -139,16 +139,16 @@ export class DashboardComponent implements OnInit {
 
   getEmptyPost(): PostForm {
     return {
-      subject: "helloWorld",
-      content: "HelloWorld",
+      subject: "",
+      content: "",
       isResolved: false
     };
   }
 
   getEmptyDiscussion(): DiscussionForm {
     return {
-      subject: "discussion subject",
-      content: "discussion content",
+      subject: "",
+      content: "",
     };
   }
 
@@ -170,7 +170,7 @@ export class DashboardComponent implements OnInit {
       let result = this.selectedPosts.filter(post => post._id == this.selectedPostId);
       if (result.length > 0) {
         this.selectedPost = result[0];
-        this.gs.sortOn(this.selectedPost.discussions, "postedWhen", true);
+        this.gs.sortOn(this.selectedPost.discussions, "postedWhen", false);
       } else {
         this.selectedPost = null;
       }
@@ -230,6 +230,7 @@ export class DashboardComponent implements OnInit {
         resolve(posts);
       })
       .catch(err => {
+        console.log(err);
         reject(err);
       })
     });
@@ -289,7 +290,7 @@ export class DashboardComponent implements OnInit {
   setPostAndDiscussions(post: Post) {
     this.selectedPost = post;
     this.selectedPostId = post._id;
-    this.gs.sortOn(this.selectedPost.discussions, "postedWhen", true);
+    this.gs.sortOn(this.selectedPost.discussions, "postedWhen", false);
   }
 
 

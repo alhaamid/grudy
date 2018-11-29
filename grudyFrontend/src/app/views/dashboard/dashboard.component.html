@@ -48,6 +48,10 @@
             Toggle Search Mode
           </mat-checkbox>
 
+          <button mat-icon-button *ngIf="this.selectedTopicId" (click)="this.refreshPosts()">
+            <mat-icon>refresh</mat-icon>
+          </button>
+
           <mat-card-actions>
             <button *ngIf="this.selectedTopicId"
               mat-raised-button 
@@ -61,7 +65,7 @@
         </mat-card>
       </div>
 
-      <div class="notification" *ngIf="this.selectedPosts.length == 0 && this.checkedPosts">
+      <div class="notification" *ngIf="this.selectedPosts.length == 0 && this.checkedPosts && !this.searchMode">
         No posts exist for this topic.
       </div>
 
@@ -85,7 +89,7 @@
           <form [formGroup]="this.searchFormGroup" class="fullWidth">
             <div class="validationError" *ngIf="!this.searchFormGroup.controls['searchValidation'].valid && this.searchFormGroup.controls['searchValidation'].touched">
               <div *ngIf="this.searchFormGroup.controls['searchValidation'].hasError('required')">
-                A search parameter is required.
+                A search query is required.
               </div>
             </div>
 

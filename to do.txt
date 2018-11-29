@@ -1,3 +1,2 @@
 User can view his/her posts, separated into resolved and unresolved in "Your Account Page"
 Add refresh/back buttons to each page?
-Correct getEmptyPost, getEmptyDiscussion in dashboard.ts
